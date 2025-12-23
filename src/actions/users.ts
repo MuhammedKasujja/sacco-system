@@ -8,9 +8,9 @@ export const fetchUsers = createServerFn({ method: 'GET' }).handler(() => {
 
 export const createUser = createServerFn().handler(() => {
   return db.insert(users).values({
-    name: 'kasujja muhammed',
+    firstName: 'kasujja',
+    lastName: 'muhammed',
     email: 'al.kasmud.2@gmail.com',
     password: 'Password2',
-    age: 30,
   })
 })

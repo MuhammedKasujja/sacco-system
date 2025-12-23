@@ -12,10 +12,11 @@ function RouteComponent() {
 
   return (
     <div>
-      <div>Hello "/users/"!</div>
       {users.map((user) => (
         <Fragment key={user.id}>
-          <p>{user.name}</p>
+          <p>
+            {user.firstName} {user.lastName}
+          </p>
           <p>{user.email}</p>
         </Fragment>
       ))}
