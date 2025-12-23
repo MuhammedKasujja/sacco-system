@@ -48,7 +48,7 @@ export const members = pgTable('members', {
 
 export const savingsProducts = pgTable('savings_products', {
   productId: serial('product_id').primaryKey(),
-  productName: varchar('productName', { length: 200 }).notNull(),
+  productName: varchar('product_name', { length: 200 }).notNull(),
   description: text('description'),
   interestRate: decimal('interest_rate').notNull(),
   minimumBalance: decimal('minimum_balance').notNull(),
@@ -82,6 +82,7 @@ export const savingsAccounts = pgTable('savings_accounts', {
 export const loanProducts = pgTable('loan_products', {
   productId: serial('product_id').primaryKey(),
   productName: varchar('product_name', { length: 200 }).notNull(),
+  minAmount: decimal('min_amount'),
   maxAmount: decimal('max_amount'),
   interestRate: decimal('interest_rate').notNull(),
   repaymentPeriodMonths: integer('repayment_period_months'),
@@ -97,6 +98,9 @@ export const loanProducts = pgTable('loan_products', {
 
 export const loans = pgTable('loans', {
   id: serial('id').primaryKey(),
+  loanProductId: integer('loan_product_id').references(
+    () => loanProducts.productId,
+  ),
   number: varchar('loan_number', { length: 20 }).unique(),
   principalAmount: decimal('principal_amount'),
   interestAmount: decimal('interest_amount'),
@@ -116,7 +120,9 @@ export const loans = pgTable('loans', {
 // -- Loan Repayments: Scheduled or actual repayments
 export const loanRepayments = pgTable('loan_repayments', {
   id: serial('id').primaryKey(),
-  loanId: integer('loan_id'),
+  loanId: integer('loan_id')
+    .notNull()
+    .references(() => loans.id),
   repaymentDate: date('repayment_date').notNull(),
   amountPaid: decimal('amount_paid'),
   principalPaid: decimal('principal_paid'),
@@ -134,9 +140,11 @@ export const loanRepayments = pgTable('loan_repayments', {
 export const transactions = pgTable('transactions', {
   id: serial('id').primaryKey(),
   date: date('date'),
-  memberId: integer('member_id').notNull(),
-  accountId: integer('account_id'), // -- For savings transactions
-  loanId: integer('loan_id'),
+  memberId: integer('member_id')
+    .notNull()
+    .references(() => members.id),
+  accountId: integer('account_id').references(() => savingsAccounts.accountId), // -- For savings transactions
+  loanId: integer('loan_id').references(() => loans.id),
   transactionType: varchar('transaction_type', { length: 20 }), // deposit, withdrawal, loan_disbursement, loan_repayment, share_purchase
   amount: decimal('amount'),
   recordedBy: integer('recorded_by'),
@@ -158,7 +166,9 @@ export const auditLogs = pgTable('audit_logs', {
   operation: char('operation', { length: 1 }).notNull(),
   oldValues: json('old_values'),
   newValues: json('new_values'),
-  changedBy: integer('changed_by').notNull(),
+  changedBy: integer('changed_by')
+    .notNull()
+    .references(() => users.id),
   changedAt: timestamp('changed_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
