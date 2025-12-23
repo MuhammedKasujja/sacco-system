@@ -1,13 +1,13 @@
 import { db } from '@/db'
-import { usersTable } from '@/db/schema'
+import { users } from '@/db/schema'
 import { createServerFn } from '@tanstack/react-start'
 
 export const fetchUsers = createServerFn({ method: 'GET' }).handler(() => {
-  return db.query.usersTable.findMany()
+  return db.query.users.findMany()
 })
 
 export const createUser = createServerFn().handler(() => {
-  return db.insert(usersTable).values({
+  return db.insert(users).values({
     name: 'kasujja muhammed',
     email: 'al.kasmud.2@gmail.com',
     password: 'Password2',

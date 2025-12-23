@@ -12,7 +12,7 @@
     "check": "prettier --write . && eslint --fix",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:generate:reset": "drizzle-kit drop && drizzle-kit generate",
+    "db:reset": "drizzle-kit drop && drizzle-kit generate && drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {

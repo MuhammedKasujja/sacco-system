@@ -1,9 +1,166 @@
-import { integer, pgTable, varchar } from 'drizzle-orm/pg-core'
+import {
+  char,
+  date,
+  decimal,
+  integer,
+  json,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  varchar,
+} from 'drizzle-orm/pg-core'
 
-export const usersTable = pgTable('users', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }).notNull(),
-  age: integer().notNull(),
-  email: varchar({ length: 255 }).notNull().unique(),
-  password: varchar().notNull()
+export const users = pgTable('users', {
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar('name', { length: 255 }).notNull(),
+  age: integer('age').notNull(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
+  password: varchar('password').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+})
+
+export const members = pgTable('members', {
+  id: serial('id').primaryKey(),
+  number: varchar('member_number', { length: 20 }).unique(),
+  firstName: varchar('first_name', { length: 50 }).notNull(),
+  lastName: varchar('last_name', { length: 50 }).notNull(),
+  idNumber: varchar('id_number', { length: 20 }).notNull().unique(),
+  phone: varchar({ length: 20 }).notNull().unique(),
+  email: varchar({ length: 20 }).unique(),
+  address: text('address'),
+  joinDate: date('join_date'),
+  status: varchar('status', { length: 20 }),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+})
+
+export const savingsProducts = pgTable('savings_products', {
+  productId: serial('product_id').primaryKey(),
+  productName: varchar('productName', { length: 200 }).notNull(),
+  description: text('description'),
+  interestRate: decimal('interest_rate').notNull(),
+  minimumBalance: decimal('minimum_balance').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+})
+
+export const savingsAccounts = pgTable('savings_accounts', {
+  accountId: serial('account_id').primaryKey(),
+  memberId: integer('member_id')
+    .notNull()
+    .references(() => members.id),
+  productId: integer('product_id'),
+  accountNumber: varchar('account_number', { length: 30 }),
+  balance: decimal(),
+  openedDate: date('opened_date').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+})
+
+export const loanProducts = pgTable('loan_products', {
+  productId: serial('product_id').primaryKey(),
+  productName: varchar('product_name', { length: 200 }).notNull(),
+  maxAmount: decimal('max_amount'),
+  interestRate: decimal('interest_rate').notNull(),
+  repaymentPeriodMonths: integer('repayment_period_months'),
+  description: text(),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+})
+
+export const loans = pgTable('loans', {
+  id: serial('id').primaryKey(),
+  number: varchar('loan_number', { length: 20 }).unique(),
+  principalAmount: decimal('principal_amount'),
+  interestAmount: decimal('interest_amount'),
+  totalAmount: decimal('total_amount'),
+  disbursementDate: date('disbursement_date'),
+  status: varchar('status', { length: 20 }),
+  approvedBy: integer('approved_by'),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+})
+
+// -- Loan Repayments: Scheduled or actual repayments
+export const loanRepayments = pgTable('loan_repayments', {
+  id: serial('id').primaryKey(),
+  loanId: integer('loan_id'),
+  repaymentDate: date('repayment_date').notNull(),
+  amountPaid: decimal('amount_paid'),
+  principalPaid: decimal('principal_paid'),
+  interestPaid: decimal('interest_paid'),
+  balanceAfter: decimal('balance_after'),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+})
+
+export const transactions = pgTable('transactions', {
+  id: serial('id').primaryKey(),
+  date: date('date'),
+  memberId: integer('member_id').notNull(),
+  accountId: integer('account_id'), // -- For savings transactions
+  loanId: integer('loan_id'),
+  transactionType: varchar('transaction_type', { length: 20 }), // deposit, withdrawal, loan_disbursement, loan_repayment, share_purchase
+  amount: decimal('amount'),
+  recordedBy: integer('recorded_by'),
+  description: text('description'),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .notNull()
+    .$onUpdate(() => new Date()),
+})
+
+// -- Audit Logs Table: Tracks all changes to important tables
+export const auditLogs = pgTable('audit_logs', {
+  id: serial('id').primaryKey(),
+  tableName: varchar('table_name', { length: 50 }),
+  recordId: integer('record_id').notNull(),
+  operation: char('operation', { length: 1 }).notNull(),
+  oldValues: json('old_values'),
+  newValues: json('new_values'),
+  changedBy: integer('changed_by').notNull(),
+  changedAt: timestamp('changed_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  description: text('description'),
 })
