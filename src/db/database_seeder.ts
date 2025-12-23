@@ -25,6 +25,7 @@ import {
 import { getTableConfig } from 'drizzle-orm/pg-core'
 import type { Table } from 'drizzle-orm'
 
+/// Row counts for test data per table
 const USERS_COUNT = 20
 const MEMBERS_COUNT = 50
 const LOANS_COUNT = 30
@@ -34,7 +35,7 @@ const SAVING_ACCOUNTS_COUNT = 20
 const SAVING_PRODUCTS_COUNT = 5
 const LOAN_TRANSACTIONS_COUNT = 500
 const SAVING_TRANSACTIONS_COUNT = 600
-const AUDIT_LOGS_COUNT = 1000
+const AUDIT_LOGS_COUNT = 1_000
 
 export class DatabaseSeeder {
   private mockUsers: UserEntity[] = []
@@ -81,8 +82,8 @@ export class DatabaseSeeder {
           number: faker.string.uuid(),
           interestRate: faker.finance.amount({ min: 5, max: 45, dec: 2 }),
           principalAmount: faker.finance.amount({
-            min: 5000,
-            max: 500000,
+            min: 5_000,
+            max: 500_000,
             dec: 2,
           }),
           status: faker.helpers.arrayElement([
@@ -163,7 +164,7 @@ export class DatabaseSeeder {
           date: faker.date.past().toISOString(),
           transactionType: faker.finance.transactionType(),
           description: faker.finance.transactionDescription(),
-          amount: faker.finance.amount({ min: 10000, max: 200000, dec: 2 }),
+          amount: faker.finance.amount({ min: 10_000, max: 200_000, dec: 2 }),
         })
         .returning()
 

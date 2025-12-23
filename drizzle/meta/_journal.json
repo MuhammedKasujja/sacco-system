@@ -57,6 +57,20 @@
       "when": 1766503435262,
       "tag": "0007_ambiguous_beyonder",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1766509307966,
+      "tag": "0008_boring_millenium_guard",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1766509546858,
+      "tag": "0009_complete_sumo",
+      "breakpoints": true
     }
   ]
 }

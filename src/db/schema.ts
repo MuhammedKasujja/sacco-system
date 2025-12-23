@@ -67,8 +67,12 @@ export const savingsAccounts = pgTable('savings_accounts', {
   accountId: serial('account_id').primaryKey(),
   memberId: integer('member_id')
     .notNull()
-    .references(() => members.id),
-  productId: integer('product_id').references(() => savingsProducts.productId),
+    .references(() => members.id, {
+      onDelete: 'cascade',
+    }),
+  productId: integer('product_id').references(() => savingsProducts.productId, {
+    onDelete: 'cascade',
+  }),
   accountNumber: varchar('account_number', { length: 30 }),
   balance: decimal(),
   openedDate: date('opened_date').notNull(),
@@ -102,15 +106,22 @@ export const loans = pgTable('loans', {
   id: serial('id').primaryKey(),
   loanProductId: integer('loan_product_id').references(
     () => loanProducts.productId,
+    {
+      onDelete: 'cascade',
+    },
   ),
-  memberId: integer('member_id').references(() => members.id),
+  memberId: integer('member_id').references(() => members.id, {
+    onDelete: 'set null',
+  }),
   number: varchar('loan_number', { length: 50 }).unique(),
   principalAmount: decimal('principal_amount'),
   interestRate: decimal('interest_rate'),
   totalAmount: decimal('total_amount'),
   disbursementDate: date('disbursement_date'),
   status: varchar('status', { length: 20 }),
-  approvedBy: integer('approved_by').references(() => users.id),
+  approvedBy: integer('approved_by').references(() => users.id, {
+    onDelete: 'cascade',
+  }),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -125,7 +136,9 @@ export const loanRepayments = pgTable('loan_repayments', {
   id: serial('id').primaryKey(),
   loanId: integer('loan_id')
     .notNull()
-    .references(() => loans.id),
+    .references(() => loans.id, {
+      onDelete: 'cascade',
+    }),
   repaymentDate: date('repayment_date').notNull(),
   amountPaid: decimal('amount_paid'),
   principalPaid: decimal('principal_paid'),
@@ -146,12 +159,20 @@ export const transactions = pgTable('transactions', {
   date: date('date').notNull(),
   memberId: integer('member_id')
     .notNull()
-    .references(() => members.id),
-  accountId: integer('account_id').references(() => savingsAccounts.accountId), // -- For savings transactions
-  loanId: integer('loan_id').references(() => loans.id),
+    .references(() => members.id, {
+      onDelete: 'cascade',
+    }),
+  accountId: integer('account_id').references(() => savingsAccounts.accountId, {
+    onDelete: 'cascade',
+  }), // -- For savings transactions
+  loanId: integer('loan_id').references(() => loans.id, {
+    onDelete: 'cascade',
+  }),
   transactionType: varchar('transaction_type', { length: 50 }), // deposit, withdrawal, loan_disbursement, loan_repayment, share_purchase
   amount: decimal('amount').notNull(),
-  recordedBy: integer('recorded_by').references(() => users.id),
+  recordedBy: integer('recorded_by').references(() => users.id, {
+    onDelete: 'cascade',
+  }),
   description: text('description'),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
@@ -172,7 +193,9 @@ export const auditLogs = pgTable('audit_logs', {
   newValues: json('new_values'),
   changedBy: integer('changed_by')
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, {
+      onDelete: 'cascade',
+    }),
   changedAt: timestamp('changed_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
