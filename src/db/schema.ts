@@ -25,6 +25,7 @@ export const users = pgTable('users', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
 })
 
 export const members = pgTable('members', {
@@ -46,6 +47,7 @@ export const members = pgTable('members', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
 })
 
 export const savingsProducts = pgTable('savings_products', {
@@ -61,6 +63,7 @@ export const savingsProducts = pgTable('savings_products', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
 })
 
 export const savingsAccounts = pgTable('savings_accounts', {
@@ -83,6 +86,7 @@ export const savingsAccounts = pgTable('savings_accounts', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
 })
 
 export const loanProducts = pgTable('loan_products', {
@@ -100,6 +104,7 @@ export const loanProducts = pgTable('loan_products', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
 })
 
 export const loans = pgTable('loans', {
@@ -129,6 +134,7 @@ export const loans = pgTable('loans', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
 })
 
 // -- Loan Repayments: Scheduled or actual repayments
@@ -152,6 +158,7 @@ export const loanRepayments = pgTable('loan_repayments', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
 })
 
 export const transactions = pgTable('transactions', {
@@ -181,6 +188,7 @@ export const transactions = pgTable('transactions', {
     .defaultNow()
     .notNull()
     .$onUpdate(() => new Date()),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
 })
 
 // -- Audit Logs Table: Tracks all changes to important tables
