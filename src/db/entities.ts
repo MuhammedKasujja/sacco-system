@@ -11,9 +11,9 @@ import {
   users,
 } from './schema'
 
-export type UserEntity = InferSelectModel<typeof users>
+export type UserEntity = Omit<InferSelectModel<typeof users>, 'password'>
 export type LoanEntity = InferSelectModel<typeof loans>
-export type MemberEntity = InferSelectModel<typeof members>
+export type MemberEntity = Omit<InferSelectModel<typeof members>, 'password'>
 export type AuditLogEntity = InferSelectModel<typeof auditLogs>
 export type LoanRepaymentEntity = InferSelectModel<typeof loanRepayments>
 export type TransactionEntity = InferSelectModel<typeof transactions>

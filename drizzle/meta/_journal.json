@@ -5,78 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1766482039253,
-      "tag": "0000_dear_crystal",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1766486009005,
-      "tag": "0001_even_jamie_braddock",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1766494029335,
-      "tag": "0002_graceful_thanos",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1766494163739,
-      "tag": "0003_tidy_red_ghost",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1766494235659,
-      "tag": "0004_superb_skin",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1766495245838,
-      "tag": "0005_odd_jasper_sitwell",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1766496629214,
-      "tag": "0006_panoramic_human_robot",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1766503435262,
-      "tag": "0007_ambiguous_beyonder",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1766509307966,
-      "tag": "0008_boring_millenium_guard",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1766509821263,
-      "tag": "0009_lyrical_the_executioner",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1766510140992,
-      "tag": "0010_strong_kat_farrell",
+      "when": 1766523183182,
+      "tag": "0000_shiny_ego",
       "breakpoints": true
     }
   ]

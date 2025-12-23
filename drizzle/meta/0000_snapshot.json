@@ -1,5 +1,5 @@
 {
-  "id": "654c8c69-4a34-4ebb-8447-27ac1c433e6b",
+  "id": "c8fbe15e-ecc7-4327-917e-2ca39c13eda3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -65,7 +65,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "audit_logs_changed_by_users_id_fk": {
+          "name": "audit_logs_changed_by_users_id_fk",
+          "tableFrom": "audit_logs",
+          "tableTo": "users",
+          "columnsFrom": [
+            "changed_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -87,6 +101,12 @@
           "type": "varchar(200)",
           "primaryKey": false,
           "notNull": true
+        },
+        "min_amount": {
+          "name": "min_amount",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
         },
         "max_amount": {
           "name": "max_amount",
@@ -125,6 +145,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -149,7 +175,7 @@
           "name": "loan_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "repayment_date": {
           "name": "repayment_date",
@@ -181,6 +207,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "status": {
+          "name": "status",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -194,10 +226,30 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "loan_repayments_loan_id_loans_id_fk": {
+          "name": "loan_repayments_loan_id_loans_id_fk",
+          "tableFrom": "loan_repayments",
+          "tableTo": "loans",
+          "columnsFrom": [
+            "loan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -214,9 +266,21 @@
           "primaryKey": true,
           "notNull": true
         },
+        "loan_product_id": {
+          "name": "loan_product_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "member_id": {
+          "name": "member_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "loan_number": {
           "name": "loan_number",
-          "type": "varchar(20)",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": false
         },
@@ -226,8 +290,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "interest_amount": {
-          "name": "interest_amount",
+        "interest_rate": {
+          "name": "interest_rate",
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
@@ -269,10 +333,56 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "loans_loan_product_id_loan_products_product_id_fk": {
+          "name": "loans_loan_product_id_loan_products_product_id_fk",
+          "tableFrom": "loans",
+          "tableTo": "loan_products",
+          "columnsFrom": [
+            "loan_product_id"
+          ],
+          "columnsTo": [
+            "product_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "loans_member_id_members_id_fk": {
+          "name": "loans_member_id_members_id_fk",
+          "tableFrom": "loans",
+          "tableTo": "members",
+          "columnsFrom": [
+            "member_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "loans_approved_by_users_id_fk": {
+          "name": "loans_approved_by_users_id_fk",
+          "tableFrom": "loans",
+          "tableTo": "users",
+          "columnsFrom": [
+            "approved_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "loans_loan_number_unique": {
@@ -317,7 +427,7 @@
         },
         "id_number": {
           "name": "id_number",
-          "type": "varchar(20)",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
@@ -327,9 +437,15 @@
           "primaryKey": false,
           "notNull": true
         },
+        "password": {
+          "name": "password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
         "email": {
           "name": "email",
-          "type": "varchar(20)",
+          "type": "varchar(100)",
           "primaryKey": false,
           "notNull": false
         },
@@ -364,6 +480,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -456,6 +578,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -470,7 +598,20 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "savings_accounts_product_id_savings_products_product_id_fk": {
+          "name": "savings_accounts_product_id_savings_products_product_id_fk",
+          "tableFrom": "savings_accounts",
+          "tableTo": "savings_products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "product_id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -490,8 +631,8 @@
           "primaryKey": true,
           "notNull": true
         },
-        "productName": {
-          "name": "productName",
+        "product_name": {
+          "name": "product_name",
           "type": "varchar(200)",
           "primaryKey": false,
           "notNull": true
@@ -527,6 +668,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -551,7 +698,7 @@
           "name": "date",
           "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "member_id": {
           "name": "member_id",
@@ -573,7 +720,7 @@
         },
         "transaction_type": {
           "name": "transaction_type",
-          "type": "varchar(20)",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": false
         },
@@ -581,7 +728,7 @@
           "name": "amount",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "recorded_by": {
           "name": "recorded_by",
@@ -608,10 +755,69 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "transactions_member_id_members_id_fk": {
+          "name": "transactions_member_id_members_id_fk",
+          "tableFrom": "transactions",
+          "tableTo": "members",
+          "columnsFrom": [
+            "member_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "transactions_account_id_savings_accounts_account_id_fk": {
+          "name": "transactions_account_id_savings_accounts_account_id_fk",
+          "tableFrom": "transactions",
+          "tableTo": "savings_accounts",
+          "columnsFrom": [
+            "account_id"
+          ],
+          "columnsTo": [
+            "account_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "transactions_loan_id_loans_id_fk": {
+          "name": "transactions_loan_id_loans_id_fk",
+          "tableFrom": "transactions",
+          "tableTo": "loans",
+          "columnsFrom": [
+            "loan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "transactions_recorded_by_users_id_fk": {
+          "name": "transactions_recorded_by_users_id_fk",
+          "tableFrom": "transactions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "recorded_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -624,30 +830,19 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "users_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
+          "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
+        "first_name": {
+          "name": "first_name",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
-        "age": {
-          "name": "age",
-          "type": "integer",
+        "last_name": {
+          "name": "last_name",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
@@ -676,6 +871,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},

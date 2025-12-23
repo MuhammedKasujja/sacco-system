@@ -48,16 +48,16 @@ export class DatabaseSeeder {
 
   private async generateUsers() {
     for (let i = 0; i < USERS_COUNT; i++) {
-      const name = faker.person.fullName()
+      const firstName = faker.person.firstName()
       const email = faker.internet.email({
-        firstName: name.split(' ')[0].toLowerCase(),
+        firstName: firstName.toLowerCase(),
       })
 
       const user = await db
         .insert(users)
         .values({
-          name,
-          age: faker.number.int({ min: 18, max: 70 }),
+          firstName,
+          lastName: faker.person.lastName(),
           email,
           password: faker.internet.password({ length: 12 }), // In real app: hash this!
         })

@@ -13,9 +13,9 @@ import {
 } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('users', {
-  id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar('name', { length: 255 }).notNull(),
-  age: integer('age').notNull(),
+  id: serial('id').primaryKey(),
+  firstName: varchar('first_name', { length: 50 }).notNull(),
+  lastName: varchar('last_name', { length: 50 }).notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: varchar('password').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true })
@@ -35,7 +35,7 @@ export const members = pgTable('members', {
   lastName: varchar('last_name', { length: 50 }).notNull(),
   idNumber: varchar('id_number', { length: 50 }).notNull().unique(),
   phone: varchar({ length: 20 }).notNull().unique(),
-  password: varchar('password').default(''), // TODO: make sure the password is required
+  password: varchar('password').notNull(),
   email: varchar({ length: 100 }).unique(),
   address: text('address'),
   joinDate: date('join_date'),
