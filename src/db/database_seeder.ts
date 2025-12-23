@@ -10,7 +10,7 @@ import {
   transactions,
   users,
 } from './schema'
-import { db } from '.'
+import { db, getDbTableName } from '.'
 import {
   AuditLogEntity,
   LoanEntity,
@@ -22,8 +22,6 @@ import {
   TransactionEntity,
   UserEntity,
 } from './entities'
-import { getTableConfig } from 'drizzle-orm/pg-core'
-import type { Table } from 'drizzle-orm'
 
 /// Row counts for test data per table
 const USERS_COUNT = 20
@@ -317,13 +315,13 @@ export class DatabaseSeeder {
           recordId: record.id,
           changedBy: user.id,
           tableName: faker.helpers.arrayElement([
-            this.getTableName(transactions),
-            this.getTableName(loanRepayments),
-            this.getTableName(loans),
-            this.getTableName(members),
-            this.getTableName(savingsProducts),
-            this.getTableName(savingsAccounts),
-            this.getTableName(loanProducts),
+            getDbTableName(transactions),
+            getDbTableName(loanRepayments),
+            getDbTableName(loans),
+            getDbTableName(members),
+            getDbTableName(savingsProducts),
+            getDbTableName(savingsAccounts),
+            getDbTableName(loanProducts),
           ]),
           operation: faker.helpers.arrayElement(['I', 'U', 'D']),
         })
@@ -333,16 +331,6 @@ export class DatabaseSeeder {
     }
     console.log(`👥 Created ${AUDIT_LOGS_COUNT} audit logs`)
     return AUDIT_LOGS_COUNT
-  }
-
-  /**
-   * get the database level table name
-   * @param table
-   * @returns string
-   */
-  private getTableName<T extends Table>(table: T): string {
-    const config = getTableConfig(table)
-    return config.name
   }
 
   async build() {
