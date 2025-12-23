@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm'
 import {
   char,
   date,
@@ -66,7 +67,7 @@ export const savingsAccounts = pgTable('savings_accounts', {
   memberId: integer('member_id')
     .notNull()
     .references(() => members.id),
-  productId: integer('product_id'),
+  productId: integer('product_id').references(() => savingsProducts.productId),
   accountNumber: varchar('account_number', { length: 30 }),
   balance: decimal(),
   openedDate: date('opened_date').notNull(),
@@ -107,7 +108,7 @@ export const loans = pgTable('loans', {
   totalAmount: decimal('total_amount'),
   disbursementDate: date('disbursement_date'),
   status: varchar('status', { length: 20 }),
-  approvedBy: integer('approved_by'),
+  approvedBy: integer('approved_by').references(() => users.id),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -128,6 +129,7 @@ export const loanRepayments = pgTable('loan_repayments', {
   principalPaid: decimal('principal_paid'),
   interestPaid: decimal('interest_paid'),
   balanceAfter: decimal('balance_after'),
+  status: varchar('status', { length: 20 }),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -174,3 +176,50 @@ export const auditLogs = pgTable('audit_logs', {
     .notNull(),
   description: text('description'),
 })
+
+export const membersRelations = relations(members, ({ many }) => ({
+  transactions: many(transactions),
+  loans: many(loans),
+  accounts: many(savingsAccounts), // TODO: check can members have multiple accounts??
+}))
+
+export const userRelations = relations(users, ({ many }) => ({
+  auditLogs: many(auditLogs),
+}))
+
+export const loansRelations = relations(loans, ({ many, one }) => ({
+  member: one(members),
+  loanProduct: one(loanProducts, {
+    fields: [loans.loanProductId],
+    references: [loanProducts.productId],
+  }),
+  repayments: many(loanRepayments),
+}))
+
+export const savingsAccountsRelations = relations(
+  savingsAccounts,
+  ({ one }) => ({
+    member: one(members),
+    loanProduct: one(loanProducts, {
+      fields: [savingsAccounts.productId],
+      references: [loanProducts.productId],
+    }),
+  }),
+)
+
+export const auditLogsRelations = relations(auditLogs, ({ one }) => ({
+  user: one(users),
+}))
+
+export const loanRepaymentsRelations = relations(loanRepayments, ({ one }) => ({
+  loan: one(loans),
+}))
+
+export const transactionsRelations = relations(transactions, ({ one }) => ({
+  loan: one(loans),
+  member: one(members),
+  account: one(savingsAccounts, {
+    fields: [transactions.accountId],
+    references: [savingsAccounts.accountId],
+  }),
+}))
