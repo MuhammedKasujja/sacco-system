@@ -1,7 +1,6 @@
 // make sure to load env variables
 import 'dotenv/config'
 /////////////////////////////////////
-import { faker } from '@faker-js/faker'
 import {
   auditLogs,
   loanProducts,

@@ -35,7 +35,7 @@ const SAVING_ACCOUNTS_COUNT = 20
 const SAVING_PRODUCTS_COUNT = 5
 const LOAN_TRANSACTIONS_COUNT = 500
 const SAVING_TRANSACTIONS_COUNT = 600
-const AUDIT_LOGS_COUNT = 1_000
+const AUDIT_LOGS_COUNT = 50_000
 
 export class DatabaseSeeder {
   private mockUsers: UserEntity[] = []
@@ -75,11 +75,21 @@ export class DatabaseSeeder {
     // Generate fake loans for random members
     for (let i = 0; i < LOANS_COUNT; i++) {
       const member: MemberEntity = faker.helpers.arrayElement(this.mockMembers)
+      const loanProduct: LoanProductEntity = faker.helpers.arrayElement(
+        this.mockLoanProducts,
+      )
+      let approvedById = null
+      if (i % 3 === 0) {
+        const approver: UserEntity = faker.helpers.arrayElement(this.mockUsers)
+        approvedById = approver.id
+      }
       const newloan = await db
         .insert(loans)
         .values({
+          loanProductId: loanProduct.productId,
           memberId: member.id,
           number: faker.string.uuid(),
+          approvedBy: approvedById,
           interestRate: faker.finance.amount({ min: 5, max: 45, dec: 2 }),
           principalAmount: faker.finance.amount({
             min: 5_000,
@@ -117,6 +127,14 @@ export class DatabaseSeeder {
           email: email,
           password: faker.internet.password({ length: 12 }),
           phone: faker.phone.number({ style: 'international' }),
+          joinDate: faker.date.past().toISOString(),
+          address: faker.location.streetAddress(),
+          status: faker.helpers.arrayElement([
+            'active',
+            'pending',
+            'rejected',
+            'inactive',
+          ]),
         })
         .returning()
 
