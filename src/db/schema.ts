@@ -32,9 +32,10 @@ export const members = pgTable('members', {
   number: varchar('member_number', { length: 20 }).unique(),
   firstName: varchar('first_name', { length: 50 }).notNull(),
   lastName: varchar('last_name', { length: 50 }).notNull(),
-  idNumber: varchar('id_number', { length: 20 }).notNull().unique(),
+  idNumber: varchar('id_number', { length: 50 }).notNull().unique(),
   phone: varchar({ length: 20 }).notNull().unique(),
-  email: varchar({ length: 20 }).unique(),
+  password: varchar('password').default(''), // TODO: make sure the password is required
+  email: varchar({ length: 100 }).unique(),
   address: text('address'),
   joinDate: date('join_date'),
   status: varchar('status', { length: 20 }),
@@ -102,9 +103,10 @@ export const loans = pgTable('loans', {
   loanProductId: integer('loan_product_id').references(
     () => loanProducts.productId,
   ),
-  number: varchar('loan_number', { length: 20 }).unique(),
+  memberId: integer('member_id').references(() => members.id),
+  number: varchar('loan_number', { length: 50 }).unique(),
   principalAmount: decimal('principal_amount'),
-  interestAmount: decimal('interest_amount'),
+  interestRate: decimal('interest_rate'),
   totalAmount: decimal('total_amount'),
   disbursementDate: date('disbursement_date'),
   status: varchar('status', { length: 20 }),
@@ -141,15 +143,15 @@ export const loanRepayments = pgTable('loan_repayments', {
 
 export const transactions = pgTable('transactions', {
   id: serial('id').primaryKey(),
-  date: date('date'),
+  date: date('date').notNull(),
   memberId: integer('member_id')
     .notNull()
     .references(() => members.id),
   accountId: integer('account_id').references(() => savingsAccounts.accountId), // -- For savings transactions
   loanId: integer('loan_id').references(() => loans.id),
-  transactionType: varchar('transaction_type', { length: 20 }), // deposit, withdrawal, loan_disbursement, loan_repayment, share_purchase
-  amount: decimal('amount'),
-  recordedBy: integer('recorded_by'),
+  transactionType: varchar('transaction_type', { length: 50 }), // deposit, withdrawal, loan_disbursement, loan_repayment, share_purchase
+  amount: decimal('amount').notNull(),
+  recordedBy: integer('recorded_by').references(() => users.id),
   description: text('description'),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()

@@ -1,0 +1,1 @@
+ALTER TABLE "members" ADD COLUMN "password" varchar DEFAULT '';

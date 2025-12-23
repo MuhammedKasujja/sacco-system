@@ -1,0 +1,1 @@
+ALTER TABLE "members" ALTER COLUMN "id_number" SET DATA TYPE varchar(50);
