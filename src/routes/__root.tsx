@@ -4,6 +4,8 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import appCss from '../styles.css?url'
 import { Toaster } from '@/components/ui/sonner'
+import { NotFound } from '@/components/NotFound'
+import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -26,7 +28,14 @@ export const Route = createRootRoute({
       },
     ],
   }),
-
+  errorComponent: (props) => {
+    return (
+      <RootDocument>
+        <DefaultCatchBoundary {...props} />
+      </RootDocument>
+    )
+  },
+  notFoundComponent: () => <NotFound />,
   shellComponent: RootDocument,
 })
 
