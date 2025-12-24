@@ -17,6 +17,7 @@ import { Route as ReportsIndexRouteImport } from './routes/reports/index'
 import { Route as MembersIndexRouteImport } from './routes/members/index'
 import { Route as LoansIndexRouteImport } from './routes/loans/index'
 import { Route as LoanProductsIndexRouteImport } from './routes/loan-products/index'
+import { Route as AccountsIndexRouteImport } from './routes/accounts/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,9 +59,15 @@ const LoanProductsIndexRoute = LoanProductsIndexRouteImport.update({
   path: '/loan-products/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountsIndexRoute = AccountsIndexRouteImport.update({
+  id: '/accounts/',
+  path: '/accounts/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/accounts': typeof AccountsIndexRoute
   '/loan-products': typeof LoanProductsIndexRoute
   '/loans': typeof LoansIndexRoute
   '/members': typeof MembersIndexRoute
@@ -71,6 +78,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/accounts': typeof AccountsIndexRoute
   '/loan-products': typeof LoanProductsIndexRoute
   '/loans': typeof LoansIndexRoute
   '/members': typeof MembersIndexRoute
@@ -82,6 +90,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/accounts/': typeof AccountsIndexRoute
   '/loan-products/': typeof LoanProductsIndexRoute
   '/loans/': typeof LoansIndexRoute
   '/members/': typeof MembersIndexRoute
@@ -94,6 +103,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/accounts'
     | '/loan-products'
     | '/loans'
     | '/members'
@@ -104,6 +114,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/accounts'
     | '/loan-products'
     | '/loans'
     | '/members'
@@ -114,6 +125,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/accounts/'
     | '/loan-products/'
     | '/loans/'
     | '/members/'
@@ -125,6 +137,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountsIndexRoute: typeof AccountsIndexRoute
   LoanProductsIndexRoute: typeof LoanProductsIndexRoute
   LoansIndexRoute: typeof LoansIndexRoute
   MembersIndexRoute: typeof MembersIndexRoute
@@ -192,11 +205,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoanProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/accounts/': {
+      id: '/accounts/'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AccountsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountsIndexRoute: AccountsIndexRoute,
   LoanProductsIndexRoute: LoanProductsIndexRoute,
   LoansIndexRoute: LoansIndexRoute,
   MembersIndexRoute: MembersIndexRoute,

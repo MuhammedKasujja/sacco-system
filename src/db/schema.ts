@@ -221,7 +221,10 @@ export const userRelations = relations(users, ({ many }) => ({
 }))
 
 export const loansRelations = relations(loans, ({ many, one }) => ({
-  member: one(members),
+  member: one(members, {
+    fields: [loans.memberId],
+    references: [members.id],
+  }),
   loanProduct: one(loanProducts, {
     fields: [loans.loanProductId],
     references: [loanProducts.productId],
@@ -232,7 +235,10 @@ export const loansRelations = relations(loans, ({ many, one }) => ({
 export const savingsAccountsRelations = relations(
   savingsAccounts,
   ({ one }) => ({
-    member: one(members),
+    member: one(members, {
+      fields: [savingsAccounts.memberId],
+      references: [members.id],
+    }),
     loanProduct: one(loanProducts, {
       fields: [savingsAccounts.productId],
       references: [loanProducts.productId],
@@ -250,7 +256,10 @@ export const loanRepaymentsRelations = relations(loanRepayments, ({ one }) => ({
 
 export const transactionsRelations = relations(transactions, ({ one }) => ({
   loan: one(loans),
-  member: one(members),
+  member: one(members, {
+    fields: [transactions.memberId],
+    references: [members.id],
+  }),
   account: one(savingsAccounts, {
     fields: [transactions.accountId],
     references: [savingsAccounts.accountId],

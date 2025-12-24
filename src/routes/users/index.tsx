@@ -1,6 +1,8 @@
-import { fetchUsers } from '@/actions/users'
+import { fetchUsers, UserEntity } from '@/actions/users'
+import { DataTable } from '@/components/data-table'
+import { formatDate } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
-import { Fragment } from 'react/jsx-runtime'
+import { ColumnDef } from '@tanstack/react-table'
 
 export const Route = createFileRoute('/users/')({
   component: RouteComponent,
@@ -11,15 +13,31 @@ function RouteComponent() {
   const users = Route.useLoaderData()
 
   return (
-    <div>
-      {users.map((user) => (
-        <Fragment key={user.id}>
-          <p>
-            {user.firstName} {user.lastName}
-          </p>
-          <p>{user.email}</p>
-        </Fragment>
-      ))}
+    <div className="p-5">
+      <DataTable columns={columns} data={users} />
     </div>
   )
 }
+
+const columns: ColumnDef<UserEntity>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+  },
+  {
+    id: 'name',
+    header: 'Name',
+    cell: ({ row }) => <div>{row.original.firstName} {row.original.lastName}</div>,
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    id: 'createdAt',
+    header: 'Joined On',
+    cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
+  },
+]
+
+// const columnHelper = createColumnHelper<UserEntity>();
