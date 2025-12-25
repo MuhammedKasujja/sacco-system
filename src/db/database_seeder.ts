@@ -60,6 +60,7 @@ export class DatabaseSeeder {
           lastName: faker.person.lastName(),
           email,
           password: faker.internet.password({ length: 12 }), // In real app: hash this!
+          createdAt: faker.date.recent({ days: 100 }),
         })
         .returning()
 
@@ -133,6 +134,7 @@ export class DatabaseSeeder {
             'rejected',
             'inactive',
           ]),
+          createdAt: faker.date.recent({ days: 1000 }),
         })
         .returning()
 
@@ -156,6 +158,7 @@ export class DatabaseSeeder {
           transactionType: faker.finance.transactionType(),
           description: faker.finance.transactionDescription(),
           amount: faker.finance.amount({ min: 5000, max: 500000, dec: 2 }),
+          createdAt: faker.date.recent({ days: 500 }),
         })
         .returning()
 
@@ -181,6 +184,7 @@ export class DatabaseSeeder {
           transactionType: faker.finance.transactionType(),
           description: faker.finance.transactionDescription(),
           amount: faker.finance.amount({ min: 10_000, max: 200_000, dec: 2 }),
+          createdAt: faker.date.recent({ days: 500 }),
         })
         .returning()
 
@@ -205,6 +209,7 @@ export class DatabaseSeeder {
             max: 1_000_000,
             dec: 2,
           }),
+          createdAt: faker.date.recent({ days: 600 }),
         })
         .returning()
 
@@ -232,6 +237,7 @@ export class DatabaseSeeder {
             max: 1_000_000,
             dec: 2,
           }),
+          createdAt: faker.date.recent({ days: 1000 }),
         })
         .returning()
 
@@ -260,6 +266,7 @@ export class DatabaseSeeder {
             max: 1_000_000,
             dec: 2,
           }),
+          createdAt: faker.date.recent({ days: 90 }),
         })
         .returning()
 
@@ -295,6 +302,7 @@ export class DatabaseSeeder {
             'rejected',
             'repaid',
           ]),
+          createdAt: faker.date.recent({ days: 500 }),
         })
         .returning()
 
@@ -324,6 +332,7 @@ export class DatabaseSeeder {
             getDbTableName(loanProducts),
           ]),
           operation: faker.helpers.arrayElement(['I', 'U', 'D']),
+          createdAt: faker.date.recent({ days: 1000 }),
         })
         .returning()
 

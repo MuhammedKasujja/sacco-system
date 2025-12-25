@@ -208,6 +208,9 @@ export const auditLogs = pgTable('audit_logs', {
     .defaultNow()
     .notNull(),
   description: text('description'),
+  createdAt: timestamp('created_at', { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 })
 
 export const membersRelations = relations(members, ({ many }) => ({
