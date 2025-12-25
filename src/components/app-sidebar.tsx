@@ -3,16 +3,13 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
-  Command,
   Frame,
   GalleryVerticalEnd,
-  Map,
-  PieChart,
   Settings2,
   PersonStanding,
   SquareTerminal,
 } from 'lucide-react'
-import { Route as DashboardRoute } from '@/routes/_app/dashboard'
+import { Route as DashboardRoute } from '@/routes/_app'
 import { Route as AccountsRoute } from '@/routes/_app/accounts'
 import { Route as MembersRoute } from '@/routes/_app/members'
 import { Route as LoansRoute } from '@/routes/_app/loans'

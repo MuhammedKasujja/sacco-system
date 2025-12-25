@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
+import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppUsersIndexRouteImport } from './routes/_app/users/index'
 import { Route as AppTransactionsIndexRouteImport } from './routes/_app/transactions/index'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
@@ -18,7 +19,6 @@ import { Route as AppReportsIndexRouteImport } from './routes/_app/reports/index
 import { Route as AppMembersIndexRouteImport } from './routes/_app/members/index'
 import { Route as AppLoansIndexRouteImport } from './routes/_app/loans/index'
 import { Route as AppLoanProductsIndexRouteImport } from './routes/_app/loan-products/index'
-import { Route as AppDashboardIndexRouteImport } from './routes/_app/dashboard/index'
 import { Route as AppAccountsIndexRouteImport } from './routes/_app/accounts/index'
 
 const LoginRoute = LoginRouteImport.update({
@@ -29,6 +29,11 @@ const LoginRoute = LoginRouteImport.update({
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRouteRoute,
 } as any)
 const AppUsersIndexRoute = AppUsersIndexRouteImport.update({
   id: '/users/',
@@ -65,11 +70,6 @@ const AppLoanProductsIndexRoute = AppLoanProductsIndexRouteImport.update({
   path: '/loan-products/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppDashboardIndexRoute = AppDashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => AppRouteRoute,
-} as any)
 const AppAccountsIndexRoute = AppAccountsIndexRouteImport.update({
   id: '/accounts/',
   path: '/accounts/',
@@ -78,8 +78,8 @@ const AppAccountsIndexRoute = AppAccountsIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
+  '/': typeof AppIndexRoute
   '/accounts': typeof AppAccountsIndexRoute
-  '/dashboard': typeof AppDashboardIndexRoute
   '/loan-products': typeof AppLoanProductsIndexRoute
   '/loans': typeof AppLoansIndexRoute
   '/members': typeof AppMembersIndexRoute
@@ -90,8 +90,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/': typeof AppIndexRoute
   '/accounts': typeof AppAccountsIndexRoute
-  '/dashboard': typeof AppDashboardIndexRoute
   '/loan-products': typeof AppLoanProductsIndexRoute
   '/loans': typeof AppLoansIndexRoute
   '/members': typeof AppMembersIndexRoute
@@ -104,8 +104,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
   '/login': typeof LoginRoute
+  '/_app/': typeof AppIndexRoute
   '/_app/accounts/': typeof AppAccountsIndexRoute
-  '/_app/dashboard/': typeof AppDashboardIndexRoute
   '/_app/loan-products/': typeof AppLoanProductsIndexRoute
   '/_app/loans/': typeof AppLoansIndexRoute
   '/_app/members/': typeof AppMembersIndexRoute
@@ -118,8 +118,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/login'
+    | '/'
     | '/accounts'
-    | '/dashboard'
     | '/loan-products'
     | '/loans'
     | '/members'
@@ -130,8 +130,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
+    | '/'
     | '/accounts'
-    | '/dashboard'
     | '/loan-products'
     | '/loans'
     | '/members'
@@ -143,8 +143,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/login'
+    | '/_app/'
     | '/_app/accounts/'
-    | '/_app/dashboard/'
     | '/_app/loan-products/'
     | '/_app/loans/'
     | '/_app/members/'
@@ -174,6 +174,13 @@ declare module '@tanstack/react-router' {
       fullPath: ''
       preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
     '/_app/users/': {
       id: '/_app/users/'
@@ -224,13 +231,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLoanProductsIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_app/dashboard/': {
-      id: '/_app/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AppDashboardIndexRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
     '/_app/accounts/': {
       id: '/_app/accounts/'
       path: '/accounts'
@@ -242,8 +242,8 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
   AppAccountsIndexRoute: typeof AppAccountsIndexRoute
-  AppDashboardIndexRoute: typeof AppDashboardIndexRoute
   AppLoanProductsIndexRoute: typeof AppLoanProductsIndexRoute
   AppLoansIndexRoute: typeof AppLoansIndexRoute
   AppMembersIndexRoute: typeof AppMembersIndexRoute
@@ -254,8 +254,8 @@ interface AppRouteRouteChildren {
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
   AppAccountsIndexRoute: AppAccountsIndexRoute,
-  AppDashboardIndexRoute: AppDashboardIndexRoute,
   AppLoanProductsIndexRoute: AppLoanProductsIndexRoute,
   AppLoansIndexRoute: AppLoansIndexRoute,
   AppMembersIndexRoute: AppMembersIndexRoute,
