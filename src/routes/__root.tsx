@@ -6,6 +6,8 @@ import appCss from '../styles.css?url'
 import { Toaster } from '@/components/ui/sonner'
 import { NotFound } from '@/components/NotFound'
 import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary'
+import { getThemeServerFn } from '@/lib/theme'
+import { ThemeProvider } from '@/components/theme-provider'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -28,6 +30,7 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  loader: () => getThemeServerFn(),
   errorComponent: (props) => {
     return (
       <RootDocument>
@@ -40,13 +43,14 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const theme = Route.useLoaderData()
   return (
-    <html lang="en">
+    <html className={theme} lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
