@@ -22,7 +22,7 @@ const columns: ColumnDef<MemberEntity>[] = [
     id: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <div>
+      <div className='font-semibold'>
         {row.original.firstName} {row.original.lastName}
       </div>
     ),

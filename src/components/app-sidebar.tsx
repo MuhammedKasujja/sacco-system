@@ -3,11 +3,11 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
-  Frame,
+  CreditCard,
+  Users2,
   GalleryVerticalEnd,
-  Settings2,
-  PersonStanding,
-  SquareTerminal,
+  Settings,
+  LayoutDashboard,
 } from 'lucide-react'
 import { Route as DashboardRoute } from '@/routes/_app'
 import { Route as AccountsRoute } from '@/routes/_app/accounts'
@@ -43,7 +43,7 @@ const data = {
     {
       title: 'Dashboard',
       url: DashboardRoute.to,
-      icon: SquareTerminal,
+      icon: LayoutDashboard,
       isActive: true,
     },
     {
@@ -64,7 +64,7 @@ const data = {
     {
       title: 'Transactions',
       url: TransactionsRoute.to,
-      icon: Frame,
+      icon: CreditCard,
     },
     {
       title: 'Loan Products',
@@ -74,7 +74,7 @@ const data = {
     {
       title: 'Users',
       url: UsersRoute.to,
-      icon: PersonStanding,
+      icon: Users2,
     },
     {
       title: 'Reports',
@@ -85,7 +85,7 @@ const data = {
   settings: {
     title: 'Settings',
     url: SettingsRoute.to,
-    icon: Settings2,
+    icon: Settings,
   },
 }
 
@@ -100,7 +100,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip={data.settings.title} asChild>
-              <Link to={data.settings.url}>
+              <Link
+                to={data.settings.url}
+                activeProps={{
+                  className:
+                    'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
+                }}
+              >
                 <data.settings.icon />
                 <span>{data.settings.title}</span>
               </Link>

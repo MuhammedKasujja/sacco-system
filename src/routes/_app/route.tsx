@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router'
 import { AppSidebar } from '@/components/app-sidebar'
 import {
   Breadcrumb,
@@ -20,6 +20,7 @@ export const Route = createFileRoute('/_app')({
 })
 
 function RouteComponent() {
+  const currentPath = useLocation({ select: (loc) => loc.pathname })
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -34,13 +35,13 @@ function RouteComponent() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  <BreadcrumbPage className="capitalize">
+                    {currentPath.replace('/', '').replace('-', " ")}
+                  </BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -53,10 +54,9 @@ function RouteComponent() {
             <div className="bg-muted/50 aspect-video rounded-xl" />
           </div>
           <div className="bg-muted/50 min-h-screen flex-1 rounded-xl md:min-h-min" /> */}
-          <Outlet/>
+          <Outlet />
         </div>
       </SidebarInset>
     </SidebarProvider>
   )
 }
-
