@@ -3,18 +3,14 @@ import { DataTable } from '@/components/data-table'
 import { createFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
 
-export const Route = createFileRoute('/members/')({
+export const Route = createFileRoute('/_app/members/')({
   component: RouteComponent,
   loader: () => fetchMembers(),
 })
 
 function RouteComponent() {
   const members = Route.useLoaderData()
-  return (
-    <div className="p-5">
-      <DataTable columns={columns} data={members} />
-    </div>
-  )
+  return <DataTable columns={columns} data={members} />
 }
 
 const columns: ColumnDef<MemberEntity>[] = [

@@ -4,7 +4,7 @@ import { formatDate } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
 
-export const Route = createFileRoute('/users/')({
+export const Route = createFileRoute('/_app/users/')({
   component: RouteComponent,
   loader: () => fetchUsers(),
 })
@@ -12,11 +12,7 @@ export const Route = createFileRoute('/users/')({
 function RouteComponent() {
   const users = Route.useLoaderData()
 
-  return (
-    <div className="p-5">
-      <DataTable columns={columns} data={users} />
-    </div>
-  )
+  return <DataTable columns={columns} data={users} />
 }
 
 const columns: ColumnDef<UserEntity>[] = [
@@ -27,7 +23,11 @@ const columns: ColumnDef<UserEntity>[] = [
   {
     id: 'name',
     header: 'Name',
-    cell: ({ row }) => <div>{row.original.firstName} {row.original.lastName}</div>,
+    cell: ({ row }) => (
+      <div>
+        {row.original.firstName} {row.original.lastName}
+      </div>
+    ),
   },
   {
     accessorKey: 'email',

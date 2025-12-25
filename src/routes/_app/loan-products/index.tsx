@@ -4,18 +4,14 @@ import { formatDate, formatMoney } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
 
-export const Route = createFileRoute('/loan-products/')({
+export const Route = createFileRoute('/_app/loan-products/')({
   component: RouteComponent,
   loader: () => fetchLoanProducts(),
 })
 
 function RouteComponent() {
   const loanProducts = Route.useLoaderData()
-  return (
-    <div className="p-5">
-      <DataTable columns={columns} data={loanProducts} />
-    </div>
-  )
+  return <DataTable columns={columns} data={loanProducts} />
 }
 
 const columns: ColumnDef<LoanProductEntity>[] = [

@@ -4,7 +4,7 @@ import { formatMoney } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
 
-export const Route = createFileRoute('/accounts/')({
+export const Route = createFileRoute('/_app/accounts/')({
   component: RouteComponent,
   loader: () => fetchAccounts(),
 })
@@ -12,9 +12,7 @@ export const Route = createFileRoute('/accounts/')({
 function RouteComponent() {
   const members = Route.useLoaderData()
   return (
-    <div className="p-5">
       <DataTable columns={columns} data={members} />
-    </div>
   )
 }
 
