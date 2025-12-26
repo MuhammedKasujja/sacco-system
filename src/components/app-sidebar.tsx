@@ -8,6 +8,7 @@ import {
   GalleryVerticalEnd,
   Settings,
   LayoutDashboard,
+  Building2,
 } from 'lucide-react'
 import { Route as DashboardRoute } from '@/routes/_app'
 import { Route as AccountsRoute } from '@/routes/_app/accounts'
@@ -38,6 +39,10 @@ const data = {
     name: 'kasujja musa',
     email: 'm@example.com',
     avatar: '/avatars/shadcn.jpg',
+  },
+  app: {
+    name: 'Sacco',
+    logo: Building2,
   },
   navMain: [
     {
@@ -92,7 +97,23 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader></SidebarHeader>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <div className="bg-mutted text-mutted-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                <data.app.logo className="size-4" />
+              </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-medium">{data.app.name}</span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>

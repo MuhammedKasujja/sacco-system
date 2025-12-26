@@ -1,8 +1,10 @@
 import { fetchUsers, UserEntity } from '@/actions/users'
 import { DataTable } from '@/components/data-table'
 import { formatDate } from '@/lib/formatting'
+import { Button } from '@/components/ui/button'
 import { createFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
+import { Plus } from 'lucide-react'
 
 export const Route = createFileRoute('/_app/users/')({
   component: RouteComponent,
@@ -12,7 +14,25 @@ export const Route = createFileRoute('/_app/users/')({
 function RouteComponent() {
   const users = Route.useLoaderData()
 
-  return <DataTable columns={columns} data={users} />
+  function handleSearch(query?: string) {
+    console.log('Search query', query)
+  }
+
+  return (
+    <DataTable
+      columns={columns}
+      data={users}
+      onSearch={handleSearch}
+      tableActions={() => (
+        <Button>
+          <span>
+            <Plus />
+          </span>
+          New User
+        </Button>
+      )}
+    />
+  )
 }
 
 const columns: ColumnDef<UserEntity>[] = [

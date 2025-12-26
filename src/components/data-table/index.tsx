@@ -3,7 +3,8 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+  getPaginationRowModel,
+} from '@tanstack/react-table'
 
 import {
   Table,
@@ -12,25 +13,63 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table'
+import { DataTablePagination } from './pagination'
+import { Input } from '../ui/input'
+import React from 'react'
+import { Label } from '../ui/label'
+import { Search } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  tableActions?: () => React.ReactNode
+  onSearch?: (value?: string) => void
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  tableActions,
+  onSearch,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  });
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 20,
+      },
+    },
+  })
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between gap-4">
+        <div className="p-2 relative flex w-full min-w-0 flex-col">
+          <div className="w-full relative">
+            <Label htmlFor="search" className="sr-only">
+              Search
+            </Label>
+            <Input
+              id="search"
+              placeholder="Search..."
+              value={
+                (table.getColumn('email')?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) => {
+                table.getColumn('email')?.setFilterValue(event.target.value)
+                onSearch?.(event.target.value)
+              }}
+              className="max-w-sm"
+            />
+            {/* <Search className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" /> */}
+          </div>
+        </div>
+        {tableActions?.()}
+      </div>
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader className="bg-muted">
@@ -43,10 +82,10 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -56,13 +95,13 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -81,6 +120,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      <DataTablePagination table={table} />
     </div>
-  );
+  )
 }
