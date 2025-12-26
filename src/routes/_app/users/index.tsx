@@ -2,7 +2,7 @@ import { fetchUsers, UserEntity } from '@/actions/users'
 import { DataTable } from '@/components/data-table'
 import { formatDate } from '@/lib/formatting'
 import { Button } from '@/components/ui/button'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
 
@@ -25,10 +25,12 @@ function RouteComponent() {
       onSearch={handleSearch}
       tableActions={() => (
         <Button>
-          <span>
-            <Plus />
-          </span>
-          New User
+          <Link to={"/users/edit"} className='inline-flex items-center gap-0.5'>
+            <span>
+              <Plus />
+            </span>
+            New User
+          </Link>
         </Button>
       )}
     />

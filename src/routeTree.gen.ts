@@ -20,6 +20,7 @@ import { Route as AppMembersIndexRouteImport } from './routes/_app/members/index
 import { Route as AppLoansIndexRouteImport } from './routes/_app/loans/index'
 import { Route as AppLoanProductsIndexRouteImport } from './routes/_app/loan-products/index'
 import { Route as AppAccountsIndexRouteImport } from './routes/_app/accounts/index'
+import { Route as AppUsersEditRouteImport } from './routes/_app/users/edit'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -75,10 +76,16 @@ const AppAccountsIndexRoute = AppAccountsIndexRouteImport.update({
   path: '/accounts/',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppUsersEditRoute = AppUsersEditRouteImport.update({
+  id: '/users/edit',
+  path: '/users/edit',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/': typeof AppIndexRoute
+  '/users/edit': typeof AppUsersEditRoute
   '/accounts': typeof AppAccountsIndexRoute
   '/loan-products': typeof AppLoanProductsIndexRoute
   '/loans': typeof AppLoansIndexRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof AppIndexRoute
+  '/users/edit': typeof AppUsersEditRoute
   '/accounts': typeof AppAccountsIndexRoute
   '/loan-products': typeof AppLoanProductsIndexRoute
   '/loans': typeof AppLoansIndexRoute
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/users/edit': typeof AppUsersEditRoute
   '/_app/accounts/': typeof AppAccountsIndexRoute
   '/_app/loan-products/': typeof AppLoanProductsIndexRoute
   '/_app/loans/': typeof AppLoansIndexRoute
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/login'
     | '/'
+    | '/users/edit'
     | '/accounts'
     | '/loan-products'
     | '/loans'
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/'
+    | '/users/edit'
     | '/accounts'
     | '/loan-products'
     | '/loans'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/login'
     | '/_app/'
+    | '/_app/users/edit'
     | '/_app/accounts/'
     | '/_app/loan-products/'
     | '/_app/loans/'
@@ -238,11 +250,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAccountsIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/users/edit': {
+      id: '/_app/users/edit'
+      path: '/users/edit'
+      fullPath: '/users/edit'
+      preLoaderRoute: typeof AppUsersEditRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
 interface AppRouteRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppUsersEditRoute: typeof AppUsersEditRoute
   AppAccountsIndexRoute: typeof AppAccountsIndexRoute
   AppLoanProductsIndexRoute: typeof AppLoanProductsIndexRoute
   AppLoansIndexRoute: typeof AppLoansIndexRoute
@@ -255,6 +275,7 @@ interface AppRouteRouteChildren {
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppUsersEditRoute: AppUsersEditRoute,
   AppAccountsIndexRoute: AppAccountsIndexRoute,
   AppLoanProductsIndexRoute: AppLoanProductsIndexRoute,
   AppLoansIndexRoute: AppLoansIndexRoute,
