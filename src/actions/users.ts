@@ -1,7 +1,16 @@
 import { db } from '@/db'
 import { users } from '@/db/schema'
+import { hashPassword } from '@/lib/utils'
 import { createServerFn } from '@tanstack/react-start'
 import { and, eq, ilike, or } from 'drizzle-orm'
+import z from 'zod'
+
+export const EditUserSchema = z.object({
+  email: z.email(),
+  password: z.string().min(4),
+  firstName: z.string().min(4),
+  lastName: z.string().min(4),
+})
 
 export type UserEntity = Awaited<ReturnType<typeof fetchUsers>>[0]
 
@@ -39,14 +48,30 @@ export const fetchUsers = createServerFn({ method: 'GET' })
     // return db.query.users.findMany()
   })
 
-export const createUser = createServerFn({ method: 'POST' }).handler(() => {
-  return db.insert(users).values({
-    firstName: 'kasujja',
-    lastName: 'muhammed',
-    email: 'al.kasmud.2@gmail.com',
-    password: 'Password2',
+export const createUserFn = createServerFn({ method: 'POST' })
+  .inputValidator((data) => EditUserSchema.parse(data))
+  .handler(async ({ data }) => {
+    const existingUser = await db.query.users.findFirst({
+      where: eq(users.email, data.email),
+    })
+
+    if (existingUser) {
+      return { error: true, message: 'User already exists' }
+    }
+
+    const encryptedPassword = await hashPassword(data.password)
+
+    const user = await db
+      .insert(users)
+      .values({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: encryptedPassword,
+      })
+      .returning()
+    return { error: false, data: user[0] }
   })
-})
 
 export const getUserById = createServerFn({ method: 'POST' })
   .inputValidator((userId: number) => userId)
