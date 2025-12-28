@@ -74,7 +74,7 @@ function RouteComponent() {
                 <BellDot className="size-5" />
               </div>
               <ThemeToggle />
-              <Link to={'/login'}>
+              <Link to={"/logout"}>
                 <Avatar>
                   <AvatarImage src={'tanstack-circle-logo.png'} />
                 </Avatar>
