@@ -15,10 +15,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination } from './pagination'
-import { Input } from '../ui/input'
 import React from 'react'
-import { Label } from '../ui/label'
 import { Search } from 'lucide-react'
+import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -48,26 +47,21 @@ export function DataTable<TData, TValue>({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-4">
-        <div className="p-2 relative flex w-full min-w-0 flex-col">
-          <div className="w-full relative">
-            <Label htmlFor="search" className="sr-only">
-              Search
-            </Label>
-            <Input
-              id="search"
-              placeholder="Search..."
-              value={
-                (table.getColumn('email')?.getFilterValue() as string) ?? ''
-              }
-              onChange={(event) => {
-                table.getColumn('email')?.setFilterValue(event.target.value)
-                onSearch?.(event.target.value)
-              }}
-              className="max-w-sm"
-            />
-            {/* <Search className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" /> */}
-          </div>
-        </div>
+        <InputGroup className="w-full min-w-0 max-w-sm">
+          <InputGroupInput
+            id="search"
+            placeholder="Search..."
+            value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+            onChange={(event) => {
+              table.getColumn('email')?.setFilterValue(event.target.value)
+              onSearch?.(event.target.value)
+            }}
+            className="max-w-sm"
+          />
+          <InputGroupAddon align="inline-start">
+            <Search />
+          </InputGroupAddon>
+        </InputGroup>
         {tableActions?.()}
       </div>
       <div className="overflow-hidden rounded-md border">

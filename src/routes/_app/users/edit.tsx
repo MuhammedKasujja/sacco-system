@@ -13,7 +13,7 @@ import {
 import { FieldGroup, Field } from '@/components/ui/field'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { TextField } from '@/components/ui/form-fields'
+import { EmailField, TextField, PasswordField } from '@/components/ui/form-fields'
 import { createUserFn, EditUserSchema } from '@/actions/users'
 
 export const Route = createFileRoute('/_app/users/edit')({
@@ -59,13 +59,13 @@ function RouteComponent() {
               control={form.control}
               placeholder=""
             />
-            <TextField
+            <EmailField
               label="Email"
               name={'email'}
               control={form.control}
               placeholder="user@mail.com"
             />
-            <TextField
+            <PasswordField
               label="Password"
               name={'password'}
               control={form.control}
