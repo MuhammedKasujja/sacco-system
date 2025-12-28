@@ -52,15 +52,13 @@ export const getUserById = createServerFn({ method: 'POST' })
     })
   })
 
-export const getUserByEmailPassword = createServerFn({ method: 'POST' })
-  .inputValidator((data: { email: string; password: string }) => data)
+export const getUserByEmail = createServerFn({ method: 'POST' })
+  .inputValidator((data: { email: string }) => data)
   .handler(async ({ data }) => {
     const listUsers = await db
       .select()
       .from(users)
-      .where(
-        and(eq(users.password, data.password), eq(users.email, data.email)),
-      )
+      .where(and(eq(users.email, data.email)))
       .limit(1)
 
     return listUsers.length > 0 ? listUsers[0] : null

@@ -11,17 +11,18 @@ import {
   users,
 } from './schema'
 import { db, getDbTableName } from '.'
-import {
-  AuditLogEntity,
-  LoanEntity,
-  LoanProductEntity,
-  LoanRepaymentEntity,
-  MemberEntity,
-  SavingAccountEntity,
-  SavingProductEntity,
-  TransactionEntity,
-  UserEntity,
-} from './entities'
+import { hashPassword } from '@/lib/utils'
+import { InferSelectModel } from 'drizzle-orm'
+
+type UserEntity = InferSelectModel<typeof users>
+type LoanEntity = InferSelectModel<typeof loans>
+type MemberEntity = InferSelectModel<typeof members>
+type AuditLogEntity = InferSelectModel<typeof auditLogs>
+type LoanRepaymentEntity = InferSelectModel<typeof loanRepayments>
+type TransactionEntity = InferSelectModel<typeof transactions>
+type SavingAccountEntity = InferSelectModel<typeof savingsAccounts>
+type SavingProductEntity = InferSelectModel<typeof savingsProducts>
+type LoanProductEntity = InferSelectModel<typeof loanProducts>
 
 /// Row counts for test data per table
 const USERS_COUNT = 20
@@ -53,13 +54,15 @@ export class DatabaseSeeder {
         firstName: firstName.toLowerCase(),
       })
 
+      const password = await hashPassword('Password2')
+
       const user = await db
         .insert(users)
         .values({
           firstName,
           lastName: faker.person.lastName(),
           email,
-          password: faker.internet.password({ length: 12 }), // In real app: hash this!
+          password: password, // In real app: hash this!
           createdAt: faker.date.recent({ days: 100 }),
         })
         .returning()

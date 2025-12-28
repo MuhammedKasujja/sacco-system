@@ -1,8 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
 import { redirect } from '@tanstack/react-router'
 import { useAppSession } from '@/lib/session'
-import { getUserByEmailPassword, getUserById } from './users'
+import { getUserByEmail, getUserById } from './users'
 import z from 'zod'
+import { checkPassword } from '@/lib/utils'
 
 const loginSchema = z.object({
   email: z.email().max(255),
@@ -13,12 +14,18 @@ const loginSchema = z.object({
 export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator((data) => loginSchema.parse(data))
   .handler(async ({ data }) => {
-    const user = await getUserByEmailPassword({
-      data: { email: data.email, password: data.password },
+    const user = await getUserByEmail({
+      data: { email: data.email },
     })
 
     if (!user) {
       return { error: 'Invalid credentials' }
+    }
+
+    const isValidPassword = await checkPassword(data.password, user.password)
+
+    if (!isValidPassword) {
+      return { error: 'Invalid Email or Password' }
     }
 
     // Create session
@@ -33,7 +40,7 @@ export const loginFn = createServerFn({ method: 'POST' })
 export const logoutFn = createServerFn({ method: 'POST' }).handler(async () => {
   const session = await useAppSession()
   await session.clear()
-  throw redirect({ href: '/' })
+  throw redirect({ href: '/login' })
 })
 
 // Get current user
