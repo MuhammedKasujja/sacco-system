@@ -24,6 +24,10 @@ type SavingAccountEntity = InferSelectModel<typeof savingsAccounts>
 type SavingProductEntity = InferSelectModel<typeof savingsProducts>
 type LoanProductEntity = InferSelectModel<typeof loanProducts>
 
+const testUserPassword = 'Password2'
+
+const testMemberPassword = 'Password2!'
+
 /// Row counts for test data per table
 const USERS_COUNT = 20
 const MEMBERS_COUNT = 50
@@ -54,7 +58,7 @@ export class DatabaseSeeder {
         firstName: firstName.toLowerCase(),
       })
 
-      const password = await hashPassword('Password2')
+      const password = await hashPassword(testUserPassword)
 
       const user = await db
         .insert(users)
@@ -119,6 +123,7 @@ export class DatabaseSeeder {
     for (let i = 0; i < MEMBERS_COUNT; i++) {
       const firstName = faker.person.firstName()
       const email = faker.internet.email({ firstName })
+      const password = await hashPassword(testMemberPassword)
 
       const newMember = await db
         .insert(members)
@@ -127,7 +132,7 @@ export class DatabaseSeeder {
           firstName: firstName,
           lastName: faker.person.lastName(),
           email: email,
-          password: faker.internet.password({ length: 12 }),
+          password: password,
           phone: faker.phone.number({ style: 'international' }),
           joinDate: faker.date.past().toISOString(),
           address: faker.location.streetAddress(),

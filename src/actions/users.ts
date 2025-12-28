@@ -3,10 +3,7 @@ import { users } from '@/db/schema'
 import { createServerFn } from '@tanstack/react-start'
 import { and, eq, ilike, or } from 'drizzle-orm'
 
-export type UserEntity = Omit<
-  Awaited<ReturnType<typeof fetchUsers>>[0],
-  'password'
->
+export type UserEntity = Awaited<ReturnType<typeof fetchUsers>>[0]
 
 export const fetchUsers = createServerFn({ method: 'GET' })
   .inputValidator((query?: string) => query)
@@ -28,7 +25,14 @@ export const fetchUsers = createServerFn({ method: 'GET' })
     // }
 
     return await db
-      .select()
+      .select({
+        id: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        email: users.email,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+      })
       .from(users)
       .where(or(...textConditions))
 
