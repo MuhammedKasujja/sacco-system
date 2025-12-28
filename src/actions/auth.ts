@@ -27,9 +27,6 @@ export const loginFn = createServerFn({ method: 'POST' })
       userId: user.id,
       email: user.email,
     })
-
-    // Redirect to protected area
-    throw redirect({ to: '/' })
   })
 
 // Logout server function

@@ -1,19 +1,7 @@
-import { getCurrentUserFn } from '@/actions/auth'
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_app/')({
   component: RouteComponent,
-  beforeLoad: async ({ location }) => {
-    const user = await getCurrentUserFn()
-    if (!user) {
-      throw redirect({
-        to: '/login',
-        search: { redirect: location.href },
-      })
-    }
-    // Pass user to child routes
-    return { user }
-  },
 })
 
 function RouteComponent() {

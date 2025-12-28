@@ -3,6 +3,9 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
+import { useMutation } from '@/hooks/useMutation'
+import { loginFn } from '@/actions/auth'
+import { toast } from 'sonner'
 
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
@@ -10,8 +13,32 @@ export const Route = createFileRoute('/login')({
 
 function RouteComponent() {
   const router = useRouter()
-  function handleAfterLogin() {
-    router.navigate({ to: '/' })
+
+  const loginMutation = useMutation({
+    fn: loginFn,
+    onSuccess: async (ctx) => {
+      if (ctx.data?.error) {
+        toast.error(ctx.data.error)
+        return
+      }
+      await router.invalidate()
+      router.navigate({ to: '/' })
+      return
+    },
+    onError: async (ctx) => {
+      toast.error(ctx.data.message)
+      console.error('Login error message: ', ctx.data)
+    },
+  })
+
+  function handleAfterLogin(e: React.FormEvent<HTMLFormElement>) {
+    const formData = new FormData(e.target as HTMLFormElement)
+    loginMutation.mutate({
+      data: {
+        email: formData.get('email') as string,
+        password: formData.get('password') as string,
+      },
+    })
   }
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
@@ -19,7 +46,13 @@ function RouteComponent() {
         <div className="flex flex-col gap-6">
           <Card className="overflow-hidden p-0">
             <CardContent className="grid p-0 md:grid-cols-2">
-              <form className="p-6 md:p-8">
+              <form
+                className="p-6 md:p-8"
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  handleAfterLogin(e)
+                }}
+              >
                 <FieldGroup>
                   <div className="flex flex-col items-center gap-2 text-center">
                     <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -34,6 +67,7 @@ function RouteComponent() {
                       type="email"
                       placeholder="m@example.com"
                       required
+                      name="email"
                     />
                   </Field>
                   <Field>
@@ -46,12 +80,15 @@ function RouteComponent() {
                         Forgot your password?
                       </a>
                     </div>
-                    <Input id="password" type="password" required />
+                    <Input
+                      id="password"
+                      type="password"
+                      required
+                      name="password"
+                    />
                   </Field>
                   <Field>
-                    <Button type="button" onClick={handleAfterLogin}>
-                      Login
-                    </Button>
+                    <Button type="submit">Login</Button>
                   </Field>
                 </FieldGroup>
               </form>
