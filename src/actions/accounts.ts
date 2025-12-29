@@ -4,7 +4,7 @@ import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 
 export const CreateMemberAccountSchema = z.object({
-  memberId: z.coerce.number(),
+  memberId: z.string(),
 })
 
 export type AccountEntity = Awaited<ReturnType<typeof fetchAccounts>>[0]

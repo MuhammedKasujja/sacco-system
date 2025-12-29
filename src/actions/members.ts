@@ -6,7 +6,7 @@ import z from 'zod'
 import { createMemberAccountFn } from './accounts'
 
 export const EditMemberSchema = z.object({
-  id: z.number().optional(),
+  id: z.string().optional(),
   idNumber: z.string().optional(),
   firstName: z.string(),
   lastName: z.string(),

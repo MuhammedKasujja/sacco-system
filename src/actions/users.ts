@@ -76,7 +76,7 @@ export const createUserFn = createServerFn({ method: 'POST' })
   })
 
 export const getUserById = createServerFn({ method: 'POST' })
-  .inputValidator((userId: number) => userId)
+  .inputValidator((userId: string) => userId)
   .handler(async ({ data }) => {
     return await db.query.users.findFirst({
       where: eq(users.id, data),
