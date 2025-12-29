@@ -14,6 +14,8 @@ export const EditUserSchema = z.object({
 
 export type UserEntity = Awaited<ReturnType<typeof fetchUsers>>[0]
 
+export type AuthUserEntity = Awaited<ReturnType<typeof getUserById>>
+
 export const fetchUsers = createServerFn({ method: 'GET' })
   .inputValidator((query?: string) => query)
   .handler(async ({ data }) => {
@@ -78,6 +80,13 @@ export const getUserById = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     return await db.query.users.findFirst({
       where: eq(users.id, data),
+      columns: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        createdAt: true,
+      },
     })
   })
 

@@ -1,5 +1,11 @@
 import { db } from '@/db'
+import { savingsAccounts } from '@/db/schema'
 import { createServerFn } from '@tanstack/react-start'
+import z from 'zod'
+
+export const CreateMemberAccountSchema = z.object({
+  memberId: z.coerce.number(),
+})
 
 export type AccountEntity = Awaited<ReturnType<typeof fetchAccounts>>[0]
 
@@ -10,3 +16,17 @@ export const fetchAccounts = createServerFn().handler(() => {
     },
   })
 })
+
+export const createMemberAccountFn = createServerFn()
+  .inputValidator((data)=>CreateMemberAccountSchema.parse(data))
+  .handler(async ({ data }) => {
+    const account = await db
+      .insert(savingsAccounts)
+      .values({
+        memberId: data.memberId,
+        accountNumber: 'ACC 890089',
+        openedDate: new Date().toISOString(),
+      })
+      .returning()
+    return account.at(0)
+  })

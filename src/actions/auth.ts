@@ -5,14 +5,14 @@ import { getUserByEmail, getUserById } from './users'
 import z from 'zod'
 import { checkPassword } from '@/lib/utils'
 
-const loginSchema = z.object({
+export const LoginSchema = z.object({
   email: z.email().max(255),
   password: z.string().min(8).max(100),
 })
 
 // Login server function
 export const loginFn = createServerFn({ method: 'POST' })
-  .inputValidator((data) => loginSchema.parse(data))
+  .inputValidator((data) => LoginSchema.parse(data))
   .handler(async ({ data }) => {
     const user = await getUserByEmail({
       data: { email: data.email },

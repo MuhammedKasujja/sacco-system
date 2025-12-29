@@ -1,9 +1,9 @@
 import { createContext, useContext, ReactNode } from 'react'
-import { UserEntity } from '@/actions/users'
+import { AuthUserEntity } from '@/actions/users'
 import { useRouteContext } from '@tanstack/react-router'
 
 type AuthContextType = {
-  user: UserEntity | null | undefined
+  user: AuthUserEntity | null | undefined
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)

@@ -1,5 +1,21 @@
 import { db } from '@/db'
+import { members } from '@/db/schema'
+import { hashPassword } from '@/lib/utils'
 import { createServerFn } from '@tanstack/react-start'
+import z from 'zod'
+import { createMemberAccountFn } from './accounts'
+
+export const EditMemberSchema = z.object({
+  id: z.number().optional(),
+  idNumber: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.email(),
+  phone: z.string(),
+  password: z.string(),
+  joinDate: z.coerce.date().optional(),
+  address: z.string(),
+})
 
 export type MemberEntity = Awaited<ReturnType<typeof fetchMembers>>[0]
 
@@ -15,6 +31,29 @@ export const fetchMembers = createServerFn().handler(() => {
       updatedAt: true,
       phone: true,
       joinDate: true,
+      status: true,
+      address: true,
     },
   })
 })
+
+export const createMemberFn = createServerFn({ method: 'POST' })
+  .inputValidator(EditMemberSchema.parse)
+  .handler(async ({ data }) => {
+    const encryptedPassword = await hashPassword(data.password)
+
+    const createdMember = await db
+      .insert(members)
+      .values({
+        idNumber: data.idNumber,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        password: encryptedPassword,
+      })
+      .returning()
+
+    return createMemberAccountFn({ data: { memberId: createdMember[0].id } })
+  })
