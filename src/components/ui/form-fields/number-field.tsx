@@ -1,15 +1,15 @@
 import { FieldValues } from "react-hook-form";
 import { TextField, TextFieldProps } from "./text-field";
 
-type NumberInputProps<F extends FieldValues> = Omit<TextFieldProps<F>, "type">;
+type NumberFieldProps<F extends FieldValues> = Omit<TextFieldProps<F>, "type">;
 
-export function NumberInput<T extends FieldValues>({
+export function NumberField<T extends FieldValues>({
   control,
   name,
   label,
   placeholder,
   required = true,
-}: Readonly<NumberInputProps<T>>) {
+}: Readonly<NumberFieldProps<T>>) {
   return (
     <TextField
       control={control}

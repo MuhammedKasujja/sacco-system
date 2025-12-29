@@ -1,8 +1,10 @@
 import { fetchLoanProducts, LoanProductEntity } from '@/actions/loan_products'
 import { DataTable } from '@/components/data-table'
+import { Button } from '@/components/ui/button'
 import { formatDate, formatMoney } from '@/lib/formatting'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
+import { Plus } from 'lucide-react'
 
 export const Route = createFileRoute('/_app/loan-products/')({
   component: RouteComponent,
@@ -11,7 +13,25 @@ export const Route = createFileRoute('/_app/loan-products/')({
 
 function RouteComponent() {
   const loanProducts = Route.useLoaderData()
-  return <DataTable columns={columns} data={loanProducts} />
+  return (
+    <DataTable
+      columns={columns}
+      data={loanProducts}
+      tableActions={() => (
+        <Button>
+          <Link
+            to={'/loan-products/edit'}
+            className="inline-flex items-center gap-0.5"
+          >
+            <span>
+              <Plus />
+            </span>
+            New Loan Product
+          </Link>
+        </Button>
+      )}
+    />
+  )
 }
 
 const columns: ColumnDef<LoanProductEntity>[] = [

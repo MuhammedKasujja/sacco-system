@@ -5,11 +5,11 @@ import z from 'zod'
 
 export const CreateLoanProductSchema = z.object({
   productName: z.string(),
-  description: z.string().optional().default(''),
-  repaymentPeriodMonths: z.coerce.number(),
-  interestRate: z.coerce.number(),
-  minAmount: z.coerce.number(),
-  maxAmount: z.coerce.number(),
+  description: z.string().optional(),
+  repaymentPeriodMonths: z.number(),
+  interestRate: z.string(),
+  minAmount: z.string().regex(/^\d+(\.\d{1,2})?$/, 'Invalid money format'),
+  maxAmount: z.string().regex(/^\d+(\.\d{1,2})?$/, 'Invalid money format'),
 })
 
 export type LoanProductEntity = Awaited<ReturnType<typeof fetchLoanProducts>>[0]
@@ -21,17 +21,17 @@ export const fetchLoanProducts = createServerFn().handler(() => {
 export const createLoanProductFn = createServerFn({ method: 'POST' })
   .inputValidator((data) => CreateLoanProductSchema.parse(data))
   .handler(async ({ data }) => {
-    const loanProduct = await db
+    await db
       .insert(loanProducts)
       .values({
         productName: data.productName,
         description: data.description,
         repaymentPeriodMonths: data.repaymentPeriodMonths,
-        interestRate: data.productName,
-        minAmount: data.productName,
-        maxAmount: data.productName,
+        interestRate: data.interestRate,
+        minAmount: data.minAmount,
+        maxAmount: data.maxAmount,
       })
       .returning()
 
-    return loanProduct[0]
+    return { status: 'success', message: 'Loan Product created successfully' }
   })
