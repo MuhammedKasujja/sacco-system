@@ -1,7 +1,9 @@
 import { fetchMembers, MemberEntity } from '@/actions/members'
 import { DataTable } from '@/components/data-table'
-import { createFileRoute } from '@tanstack/react-router'
+import { Button } from '@/components/ui/button'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
+import { Plus } from 'lucide-react'
 
 export const Route = createFileRoute('/_app/members/')({
   component: RouteComponent,
@@ -10,7 +12,22 @@ export const Route = createFileRoute('/_app/members/')({
 
 function RouteComponent() {
   const members = Route.useLoaderData()
-  return <DataTable columns={columns} data={members} />
+  return (
+    <DataTable
+      columns={columns}
+      data={members}
+      tableActions={() => (
+        <Button>
+          <Link to={'/members/edit'} className="inline-flex items-center gap-0.5">
+            <span>
+              <Plus />
+            </span>
+            New Member
+          </Link>
+        </Button>
+      )}
+    />
+  )
 }
 
 const columns: ColumnDef<MemberEntity>[] = [
@@ -22,7 +39,7 @@ const columns: ColumnDef<MemberEntity>[] = [
     id: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <div className='font-semibold'>
+      <div className="font-semibold">
         {row.original.firstName} {row.original.lastName}
       </div>
     ),

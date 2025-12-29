@@ -26,6 +26,7 @@ export const createMemberAccountFn = createServerFn()
         memberId: data.memberId,
         accountNumber: 'ACC 890089',
         openedDate: new Date().toISOString(),
+        balance: '0'
       })
       .returning()
     return account.at(0)

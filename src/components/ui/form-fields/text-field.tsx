@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 
-export type InputType = 'text' | 'number' | 'email' | 'url'
+export type InputType = 'text' | 'number' | 'email' | 'url' | 'phone'
 
 export type TextFieldProps<F extends FieldValues> = {
   label?: string

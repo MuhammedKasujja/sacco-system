@@ -7,14 +7,14 @@ import { createMemberAccountFn } from './accounts'
 
 export const EditMemberSchema = z.object({
   id: z.number().optional(),
-  idNumber: z.string(),
+  idNumber: z.string().optional(),
   firstName: z.string(),
   lastName: z.string(),
   email: z.email(),
   phone: z.string(),
   password: z.string(),
-  joinDate: z.coerce.date().optional(),
-  address: z.string(),
+  joinDate: z.date().optional(),
+  address: z.string().optional(),
 })
 
 export type MemberEntity = Awaited<ReturnType<typeof fetchMembers>>[0]
@@ -42,10 +42,12 @@ export const createMemberFn = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     const encryptedPassword = await hashPassword(data.password)
 
+    const idNumber = 'M-001'
+
     const createdMember = await db
       .insert(members)
       .values({
-        idNumber: data.idNumber,
+        idNumber: idNumber,
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
@@ -55,5 +57,8 @@ export const createMemberFn = createServerFn({ method: 'POST' })
       })
       .returning()
 
-    return createMemberAccountFn({ data: { memberId: createdMember[0].id } })
+    // const account =
+    await createMemberAccountFn({ data: { memberId: createdMember[0].id } })
+
+    return { status: "success", message: 'Member created successfully' }
   })

@@ -1,4 +1,4 @@
-export function formatMoney(amount: number| string, { showZeroAsNumber = false } = {}) {
+export function formatMoney(amount: number| string, { showZeroAsNumber = true } = {}) {
   const numberAmount = Number.parseFloat(amount.toString())
   const formatter = new Intl.NumberFormat(undefined, {
     style: "currency",
