@@ -92,7 +92,7 @@ export class DatabaseSeeder {
       const newloan = await db
         .insert(loans)
         .values({
-          loanProductId: loanProduct.productId,
+          loanProductId: loanProduct.id,
           memberId: member.id,
           number: faker.string.uuid(),
           approvedBy: approvedById,
@@ -186,7 +186,7 @@ export class DatabaseSeeder {
       const newTransaction = await db
         .insert(transactions)
         .values({
-          accountId: account.accountId,
+          accountId: account.id,
           memberId: member.id,
           date: faker.date.past().toISOString(),
           transactionType: faker.finance.transactionType(),
@@ -237,7 +237,7 @@ export class DatabaseSeeder {
         .insert(savingsAccounts)
         .values({
           memberId: member.id,
-          productId: product.productId,
+          productId: product.id,
           accountNumber: faker.finance.accountNumber(),
           openedDate: faker.date.past().toISOString(),
           balance: faker.finance.amount({

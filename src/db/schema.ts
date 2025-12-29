@@ -6,30 +6,36 @@ import {
   integer,
   json,
   pgTable,
-  serial,
   text,
   timestamp,
+  uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
 
+const createdAt = timestamp('created_at', { withTimezone: true })
+  .defaultNow()
+  .notNull()
+
+const updatedAt = timestamp('updated_at', { withTimezone: true })
+  .defaultNow()
+  .notNull()
+  .$onUpdate(() => new Date())
+
+const deletedAt = timestamp('deleted_at', { withTimezone: true })
+
 export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   firstName: varchar('first_name', { length: 50 }).notNull(),
   lastName: varchar('last_name', { length: 50 }).notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: varchar('password').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  createdAt,
+  updatedAt,
+  deletedAt,
 })
 
 export const members = pgTable('members', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   number: varchar('member_number', { length: 20 }).unique(),
   firstName: varchar('first_name', { length: 50 }).notNull(),
   lastName: varchar('last_name', { length: 50 }).notNull(),
@@ -40,107 +46,81 @@ export const members = pgTable('members', {
   address: text('address'),
   joinDate: date('join_date'),
   status: varchar('status', { length: 20 }),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  createdAt,
+  updatedAt,
+  deletedAt,
 })
 
 export const savingsProducts = pgTable('savings_products', {
-  productId: serial('product_id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   productName: varchar('product_name', { length: 200 }).notNull(),
   description: text('description'),
   interestRate: decimal('interest_rate').notNull(),
   minimumBalance: decimal('minimum_balance').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  createdAt,
+  updatedAt,
+  deletedAt,
 })
 
 export const savingsAccounts = pgTable('savings_accounts', {
-  accountId: serial('account_id').primaryKey(),
-  memberId: integer('member_id')
+  id: uuid('id').primaryKey().defaultRandom(),
+  memberId: uuid('member_id')
     .notNull()
     .references(() => members.id, {
       onDelete: 'cascade',
     }),
-  productId: integer('product_id').references(() => savingsProducts.productId, {
+  productId: uuid('product_id').references(() => savingsProducts.id, {
     onDelete: 'cascade',
   }),
   accountNumber: varchar('account_number', { length: 30 }),
   balance: decimal(),
   openedDate: date('opened_date').notNull(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  createdAt,
+  updatedAt,
+  deletedAt,
 })
 
 export const loanProducts = pgTable('loan_products', {
-  productId: serial('product_id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   productName: varchar('product_name', { length: 200 }).notNull(),
   minAmount: decimal('min_amount'),
   maxAmount: decimal('max_amount'),
   interestRate: decimal('interest_rate').notNull(),
   repaymentPeriodMonths: integer('repayment_period_months'),
   description: text(),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  createdAt,
+  updatedAt,
+  deletedAt,
 })
 
 export const loans = pgTable('loans', {
-  id: serial('id').primaryKey(),
-  loanProductId: integer('loan_product_id').references(
-    () => loanProducts.productId,
-    {
-      onDelete: 'cascade',
-    },
-  ),
-  memberId: integer('member_id').references(() => members.id, {
-    onDelete: 'set null',
+  id: uuid('id').primaryKey().defaultRandom(),
+  loanProductId: uuid('loan_product_id').references(() => loanProducts.id, {
+    onDelete: 'cascade',
   }),
+  memberId: uuid('member_id')
+    .references(() => members.id, {
+      onDelete: 'set null',
+    })
+    .notNull(),
   number: varchar('loan_number', { length: 50 }).unique(),
   principalAmount: decimal('principal_amount'),
   interestRate: decimal('interest_rate'),
   totalAmount: decimal('total_amount'),
   disbursementDate: date('disbursement_date'),
   status: varchar('status', { length: 20 }),
-  approvedBy: integer('approved_by').references(() => users.id, {
+  approvedBy: uuid('approved_by').references(() => users.id, {
     onDelete: 'cascade',
   }),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  createdAt,
+  updatedAt,
+  deletedAt,
 })
 
 // -- Loan Repayments: Scheduled or actual repayments
 export const loanRepayments = pgTable('loan_repayments', {
-  id: serial('id').primaryKey(),
-  loanId: integer('loan_id')
+  id: uuid('id').primaryKey().defaultRandom(),
+  loanId: uuid('loan_id')
     .notNull()
     .references(() => loans.id, {
       onDelete: 'cascade',
@@ -151,55 +131,45 @@ export const loanRepayments = pgTable('loan_repayments', {
   interestPaid: decimal('interest_paid'),
   balanceAfter: decimal('balance_after'),
   status: varchar('status', { length: 20 }),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  createdAt,
+  updatedAt,
+  deletedAt,
 })
 
 export const transactions = pgTable('transactions', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   date: date('date').notNull(),
-  memberId: integer('member_id')
+  memberId: uuid('member_id')
     .notNull()
     .references(() => members.id, {
       onDelete: 'cascade',
     }),
-  accountId: integer('account_id').references(() => savingsAccounts.accountId, {
+  accountId: uuid('account_id').references(() => savingsAccounts.id, {
     onDelete: 'cascade',
   }), // -- For savings transactions
-  loanId: integer('loan_id').references(() => loans.id, {
+  loanId: uuid('loan_id').references(() => loans.id, {
     onDelete: 'cascade',
   }),
   transactionType: varchar('transaction_type', { length: 50 }), // deposit, withdrawal, loan_disbursement, loan_repayment, share_purchase
   amount: decimal('amount').notNull(),
-  recordedBy: integer('recorded_by').references(() => users.id, {
+  recordedBy: uuid('recorded_by').references(() => users.id, {
     onDelete: 'cascade',
   }),
   description: text('description'),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true })
-    .defaultNow()
-    .notNull()
-    .$onUpdate(() => new Date()),
-  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  createdAt,
+  updatedAt,
+  deletedAt,
 })
 
 // -- Audit Logs Table: Tracks all changes to important tables
 export const auditLogs = pgTable('audit_logs', {
-  id: serial('id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   tableName: varchar('table_name', { length: 50 }),
-  recordId: integer('record_id').notNull(),
+  recordId: uuid('record_id').notNull(),
   operation: char('operation', { length: 1 }).notNull(),
   oldValues: json('old_values'),
   newValues: json('new_values'),
-  changedBy: integer('changed_by')
+  changedBy: uuid('changed_by')
     .notNull()
     .references(() => users.id, {
       onDelete: 'cascade',
@@ -208,9 +178,7 @@ export const auditLogs = pgTable('audit_logs', {
     .defaultNow()
     .notNull(),
   description: text('description'),
-  createdAt: timestamp('created_at', { withTimezone: true })
-    .defaultNow()
-    .notNull(),
+  createdAt,
 })
 
 export const membersRelations = relations(members, ({ many }) => ({
@@ -230,7 +198,7 @@ export const loansRelations = relations(loans, ({ many, one }) => ({
   }),
   loanProduct: one(loanProducts, {
     fields: [loans.loanProductId],
-    references: [loanProducts.productId],
+    references: [loanProducts.id],
   }),
   repayments: many(loanRepayments),
 }))
@@ -244,7 +212,7 @@ export const savingsAccountsRelations = relations(
     }),
     loanProduct: one(loanProducts, {
       fields: [savingsAccounts.productId],
-      references: [loanProducts.productId],
+      references: [loanProducts.id],
     }),
   }),
 )
@@ -265,6 +233,6 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
   }),
   account: one(savingsAccounts, {
     fields: [transactions.accountId],
-    references: [savingsAccounts.accountId],
+    references: [savingsAccounts.id],
   }),
 }))

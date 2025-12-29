@@ -1,1 +1,0 @@
-ALTER TABLE "audit_logs" ADD COLUMN "created_at" timestamp with time zone DEFAULT now() NOT NULL;

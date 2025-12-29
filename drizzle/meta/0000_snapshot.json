@@ -1,5 +1,5 @@
 {
-  "id": "c8fbe15e-ecc7-4327-917e-2ca39c13eda3",
+  "id": "ecb26ca0-f046-46e4-ae33-150ef1aaa217",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,9 +10,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "table_name": {
           "name": "table_name",
@@ -22,7 +23,7 @@
         },
         "record_id": {
           "name": "record_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -46,7 +47,7 @@
         },
         "changed_by": {
           "name": "changed_by",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -62,6 +63,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -90,11 +98,12 @@
       "name": "loan_products",
       "schema": "",
       "columns": {
-        "product_id": {
-          "name": "product_id",
-          "type": "serial",
+        "id": {
+          "name": "id",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "product_name": {
           "name": "product_name",
@@ -167,13 +176,14 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "loan_id": {
           "name": "loan_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -262,21 +272,22 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "loan_product_id": {
           "name": "loan_product_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
         "member_id": {
           "name": "member_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "loan_number": {
           "name": "loan_number",
@@ -316,7 +327,7 @@
         },
         "approved_by": {
           "name": "approved_by",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -343,15 +354,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "loans_loan_product_id_loan_products_product_id_fk": {
-          "name": "loans_loan_product_id_loan_products_product_id_fk",
+        "loans_loan_product_id_loan_products_id_fk": {
+          "name": "loans_loan_product_id_loan_products_id_fk",
           "tableFrom": "loans",
           "tableTo": "loan_products",
           "columnsFrom": [
             "loan_product_id"
           ],
           "columnsTo": [
-            "product_id"
+            "id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -403,9 +414,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "member_number": {
           "name": "member_number",
@@ -529,21 +541,22 @@
       "name": "savings_accounts",
       "schema": "",
       "columns": {
-        "account_id": {
-          "name": "account_id",
-          "type": "serial",
+        "id": {
+          "name": "id",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "member_id": {
           "name": "member_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "product_id": {
           "name": "product_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -601,15 +614,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "savings_accounts_product_id_savings_products_product_id_fk": {
-          "name": "savings_accounts_product_id_savings_products_product_id_fk",
+        "savings_accounts_product_id_savings_products_id_fk": {
+          "name": "savings_accounts_product_id_savings_products_id_fk",
           "tableFrom": "savings_accounts",
           "tableTo": "savings_products",
           "columnsFrom": [
             "product_id"
           ],
           "columnsTo": [
-            "product_id"
+            "id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -625,11 +638,12 @@
       "name": "savings_products",
       "schema": "",
       "columns": {
-        "product_id": {
-          "name": "product_id",
-          "type": "serial",
+        "id": {
+          "name": "id",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "product_name": {
           "name": "product_name",
@@ -690,9 +704,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "date": {
           "name": "date",
@@ -702,19 +717,19 @@
         },
         "member_id": {
           "name": "member_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "account_id": {
           "name": "account_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
         "loan_id": {
           "name": "loan_id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -732,7 +747,7 @@
         },
         "recorded_by": {
           "name": "recorded_by",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -778,15 +793,15 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "transactions_account_id_savings_accounts_account_id_fk": {
-          "name": "transactions_account_id_savings_accounts_account_id_fk",
+        "transactions_account_id_savings_accounts_id_fk": {
+          "name": "transactions_account_id_savings_accounts_id_fk",
           "tableFrom": "transactions",
           "tableTo": "savings_accounts",
           "columnsFrom": [
             "account_id"
           ],
           "columnsTo": [
-            "account_id"
+            "id"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -830,9 +845,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "first_name": {
           "name": "first_name",

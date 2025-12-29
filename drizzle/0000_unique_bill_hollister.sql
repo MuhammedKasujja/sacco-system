@@ -1,17 +1,18 @@
 CREATE TABLE "audit_logs" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"table_name" varchar(50),
-	"record_id" integer NOT NULL,
+	"record_id" uuid NOT NULL,
 	"operation" char(1) NOT NULL,
 	"old_values" json,
 	"new_values" json,
-	"changed_by" integer NOT NULL,
+	"changed_by" uuid NOT NULL,
 	"changed_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"description" text
+	"description" text,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "loan_products" (
-	"product_id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"product_name" varchar(200) NOT NULL,
 	"min_amount" numeric,
 	"max_amount" numeric,
@@ -24,8 +25,8 @@ CREATE TABLE "loan_products" (
 );
 --> statement-breakpoint
 CREATE TABLE "loan_repayments" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"loan_id" integer NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"loan_id" uuid NOT NULL,
 	"repayment_date" date NOT NULL,
 	"amount_paid" numeric,
 	"principal_paid" numeric,
@@ -38,16 +39,16 @@ CREATE TABLE "loan_repayments" (
 );
 --> statement-breakpoint
 CREATE TABLE "loans" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"loan_product_id" integer,
-	"member_id" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"loan_product_id" uuid,
+	"member_id" uuid NOT NULL,
 	"loan_number" varchar(50),
 	"principal_amount" numeric,
 	"interest_rate" numeric,
 	"total_amount" numeric,
 	"disbursement_date" date,
 	"status" varchar(20),
-	"approved_by" integer,
+	"approved_by" uuid,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"deleted_at" timestamp with time zone,
@@ -55,7 +56,7 @@ CREATE TABLE "loans" (
 );
 --> statement-breakpoint
 CREATE TABLE "members" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"member_number" varchar(20),
 	"first_name" varchar(50) NOT NULL,
 	"last_name" varchar(50) NOT NULL,
@@ -76,9 +77,9 @@ CREATE TABLE "members" (
 );
 --> statement-breakpoint
 CREATE TABLE "savings_accounts" (
-	"account_id" serial PRIMARY KEY NOT NULL,
-	"member_id" integer NOT NULL,
-	"product_id" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"member_id" uuid NOT NULL,
+	"product_id" uuid,
 	"account_number" varchar(30),
 	"balance" numeric,
 	"opened_date" date NOT NULL,
@@ -88,7 +89,7 @@ CREATE TABLE "savings_accounts" (
 );
 --> statement-breakpoint
 CREATE TABLE "savings_products" (
-	"product_id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"product_name" varchar(200) NOT NULL,
 	"description" text,
 	"interest_rate" numeric NOT NULL,
@@ -99,14 +100,14 @@ CREATE TABLE "savings_products" (
 );
 --> statement-breakpoint
 CREATE TABLE "transactions" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"date" date NOT NULL,
-	"member_id" integer NOT NULL,
-	"account_id" integer,
-	"loan_id" integer,
+	"member_id" uuid NOT NULL,
+	"account_id" uuid,
+	"loan_id" uuid,
 	"transaction_type" varchar(50),
 	"amount" numeric NOT NULL,
-	"recorded_by" integer,
+	"recorded_by" uuid,
 	"description" text,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
@@ -114,7 +115,7 @@ CREATE TABLE "transactions" (
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"first_name" varchar(50) NOT NULL,
 	"last_name" varchar(50) NOT NULL,
 	"email" varchar(255) NOT NULL,
@@ -127,12 +128,12 @@ CREATE TABLE "users" (
 --> statement-breakpoint
 ALTER TABLE "audit_logs" ADD CONSTRAINT "audit_logs_changed_by_users_id_fk" FOREIGN KEY ("changed_by") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "loan_repayments" ADD CONSTRAINT "loan_repayments_loan_id_loans_id_fk" FOREIGN KEY ("loan_id") REFERENCES "public"."loans"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "loans" ADD CONSTRAINT "loans_loan_product_id_loan_products_product_id_fk" FOREIGN KEY ("loan_product_id") REFERENCES "public"."loan_products"("product_id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "loans" ADD CONSTRAINT "loans_loan_product_id_loan_products_id_fk" FOREIGN KEY ("loan_product_id") REFERENCES "public"."loan_products"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "loans" ADD CONSTRAINT "loans_member_id_members_id_fk" FOREIGN KEY ("member_id") REFERENCES "public"."members"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "loans" ADD CONSTRAINT "loans_approved_by_users_id_fk" FOREIGN KEY ("approved_by") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "savings_accounts" ADD CONSTRAINT "savings_accounts_member_id_members_id_fk" FOREIGN KEY ("member_id") REFERENCES "public"."members"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "savings_accounts" ADD CONSTRAINT "savings_accounts_product_id_savings_products_product_id_fk" FOREIGN KEY ("product_id") REFERENCES "public"."savings_products"("product_id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "savings_accounts" ADD CONSTRAINT "savings_accounts_product_id_savings_products_id_fk" FOREIGN KEY ("product_id") REFERENCES "public"."savings_products"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_member_id_members_id_fk" FOREIGN KEY ("member_id") REFERENCES "public"."members"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "transactions" ADD CONSTRAINT "transactions_account_id_savings_accounts_account_id_fk" FOREIGN KEY ("account_id") REFERENCES "public"."savings_accounts"("account_id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "transactions" ADD CONSTRAINT "transactions_account_id_savings_accounts_id_fk" FOREIGN KEY ("account_id") REFERENCES "public"."savings_accounts"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_loan_id_loans_id_fk" FOREIGN KEY ("loan_id") REFERENCES "public"."loans"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_recorded_by_users_id_fk" FOREIGN KEY ("recorded_by") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
