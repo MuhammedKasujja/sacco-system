@@ -44,7 +44,7 @@ export const createMemberFn = createServerFn({ method: 'POST' })
 
     const idNumber = 'M-001'
 
-    const createdMember = await db
+    const [createdMember] = await db
       .insert(members)
       .values({
         idNumber: idNumber,
@@ -58,7 +58,7 @@ export const createMemberFn = createServerFn({ method: 'POST' })
       .returning()
 
     // const account =
-    await createMemberAccountFn({ data: { memberId: createdMember[0].id } })
+    await createMemberAccountFn({ data: { memberId: createdMember.id } })
 
-    return { status: "success", message: 'Member created successfully' }
+    return { status: 'success', message: 'Member created successfully' }
   })

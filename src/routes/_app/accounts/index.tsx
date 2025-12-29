@@ -18,7 +18,7 @@ function RouteComponent() {
 
 const columns: ColumnDef<AccountEntity>[] = [
   {
-    accessorKey: 'accountId',
+    accessorKey: 'id',
     header: 'ID',
   },
   {

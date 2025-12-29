@@ -6,7 +6,7 @@ import z from 'zod'
 export const CreateLoanProductSchema = z.object({
   productName: z.string(),
   description: z.string().optional(),
-  repaymentPeriodMonths: z.number(),
+  repaymentPeriodMonths: z.coerce.number<number>(),
   interestRate: z.string(),
   minAmount: z.string().regex(/^\d+(\.\d{1,2})?$/, 'Invalid money format'),
   maxAmount: z.string().regex(/^\d+(\.\d{1,2})?$/, 'Invalid money format'),

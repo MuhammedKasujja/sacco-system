@@ -38,7 +38,7 @@ const columns: ColumnDef<LoanProductEntity>[] = [
   {
     id: 'number',
     header: 'ID',
-    cell: ({ row }) => <div>{row.original.productId}</div>,
+    cell: ({ row }) => <div>{row.original.id}</div>,
   },
   {
     id: 'name',

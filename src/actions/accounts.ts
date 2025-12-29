@@ -18,16 +18,16 @@ export const fetchAccounts = createServerFn().handler(() => {
 })
 
 export const createMemberAccountFn = createServerFn()
-  .inputValidator((data)=>CreateMemberAccountSchema.parse(data))
+  .inputValidator(CreateMemberAccountSchema.parse)
   .handler(async ({ data }) => {
-    const account = await db
+    const [account] = await db
       .insert(savingsAccounts)
       .values({
         memberId: data.memberId,
         accountNumber: 'ACC 890089',
         openedDate: new Date().toISOString(),
-        balance: '0'
+        balance: '0',
       })
       .returning()
-    return account.at(0)
+    return account
   })

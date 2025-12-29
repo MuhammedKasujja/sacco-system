@@ -218,15 +218,24 @@ export const savingsAccountsRelations = relations(
 )
 
 export const auditLogsRelations = relations(auditLogs, ({ one }) => ({
-  user: one(users),
+  user: one(users, {
+    fields: [auditLogs.changedBy],
+    references: [users.id],
+  }),
 }))
 
 export const loanRepaymentsRelations = relations(loanRepayments, ({ one }) => ({
-  loan: one(loans),
+  loan: one(loans, {
+    fields: [loanRepayments.loanId],
+    references: [loans.id],
+  }),
 }))
 
 export const transactionsRelations = relations(transactions, ({ one }) => ({
-  loan: one(loans),
+  loan: one(loans, {
+    fields: [transactions.loanId],
+    references: [loans.id],
+  }),
   member: one(members, {
     fields: [transactions.memberId],
     references: [members.id],

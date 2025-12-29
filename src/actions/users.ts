@@ -63,7 +63,7 @@ export const createUserFn = createServerFn({ method: 'POST' })
 
     const encryptedPassword = await hashPassword(data.password)
 
-    const user = await db
+    const [user] = await db
       .insert(users)
       .values({
         firstName: data.firstName,
@@ -72,7 +72,7 @@ export const createUserFn = createServerFn({ method: 'POST' })
         password: encryptedPassword,
       })
       .returning()
-    return { error: false, data: user[0] }
+    return { error: false, data: user }
   })
 
 export const getUserById = createServerFn({ method: 'POST' })
