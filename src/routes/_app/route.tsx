@@ -25,6 +25,7 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { getCurrentUserFn } from '@/actions/auth'
 import { AuthProvider } from '@/contexts/auth'
+import React from 'react'
 
 export const Route = createFileRoute('/_app')({
   component: RouteComponent,
@@ -43,6 +44,8 @@ export const Route = createFileRoute('/_app')({
 
 function RouteComponent() {
   const currentPath = useLocation({ select: (loc) => loc.pathname })
+  // console.log(currentPath.trim().split('/'))
+  console.log(currentPath.trim())
   return (
     <AuthProvider>
       <SidebarProvider>
@@ -58,14 +61,20 @@ function RouteComponent() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">Dashboard</BreadcrumbLink>
+                    <BreadcrumbLink asChild>
+                      <Link to={'/'}>Dashboard</Link>
+                    </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="capitalize">
-                      {currentPath.replace('/', '').replace('-', ' ')}
-                    </BreadcrumbPage>
-                  </BreadcrumbItem>
+                  {currentPath.trim().split('/').map((path) => (
+                    <React.Fragment key={path}>
+                      <BreadcrumbSeparator className="block" />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage className="capitalize">
+                          {path}
+                        </BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </React.Fragment>
+                  ))}
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
@@ -74,7 +83,7 @@ function RouteComponent() {
                 <BellDot className="size-5" />
               </div>
               <ThemeToggle />
-              <Link to={"/logout"}>
+              <Link to={'/logout'}>
                 <Avatar>
                   <AvatarImage src={'tanstack-circle-logo.png'} />
                 </Avatar>
