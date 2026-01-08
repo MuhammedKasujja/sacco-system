@@ -16,8 +16,7 @@ import {
 } from '@/components/ui/table'
 import { DataTablePagination } from './pagination'
 import React from 'react'
-import { Search } from 'lucide-react'
-import { InputGroup, InputGroupAddon, InputGroupInput } from '../ui/input-group'
+import { DataTableSearchInput } from './data-table-search-input'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -47,21 +46,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-4">
-        {onSearch && (
-          <InputGroup className="w-full min-w-0 max-w-sm">
-            <InputGroupInput
-              id="search"
-              placeholder="Search..."
-              onChange={(event) => {
-                onSearch?.(event.target.value)
-              }}
-              className="max-w-sm"
-            />
-            <InputGroupAddon align="inline-start">
-              <Search />
-            </InputGroupAddon>
-          </InputGroup>
-        )}
+        {onSearch && <DataTableSearchInput onSearch={onSearch} />}
         {tableActions?.()}
       </div>
       <div className="overflow-hidden rounded-md border">
