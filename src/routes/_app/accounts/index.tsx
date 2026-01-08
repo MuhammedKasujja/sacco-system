@@ -12,15 +12,21 @@ export const Route = createFileRoute('/_app/accounts/')({
 function RouteComponent() {
   const members = Route.useLoaderData()
   return (
-      <DataTable columns={columns} data={members} />
+    <DataTable
+      columns={columns}
+      data={members}
+      onSearch={(query) => {
+        console.log('query: ', query)
+      }}
+    />
   )
 }
 
 const columns: ColumnDef<AccountEntity>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: 'ID',
+  // },
   {
     id: 'number',
     header: 'Acc Number',

@@ -47,21 +47,21 @@ export function DataTable<TData, TValue>({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-4">
-        <InputGroup className="w-full min-w-0 max-w-sm">
-          <InputGroupInput
-            id="search"
-            placeholder="Search..."
-            value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-            onChange={(event) => {
-              table.getColumn('email')?.setFilterValue(event.target.value)
-              onSearch?.(event.target.value)
-            }}
-            className="max-w-sm"
-          />
-          <InputGroupAddon align="inline-start">
-            <Search />
-          </InputGroupAddon>
-        </InputGroup>
+        {onSearch && (
+          <InputGroup className="w-full min-w-0 max-w-sm">
+            <InputGroupInput
+              id="search"
+              placeholder="Search..."
+              onChange={(event) => {
+                onSearch?.(event.target.value)
+              }}
+              className="max-w-sm"
+            />
+            <InputGroupAddon align="inline-start">
+              <Search />
+            </InputGroupAddon>
+          </InputGroup>
+        )}
         {tableActions?.()}
       </div>
       <div className="overflow-hidden rounded-md border">
