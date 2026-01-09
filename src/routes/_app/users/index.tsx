@@ -38,10 +38,10 @@ function RouteComponent() {
 }
 
 const columns: ColumnDef<UserEntity>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: 'ID',
+  // },
   {
     id: 'name',
     header: 'Name',

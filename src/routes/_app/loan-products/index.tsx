@@ -35,11 +35,11 @@ function RouteComponent() {
 }
 
 const columns: ColumnDef<LoanProductEntity>[] = [
-  {
-    id: 'number',
-    header: 'ID',
-    cell: ({ row }) => <div>{row.original.id}</div>,
-  },
+  // {
+  //   id: 'number',
+  //   header: 'ID',
+  //   cell: ({ row }) => <div>{row.original.id}</div>,
+  // },
   {
     id: 'name',
     header: 'Name',

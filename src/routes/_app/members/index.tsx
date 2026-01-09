@@ -31,10 +31,10 @@ function RouteComponent() {
 }
 
 const columns: ColumnDef<MemberEntity>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: 'ID',
+  // },
   {
     id: 'name',
     header: 'Name',
