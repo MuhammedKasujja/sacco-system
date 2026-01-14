@@ -1,5 +1,5 @@
 import { fetchUsers, UserEntity } from '@/actions/users'
-import { DataTable } from '@/components/data-table'
+import { DataTable } from '@/components/data-table-old'
 import { formatDate } from '@/lib/formatting'
 import { Button } from '@/components/ui/button'
 import { createFileRoute, Link } from '@tanstack/react-router'

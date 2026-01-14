@@ -1,5 +1,5 @@
 import { AccountEntity, fetchAccounts } from '@/actions/accounts'
-import { DataTable } from '@/components/data-table'
+import { DataTable } from '@/components/data-table-old'
 import { formatMoney } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'

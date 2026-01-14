@@ -43,6 +43,7 @@ export const createMemberFn = createServerFn({ method: 'POST' })
     const encryptedPassword = await hashPassword(data.password)
 
     const idNumber = 'M-001'
+    const number = await generateNextMemberNumber()
 
     const [createdMember] = await db
       .insert(members)
@@ -54,6 +55,7 @@ export const createMemberFn = createServerFn({ method: 'POST' })
         phone: data.phone,
         address: data.address,
         password: encryptedPassword,
+        number,
       })
       .returning()
 
@@ -62,3 +64,10 @@ export const createMemberFn = createServerFn({ method: 'POST' })
 
     return { status: 'success', message: 'Member created successfully' }
   })
+
+async function generateNextMemberNumber() {
+  const totalMembers = await db.select({ id: members.id }).from(members)
+  const count = (totalMembers.length + 1).toString().padStart(4, '0')
+
+  return `M-${count}`
+}

@@ -1,5 +1,5 @@
 import { fetchLoanProducts, LoanProductEntity } from '@/actions/loan_products'
-import { DataTable } from '@/components/data-table'
+import { DataTable } from '@/components/data-table-old'
 import { Button } from '@/components/ui/button'
 import { formatDate, formatMoney } from '@/lib/formatting'
 import { createFileRoute, Link } from '@tanstack/react-router'

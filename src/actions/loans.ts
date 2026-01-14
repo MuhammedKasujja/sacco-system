@@ -7,7 +7,7 @@ export const fetchLoans = createServerFn().handler(() => {
   return db.query.loans.findMany({
     with: {
       member: {
-        columns:{
+        columns: {
           id: true,
           idNumber: true,
           firstName: true,
@@ -16,7 +16,7 @@ export const fetchLoans = createServerFn().handler(() => {
           email: true,
           address: true,
           joinDate: true,
-        }
+        },
       },
     },
   })

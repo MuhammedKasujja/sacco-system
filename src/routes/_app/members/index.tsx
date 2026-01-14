@@ -1,5 +1,5 @@
 import { fetchMembers, MemberEntity } from '@/actions/members'
-import { DataTable } from '@/components/data-table'
+import { DataTable } from '@/components/data-table-old'
 import { Button } from '@/components/ui/button'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'

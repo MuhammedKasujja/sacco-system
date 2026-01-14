@@ -2,7 +2,7 @@ import {
   fetchLoanTransactions,
   LoanTransactionEntity,
 } from '@/actions/transactions'
-import { DataTable } from '@/components/data-table'
+import { DataTable } from '@/components/data-table-old'
 import { formatDate, formatMoney } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'

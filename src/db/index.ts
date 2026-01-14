@@ -7,10 +7,10 @@ import { getTableConfig } from 'drizzle-orm/pg-core'
 
 class QueryLogger implements Logger {
   logQuery(query: string, params: unknown[]): void {
-    console.debug('___QUERY___', '\n')
-    console.debug(query, '\n')
-    console.debug({ params }, '\n')
-    console.debug('___END_QUERY___\n')
+    // console.debug('___QUERY___', '\n')
+    // console.debug(query, '\n')
+    // console.debug({ params }, '\n')
+    // console.debug('___END_QUERY___\n')
   }
 }
 
