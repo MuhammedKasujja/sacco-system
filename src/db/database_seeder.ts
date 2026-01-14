@@ -31,14 +31,14 @@ const testMemberPassword = 'Password2!'
 /// Row counts for test data per table
 const USERS_COUNT = 20
 const MEMBERS_COUNT = 50
-const LOANS_COUNT = 30
+const LOANS_COUNT = 10
 const LOAN_PRODUCTS_COUNT = 10
-const LOAN_REPAYMENTS_COUNT = 400
+const LOAN_REPAYMENTS_COUNT = 200
 const SAVING_ACCOUNTS_COUNT = 20
 const SAVING_PRODUCTS_COUNT = 5
-const LOAN_TRANSACTIONS_COUNT = 500
-const SAVING_TRANSACTIONS_COUNT = 600
-const AUDIT_LOGS_COUNT = 50_000
+const LOAN_TRANSACTIONS_COUNT = 200
+const SAVING_TRANSACTIONS_COUNT = 300
+const AUDIT_LOGS_COUNT = 5_000
 
 export class DatabaseSeeder {
   private mockUsers: UserEntity[] = []
@@ -97,6 +97,7 @@ export class DatabaseSeeder {
           number: faker.string.uuid(),
           approvedBy: approvedById,
           interestRate: faker.finance.amount({ min: 5, max: 45, dec: 2 }),
+          installmentCount: faker.finance.amount({ min: 5, max: 60, dec: 0 }),
           principalAmount: faker.finance.amount({
             min: 5_000,
             max: 500_000,

@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { loans } from '@/db/schema'
+import { generateLoanRepayments } from '@/features/loan_repayments/actions'
 import { createServerFn } from '@tanstack/react-start'
 import { eq } from 'drizzle-orm'
 import z from 'zod/v3'
@@ -10,14 +11,14 @@ export const EditLoanSchema = z.object({
   memberId: z.string(),
   loanProductId: z.string(),
   interestRate: z.coerce.number(),
-  repaymentPeriodInMonths: z.coerce.number(),
+  repaymentPeriodInMonths: z.coerce.number().min(1),
 })
 
 export const createLoanFn = createServerFn({ method: 'POST' })
   .inputValidator(EditLoanSchema.parse)
   .handler(async ({ data }) => {
     const loanNumber = await generateNextLoanNumber()
-    await db
+    const [latestLoan] = await db
       .insert(loans)
       .values({
         memberId: data.memberId,
@@ -28,6 +29,13 @@ export const createLoanFn = createServerFn({ method: 'POST' })
         status: 'pending',
       })
       .returning()
+    await generateLoanRepayments({
+      loanId: latestLoan.id,
+      principalAmount: Number(latestLoan.principalAmount),
+      interestRate: Number(latestLoan.interestRate),
+      installmentCount: data.repaymentPeriodInMonths,
+      installmentType: 'month',
+    })
     return { message: 'Successfully created loan' }
   })
 

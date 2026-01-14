@@ -1,5 +1,5 @@
 {
-  "id": "ecb26ca0-f046-46e4-ae33-150ef1aaa217",
+  "id": "29c015ba-ba5b-4d76-b5da-72bbe7a7c292",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -197,7 +197,7 @@
           "name": "amount_paid",
           "type": "numeric",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "principal_paid": {
           "name": "principal_paid",
@@ -312,6 +312,19 @@
           "type": "numeric",
           "primaryKey": false,
           "notNull": false
+        },
+        "installment_count": {
+          "name": "installment_count",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "installment_type": {
+          "name": "installment_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'month'"
         },
         "disbursement_date": {
           "name": "disbursement_date",
@@ -748,6 +761,18 @@
         "recorded_by": {
           "name": "recorded_by",
           "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "payeeName": {
+          "name": "payeeName",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "payeeTelephone": {
+          "name": "payeeTelephone",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },

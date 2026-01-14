@@ -5,6 +5,7 @@ import {
   decimal,
   integer,
   json,
+  pgEnum,
   pgTable,
   text,
   timestamp,
@@ -93,6 +94,8 @@ export const loanProducts = pgTable('loan_products', {
   deletedAt,
 })
 
+const enums = pgEnum('installment_type', ['month', 'week'])
+
 export const loans = pgTable('loans', {
   id: uuid('id').primaryKey().defaultRandom(),
   loanProductId: uuid('loan_product_id').references(() => loanProducts.id, {
@@ -107,6 +110,9 @@ export const loans = pgTable('loans', {
   principalAmount: decimal('principal_amount'),
   interestRate: decimal('interest_rate'),
   totalAmount: decimal('total_amount'),
+  installmentCount: decimal('installment_count'),
+  // installmentType: enums,
+  installmentType: varchar('installment_type').default('month'),
   disbursementDate: date('disbursement_date'),
   status: varchar('status', { length: 20 }),
   approvedBy: uuid('approved_by').references(() => users.id, {
@@ -126,7 +132,7 @@ export const loanRepayments = pgTable('loan_repayments', {
       onDelete: 'cascade',
     }),
   repaymentDate: date('repayment_date').notNull(),
-  amountPaid: decimal('amount_paid'),
+  amountPaid: decimal('amount_paid').notNull(),
   principalPaid: decimal('principal_paid'),
   interestPaid: decimal('interest_paid'),
   balanceAfter: decimal('balance_after'),
@@ -155,6 +161,8 @@ export const transactions = pgTable('transactions', {
   recordedBy: uuid('recorded_by').references(() => users.id, {
     onDelete: 'cascade',
   }),
+  payeeName: varchar(),
+  payeeTelephone: varchar(),
   description: text('description'),
   createdAt,
   updatedAt,
