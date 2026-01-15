@@ -1,6 +1,7 @@
 import { db } from '@/db'
 import { loans } from '@/db/schema'
-import { generateLoanRepaymentsFn } from '@/features/loan_repayments/actions'
+import { generateLoanRepaymentsFn } from '@/features/loan-repayments/actions'
+import { AuditSevice } from '@/server/services/audit_service'
 import { createServerFn } from '@tanstack/react-start'
 import { eq } from 'drizzle-orm'
 import z from 'zod/v3'
@@ -38,6 +39,10 @@ export const createLoanFn = createServerFn({ method: 'POST' })
         installmentCount: data.repaymentPeriodInMonths,
         installmentType: 'month',
       },
+    })
+    AuditSevice.createLoanAuditLog({
+      eventType: 'LOAN_CREATED',
+      entityId: latestLoan.id,
     })
     return { message: 'Successfully created loan' }
   })

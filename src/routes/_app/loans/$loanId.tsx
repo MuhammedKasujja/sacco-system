@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { MakeLoanRepayment } from '@/features/loan_repayments/components/make-loan-repayment'
+import { MakeLoanRepayment } from '@/features/loan-repayments/components/make-loan-repayment'
 import {
   getLoanDetailsFn,
   LoanRepaymentEntitty,

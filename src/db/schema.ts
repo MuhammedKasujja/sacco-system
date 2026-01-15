@@ -172,11 +172,12 @@ export const transactions = pgTable('transactions', {
 // -- Audit Logs Table: Tracks all changes to important tables
 export const auditLogs = pgTable('audit_logs', {
   id: uuid('id').primaryKey().defaultRandom(),
-  tableName: varchar('table_name', { length: 50 }),
-  recordId: uuid('record_id').notNull(),
-  operation: char('operation', { length: 1 }).notNull(),
+  entityType: varchar('entity_type'),
+  entityId: uuid('entity_id').notNull(),
+  eventType: char('event_type').notNull(),
   oldValues: json('old_values'),
   newValues: json('new_values'),
+  metadata: json('metadata'),
   changedBy: uuid('changed_by')
     .notNull()
     .references(() => users.id, {

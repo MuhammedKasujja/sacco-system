@@ -38,7 +38,7 @@ const SAVING_ACCOUNTS_COUNT = 20
 const SAVING_PRODUCTS_COUNT = 5
 const LOAN_TRANSACTIONS_COUNT = 200
 const SAVING_TRANSACTIONS_COUNT = 300
-const AUDIT_LOGS_COUNT = 5_000
+const AUDIT_LOGS_COUNT = 5_0
 
 export class DatabaseSeeder {
   private mockUsers: UserEntity[] = []
@@ -329,9 +329,9 @@ export class DatabaseSeeder {
       const newLog = await db
         .insert(auditLogs)
         .values({
-          recordId: record.id,
+          entityId: record.id,
           changedBy: user.id,
-          tableName: faker.helpers.arrayElement([
+          entityType: faker.helpers.arrayElement([
             getDbTableName(transactions),
             getDbTableName(loanRepayments),
             getDbTableName(loans),
@@ -340,7 +340,7 @@ export class DatabaseSeeder {
             getDbTableName(savingsAccounts),
             getDbTableName(loanProducts),
           ]),
-          operation: faker.helpers.arrayElement(['I', 'U', 'D']),
+          eventType: faker.helpers.arrayElement(['I', 'U', 'D']),
           createdAt: faker.date.recent({ days: 1000 }),
         })
         .returning()
