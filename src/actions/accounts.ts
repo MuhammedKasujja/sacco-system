@@ -1,5 +1,6 @@
 import { db } from '@/db'
 import { savingsAccounts } from '@/db/schema'
+import { AuditSevice } from '@/server/services/audit_service'
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 
@@ -29,5 +30,10 @@ export const createMemberAccountFn = createServerFn()
         balance: '0',
       })
       .returning()
+    AuditSevice.createAccountAuditLog({
+      eventType: 'ACCOUNT_CREATED',
+      entityId: account.id,
+      isSystem: true,
+    })
     return account
   })

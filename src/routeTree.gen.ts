@@ -23,6 +23,7 @@ import { Route as AppLoanProductsIndexRouteImport } from './routes/_app/loan-pro
 import { Route as AppAccountsIndexRouteImport } from './routes/_app/accounts/index'
 import { Route as AppUsersEditRouteImport } from './routes/_app/users/edit'
 import { Route as AppLoansLoanIdRouteImport } from './routes/_app/loans/$loanId'
+import { Route as AppReportsAuditIndexRouteImport } from './routes/_app/reports/audit/index'
 import { Route as AppMembersEditIndexRouteImport } from './routes/_app/members/edit/index'
 import { Route as AppLoansCreateIndexRouteImport } from './routes/_app/loans/create/index'
 import { Route as AppLoanProductsEditIndexRouteImport } from './routes/_app/loan-products/edit/index'
@@ -96,6 +97,11 @@ const AppLoansLoanIdRoute = AppLoansLoanIdRouteImport.update({
   path: '/loans/$loanId',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppReportsAuditIndexRoute = AppReportsAuditIndexRouteImport.update({
+  id: '/reports/audit/',
+  path: '/reports/audit/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppMembersEditIndexRoute = AppMembersEditIndexRouteImport.update({
   id: '/members/edit/',
   path: '/members/edit/',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/loan-products/edit': typeof AppLoanProductsEditIndexRoute
   '/loans/create': typeof AppLoansCreateIndexRoute
   '/members/edit': typeof AppMembersEditIndexRoute
+  '/reports/audit': typeof AppReportsAuditIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -148,6 +155,7 @@ export interface FileRoutesByTo {
   '/loan-products/edit': typeof AppLoanProductsEditIndexRoute
   '/loans/create': typeof AppLoansCreateIndexRoute
   '/members/edit': typeof AppMembersEditIndexRoute
+  '/reports/audit': typeof AppReportsAuditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/_app/loan-products/edit/': typeof AppLoanProductsEditIndexRoute
   '/_app/loans/create/': typeof AppLoansCreateIndexRoute
   '/_app/members/edit/': typeof AppMembersEditIndexRoute
+  '/_app/reports/audit/': typeof AppReportsAuditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/loan-products/edit'
     | '/loans/create'
     | '/members/edit'
+    | '/reports/audit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/loan-products/edit'
     | '/loans/create'
     | '/members/edit'
+    | '/reports/audit'
   id:
     | '__root__'
     | '/_app'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '/_app/loan-products/edit/'
     | '/_app/loans/create/'
     | '/_app/members/edit/'
+    | '/_app/reports/audit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -333,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLoansLoanIdRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/reports/audit/': {
+      id: '/_app/reports/audit/'
+      path: '/reports/audit'
+      fullPath: '/reports/audit'
+      preLoaderRoute: typeof AppReportsAuditIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/members/edit/': {
       id: '/_app/members/edit/'
       path: '/members/edit'
@@ -372,6 +391,7 @@ interface AppRouteRouteChildren {
   AppLoanProductsEditIndexRoute: typeof AppLoanProductsEditIndexRoute
   AppLoansCreateIndexRoute: typeof AppLoansCreateIndexRoute
   AppMembersEditIndexRoute: typeof AppMembersEditIndexRoute
+  AppReportsAuditIndexRoute: typeof AppReportsAuditIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
@@ -389,6 +409,7 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppLoanProductsEditIndexRoute: AppLoanProductsEditIndexRoute,
   AppLoansCreateIndexRoute: AppLoansCreateIndexRoute,
   AppMembersEditIndexRoute: AppMembersEditIndexRoute,
+  AppReportsAuditIndexRoute: AppReportsAuditIndexRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

@@ -1,11 +1,13 @@
 CREATE TABLE "audit_logs" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"table_name" varchar(50),
-	"record_id" uuid NOT NULL,
-	"operation" char(1) NOT NULL,
+	"entity_type" varchar,
+	"entity_id" uuid NOT NULL,
+	"event_type" varchar NOT NULL,
+	"is_system" boolean DEFAULT false,
 	"old_values" json,
 	"new_values" json,
-	"changed_by" uuid NOT NULL,
+	"metadata" json,
+	"changed_by" uuid,
 	"changed_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"description" text,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL

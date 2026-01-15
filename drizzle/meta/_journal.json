@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1768403413662,
-      "tag": "0000_fresh_nico_minoru",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1768486781249,
-      "tag": "0001_huge_husk",
+      "when": 1768491336659,
+      "tag": "0000_wild_microbe",
       "breakpoints": true
     }
   ]

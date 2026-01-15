@@ -4,6 +4,7 @@ import { getCurrentTime, hashPassword } from '@/lib/utils'
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createMemberAccountFn } from './accounts'
+import { AuditSevice } from '@/server/services/audit_service'
 
 export const EditMemberSchema = z.object({
   id: z.string().optional(),
@@ -59,7 +60,10 @@ export const createMemberFn = createServerFn({ method: 'POST' })
         number,
       })
       .returning()
-
+    AuditSevice.createMemberAuditLog({
+      eventType: data.id ? 'MEMBER_UPDATED' : 'MEMBER_CREATED',
+      entityId: createdMember.id,
+    })
     // const account =
     await createMemberAccountFn({ data: { memberId: createdMember.id } })
 

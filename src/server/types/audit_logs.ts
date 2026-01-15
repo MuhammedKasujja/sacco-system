@@ -24,8 +24,6 @@ const AUDIT_EVENTS = {
   users: [
     'USER_CREATED',
     'USER_UPDATED',
-    'MEMBER_ACTIVATED',
-    'MEMBER_DEACTIVATED',
   ],
   accounts: [
     'ACCOUNT_CREATED',
@@ -48,6 +46,7 @@ export type AuditEvent = {
   metadata?: Record<string, unknown>
   oldValues?: Record<string, unknown>
   newValues?: Record<string, unknown>
+  isSystem?: boolean
 }
 
 type CreateAuditLogEvent = Omit<AuditEvent, 'entity'>

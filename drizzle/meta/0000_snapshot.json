@@ -1,5 +1,5 @@
 {
-  "id": "29c015ba-ba5b-4d76-b5da-72bbe7a7c292",
+  "id": "e4900d62-488a-4a9c-bb5c-26a196c0e278",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -15,23 +15,30 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "table_name": {
-          "name": "table_name",
-          "type": "varchar(50)",
+        "entity_type": {
+          "name": "entity_type",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         },
-        "record_id": {
-          "name": "record_id",
+        "entity_id": {
+          "name": "entity_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "operation": {
-          "name": "operation",
-          "type": "char(1)",
+        "event_type": {
+          "name": "event_type",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
+        },
+        "is_system": {
+          "name": "is_system",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         },
         "old_values": {
           "name": "old_values",
@@ -45,11 +52,17 @@
           "primaryKey": false,
           "notNull": false
         },
+        "metadata": {
+          "name": "metadata",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
         "changed_by": {
           "name": "changed_by",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "changed_at": {
           "name": "changed_at",

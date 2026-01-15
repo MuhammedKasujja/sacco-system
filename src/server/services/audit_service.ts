@@ -15,9 +15,13 @@ import { getCurrentUserFn } from '@/actions/auth'
 export class AuditSevice {
   private static async createAuditLog(log: Prettify<AuditEvent>) {
     try {
-      const currentUserId = await AuditSevice.getCurrentUserId()
-      if (!currentUserId) {
-        throw new Error('Please login first')
+      let currentUserId: string | undefined
+      /// when the log is not system generated, make sure the user is logged in
+      if (!log.isSystem) {
+        currentUserId = await AuditSevice.getCurrentUserId()
+        if (!currentUserId) {
+          throw new Error('Please login first')
+        }
       }
       await db.insert(auditLogs).values({
         entityType: log.entity,
@@ -28,6 +32,7 @@ export class AuditSevice {
         metadata: log.metadata,
         oldValues: log.oldValues,
         newValues: log.newValues,
+        isSystem: log.isSystem ?? false,
       })
     } catch (error) {
       console.log(error)

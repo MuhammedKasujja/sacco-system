@@ -1,6 +1,5 @@
 import { relations } from 'drizzle-orm'
 import {
-  char,
   date,
   decimal,
   integer,
@@ -11,6 +10,7 @@ import {
   timestamp,
   uuid,
   varchar,
+  boolean,
 } from 'drizzle-orm/pg-core'
 
 const createdAt = timestamp('created_at', { withTimezone: true })
@@ -174,15 +174,14 @@ export const auditLogs = pgTable('audit_logs', {
   id: uuid('id').primaryKey().defaultRandom(),
   entityType: varchar('entity_type'),
   entityId: uuid('entity_id').notNull(),
-  eventType: char('event_type').notNull(),
+  eventType: varchar('event_type').notNull(),
+  isSystem: boolean('is_system').default(false),
   oldValues: json('old_values'),
   newValues: json('new_values'),
   metadata: json('metadata'),
-  changedBy: uuid('changed_by')
-    .notNull()
-    .references(() => users.id, {
-      onDelete: 'cascade',
-    }),
+  changedBy: uuid('changed_by').references(() => users.id, {
+    onDelete: 'cascade',
+  }),
   changedAt: timestamp('changed_at', { withTimezone: true })
     .defaultNow()
     .notNull(),

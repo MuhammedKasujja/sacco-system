@@ -1,6 +1,7 @@
 import { db } from '@/db'
 import { users } from '@/db/schema'
 import { hashPassword } from '@/lib/utils'
+import { AuditSevice } from '@/server/services/audit_service'
 import { createServerFn } from '@tanstack/react-start'
 import { and, eq, ilike, or } from 'drizzle-orm'
 import z from 'zod'
@@ -72,6 +73,10 @@ export const createUserFn = createServerFn({ method: 'POST' })
         password: encryptedPassword,
       })
       .returning()
+    AuditSevice.createUserAuditLog({
+      eventType: 'USER_CREATED',
+      entityId: user.id,
+    })
     return { error: false, data: user }
   })
 
