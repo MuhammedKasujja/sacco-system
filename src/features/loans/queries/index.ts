@@ -2,15 +2,11 @@ import { db } from '@/db'
 import { loans } from '@/db/schema'
 import { createServerFn } from '@tanstack/react-start'
 import { eq } from 'drizzle-orm'
-import z from 'zod'
+import { LoanIdSchema } from '../schemas'
 
 export type LoanRepaymentEntitty = Awaited<
   ReturnType<typeof getLoanDetailsFn>
 >['repayments'][0]
-
-const LoanIdSchema = z.object({
-  loanId: z.string().min(1, { error: 'Loan Id is required' }),
-})
 
 export const getLoanDetailsFn = createServerFn({ method: 'POST' })
   .inputValidator(LoanIdSchema.parse)

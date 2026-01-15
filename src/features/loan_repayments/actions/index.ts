@@ -3,14 +3,7 @@ import { loanRepayments } from '@/db/schema'
 import { createServerFn } from '@tanstack/react-start'
 import { addDays } from 'date-fns'
 import z from 'zod'
-
-export const CreateLoanRepaymentsRequest = z.object({
-  loanId: z.string(),
-  principalAmount: z.number(),
-  interestRate: z.number(),
-  installmentCount: z.number(),
-  installmentType: z.enum(['month', 'week']).default('month'),
-})
+import { CreateLoanRepaymentsRequest } from '../schemas'
 
 type RepaymentStruct = {
   loanId: string

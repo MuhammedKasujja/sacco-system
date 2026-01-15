@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import bcrypt from 'bcryptjs'
+import { addDays } from 'date-fns'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -19,4 +20,8 @@ export async function checkPassword(
 ): Promise<boolean> {
   const match = await bcrypt.compare(password, hashedPassword)
   return match
+}
+
+export function getCurrentTime() {
+  return addDays(Date.now(), 0).toUTCString()
 }

@@ -1,10 +1,9 @@
 import { db } from '@/db'
 import { members } from '@/db/schema'
-import { hashPassword } from '@/lib/utils'
+import { getCurrentTime, hashPassword } from '@/lib/utils'
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createMemberAccountFn } from './accounts'
-import { addDays } from 'date-fns'
 
 export const EditMemberSchema = z.object({
   id: z.string().optional(),
@@ -45,7 +44,6 @@ export const createMemberFn = createServerFn({ method: 'POST' })
 
     const idNumber = 'M-002'
     const number = await generateNextMemberNumber()
-    const joinedDate = addDays(Date.now(), 0);
 
     const [createdMember] = await db
       .insert(members)
@@ -57,7 +55,7 @@ export const createMemberFn = createServerFn({ method: 'POST' })
         phone: data.phone,
         address: data.address,
         password: encryptedPassword,
-        joinDate: joinedDate.toUTCString(),
+        joinDate: getCurrentTime(),
         number,
       })
       .returning()

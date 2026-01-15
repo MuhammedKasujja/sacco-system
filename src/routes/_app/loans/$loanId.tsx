@@ -1,5 +1,4 @@
 import { DataTable } from '@/components/data-table-old'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardDescription,
@@ -7,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { MakeLoanRepayment } from '@/features/loan_repayments/components/make-loan-repayment'
 import {
   getLoanDetailsFn,
   LoanRepaymentEntitty,
@@ -51,13 +51,17 @@ function RouteComponent() {
       <DataTable
         showPagination={false}
         data={loan.repayments}
-        columns={getLoanRemaymentColumns()}
+        columns={getLoanRemaymentColumns({ loanNumber: loan.number! })}
       />
     </div>
   )
 }
 
-function getLoanRemaymentColumns(): ColumnDef<LoanRepaymentEntitty>[] {
+function getLoanRemaymentColumns({
+  loanNumber,
+}: {
+  loanNumber: string
+}): ColumnDef<LoanRepaymentEntitty>[] {
   return [
     {
       id: 'aamount',
@@ -84,11 +88,7 @@ function getLoanRemaymentColumns(): ColumnDef<LoanRepaymentEntitty>[] {
       cell: ({ row }) => {
         const repayment = row.original
         return (
-          <Button variant={'outline'} >
-            {/* <Link href={`/admin/accounts/${company.account?.accountKey}`}> */}
-            Pay
-            {/* </Link> */}
-          </Button>
+          <MakeLoanRepayment repayment={repayment} loanNumber={loanNumber} />
         )
       },
     },
