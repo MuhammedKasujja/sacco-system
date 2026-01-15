@@ -23,6 +23,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   tableActions?: () => React.ReactNode
   onSearch?: (value?: string) => void
+  showPagination?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -30,6 +31,7 @@ export function DataTable<TData, TValue>({
   data,
   tableActions,
   onSearch,
+  showPagination = true,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -99,7 +101,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      {showPagination && <DataTablePagination table={table} />}
     </div>
   )
 }

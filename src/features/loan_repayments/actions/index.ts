@@ -20,7 +20,7 @@ type RepaymentStruct = {
   status: string
 }
 
-export const generateLoanRepayments = async (
+const generateLoanRepayments = async (
   data: z.infer<typeof CreateLoanRepaymentsRequest>,
 ) => {
   const {
@@ -33,7 +33,8 @@ export const generateLoanRepayments = async (
 
   const date = Date.now()
 
-  const installment = (principalAmount * interestRate) / installmentCount
+  const interest = (principalAmount * (interestRate / 100)) / installmentCount
+  const installment = interest + principalAmount / installmentCount
 
   const repayments: RepaymentStruct[] = []
 
@@ -54,30 +55,5 @@ export const generateLoanRepayments = async (
 export const generateLoanRepaymentsFn = createServerFn({ method: 'POST' })
   .inputValidator(CreateLoanRepaymentsRequest.parse)
   .handler(async ({ data }) => {
-    const {
-      loanId,
-      principalAmount,
-      installmentCount,
-      installmentType,
-      interestRate,
-    } = data
-
-    const date = Date.now()
-
-    const installment = (principalAmount * interestRate) / installmentCount
-
-    const repayments: RepaymentStruct[] = []
-
-    for (let count = 1; count <= installmentCount; count++) {
-      if (installmentType === 'month') {
-        repayments.push({
-          loanId: loanId,
-          repaymentDate: addDays(date, 30 * count).toUTCString(),
-          amountPaid: installment.toString(),
-          interestPaid: interestRate.toString(),
-          status: 'pending',
-        })
-      }
-    }
-    return await db.insert(loanRepayments).values(repayments).returning()
+    return generateLoanRepayments({ ...data })
   })

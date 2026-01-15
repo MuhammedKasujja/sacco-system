@@ -94,7 +94,7 @@ export const loanProducts = pgTable('loan_products', {
   deletedAt,
 })
 
-const enums = pgEnum('installment_type', ['month', 'week'])
+const enums = pgEnum('installment_type', ['month', 'week', 'year'])
 
 export const loans = pgTable('loans', {
   id: uuid('id').primaryKey().defaultRandom(),

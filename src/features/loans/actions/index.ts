@@ -1,6 +1,6 @@
 import { db } from '@/db'
 import { loans } from '@/db/schema'
-import { generateLoanRepayments } from '@/features/loan_repayments/actions'
+import { generateLoanRepaymentsFn } from '@/features/loan_repayments/actions'
 import { createServerFn } from '@tanstack/react-start'
 import { eq } from 'drizzle-orm'
 import z from 'zod/v3'
@@ -24,17 +24,20 @@ export const createLoanFn = createServerFn({ method: 'POST' })
         memberId: data.memberId,
         loanProductId: data.loanProductId,
         principalAmount: data.principalAmount.toString(),
+        installmentCount: data.repaymentPeriodInMonths.toString(),
         interestRate: data.interestRate.toString(),
         number: loanNumber,
         status: 'pending',
       })
       .returning()
-    await generateLoanRepayments({
-      loanId: latestLoan.id,
-      principalAmount: Number(latestLoan.principalAmount),
-      interestRate: Number(latestLoan.interestRate),
-      installmentCount: data.repaymentPeriodInMonths,
-      installmentType: 'month',
+    await generateLoanRepaymentsFn({
+      data: {
+        loanId: latestLoan.id,
+        principalAmount: Number(latestLoan.principalAmount),
+        interestRate: Number(latestLoan.interestRate),
+        installmentCount: data.repaymentPeriodInMonths,
+        installmentType: 'month',
+      },
     })
     return { message: 'Successfully created loan' }
   })
@@ -58,6 +61,7 @@ export const updateLoanFn = createServerFn({ method: 'POST' })
         id: loan.id,
         memberId: data.memberId,
         loanProductId: data.loanProductId,
+        installmentCount: data.repaymentPeriodInMonths.toString(),
         principalAmount: data.principalAmount.toString(),
       })
       .returning()
