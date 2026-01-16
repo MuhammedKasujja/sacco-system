@@ -7,6 +7,7 @@ import { and, eq, ilike, or } from 'drizzle-orm'
 import z from 'zod'
 
 export const EditUserSchema = z.object({
+  id: z.string().optional(),
   email: z.email(),
   password: z.string().min(4),
   firstName: z.string().min(4),
@@ -51,9 +52,17 @@ export const fetchUsers = createServerFn({ method: 'GET' })
     // return db.query.users.findMany()
   })
 
-export const createUserFn = createServerFn({ method: 'POST' })
+export const editUserFn = createServerFn({ method: 'POST' })
   .inputValidator((data) => EditUserSchema.parse(data))
   .handler(async ({ data }) => {
+    if (data.id) {
+      await db
+        .update(users)
+        .set({
+          ...data,
+        })
+        .where(eq(users.id, data.id))
+    }
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, data.email),
     })

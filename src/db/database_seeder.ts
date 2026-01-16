@@ -29,15 +29,15 @@ const testUserPassword = 'Password2'
 const testMemberPassword = 'Password2!'
 
 /// Row counts for test data per table
-const USERS_COUNT = 20
-const MEMBERS_COUNT = 50
+const USERS_COUNT = 10
+const MEMBERS_COUNT = 15
 const LOANS_COUNT = 10
 const LOAN_PRODUCTS_COUNT = 10
-const LOAN_REPAYMENTS_COUNT = 200
+const LOAN_REPAYMENTS_COUNT = 52
 const SAVING_ACCOUNTS_COUNT = 20
 const SAVING_PRODUCTS_COUNT = 5
-const LOAN_TRANSACTIONS_COUNT = 200
-const SAVING_TRANSACTIONS_COUNT = 300
+const LOAN_TRANSACTIONS_COUNT = 140
+const SAVING_TRANSACTIONS_COUNT = 100
 const AUDIT_LOGS_COUNT = 5_0
 
 export class DatabaseSeeder {
