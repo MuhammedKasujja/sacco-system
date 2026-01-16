@@ -14,7 +14,7 @@ const makeLoanRepaymentTransaction = async (
   const { loanId, amount, payeeName, payeeTelephone } = data
 
   const loggedInUser = await getCurrentUserFn()
-  const loanMember = await getMemberByLoanIdFn()
+  const loanMember = await getMemberByLoanIdFn({ data: { loanId } })
 
   const [latestTransaction] = await db
     .insert(transactions)
@@ -27,6 +27,7 @@ const makeLoanRepaymentTransaction = async (
       payeeTelephone,
       memberId: loanMember.id,
       recordedBy: loggedInUser?.id,
+      status: 'paid',
     })
     .returning()
   AuditSevice.createTransactionAuditLog({

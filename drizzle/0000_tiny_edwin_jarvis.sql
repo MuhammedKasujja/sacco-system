@@ -115,6 +115,7 @@ CREATE TABLE "transactions" (
 	"payeeName" varchar,
 	"payeeTelephone" varchar,
 	"description" text,
+	"status" varchar DEFAULT 'pending',
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"deleted_at" timestamp with time zone

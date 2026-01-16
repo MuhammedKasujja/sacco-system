@@ -164,6 +164,7 @@ export const transactions = pgTable('transactions', {
   payeeName: varchar(),
   payeeTelephone: varchar(),
   description: text('description'),
+  status: varchar('status').default('pending'),
   createdAt,
   updatedAt,
   deletedAt,

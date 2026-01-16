@@ -18,11 +18,11 @@ function RouteComponent() {
 }
 
 const columns: ColumnDef<LoanTransactionEntity>[] = [
-  // {
-  //   id: 'loan_number',
-  //   header: 'ID',
-  //   cell: ({ row }) => <div>{row.original.transactions.id}</div>,
-  // },
+  {
+    id: 'loan_number',
+    header: 'Loan',
+    cell: ({ row }) => <div>{row.original.loans.number}</div>,
+  },
   {
     id: 'member',
     header: 'Member',
@@ -33,16 +33,11 @@ const columns: ColumnDef<LoanTransactionEntity>[] = [
     ),
   },
   {
-    id: 'principalAmount',
-    header: 'Principal',
+    id: 'amount',
+    header: 'Amount',
     cell: ({ row }) => (
-      <div>{formatMoney(row.original.loans.principalAmount!)}</div>
+      <div>{formatMoney(row.original.transactions.amount)}</div>
     ),
-  },
-  {
-    id: 'interestRate',
-    header: 'Interest Rate',
-    cell: ({ row }) => <div>{row.original.loans.interestRate}%</div>,
   },
   {
     id: 'status',

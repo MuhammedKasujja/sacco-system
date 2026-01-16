@@ -1,5 +1,5 @@
 {
-  "id": "e4900d62-488a-4a9c-bb5c-26a196c0e278",
+  "id": "7957545f-77ce-4a29-bdc3-94235c472047",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -794,6 +794,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
         },
         "created_at": {
           "name": "created_at",

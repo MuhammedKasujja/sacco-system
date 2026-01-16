@@ -48,17 +48,12 @@ export function MakeLoanRepayment({
   async function onSubmit(
     data: z.infer<typeof EditLoanRepaymentTransactionSchema>,
   ) {
-    console.log({ data })
     try {
       await makeLoanRepaymentTransactionFn({ data })
       toast.message('Payment created successfully')
     } catch (error) {
-      toast.error(error as any)
+      toast.error(`${error}`)
     }
-  }
-
-  function handleError(errors: any) {
-    console.log({ SubmitErrors: errors })
   }
 
   return (
