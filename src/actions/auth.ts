@@ -4,6 +4,7 @@ import { useAppSession } from '@/lib/session'
 import { getUserByEmail, getUserById } from './users'
 import z from 'zod'
 import { checkPassword } from '@/lib/utils'
+import { AuditSevice } from '@/server/services/audit_service'
 
 export const LoginSchema = z.object({
   email: z.email().max(255),
@@ -34,12 +35,23 @@ export const loginFn = createServerFn({ method: 'POST' })
       userId: user.id,
       email: user.email,
     })
+    AuditSevice.createAuthAuditLog({
+      entityId: user.id,
+      eventType: 'AUTH_LOGGED_IN',
+      isSystem: true,
+    })
   })
 
 // Logout server function
 export const logoutFn = createServerFn({ method: 'POST' }).handler(async () => {
   const session = await useAppSession()
+  const userId = session.data.userId
   await session.clear()
+  AuditSevice.createAuthAuditLog({
+    entityId: userId!,
+    eventType: 'AUTH_LOGOUT',
+    isSystem: true,
+  })
   throw redirect({ href: '/login' })
 })
 

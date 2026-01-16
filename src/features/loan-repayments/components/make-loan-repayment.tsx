@@ -102,12 +102,12 @@ export function MakeLoanRepayment({
         <AlertDialogFooter>
           <Field orientation={'horizontal'} className="justify-end">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction type="submit" id="form-edit-repayment">
+            <AlertDialogAction type="submit" form="form-edit-repayment">
               Submit
             </AlertDialogAction>
-            <Button type="submit" id="form-edit-repayment">
+            {/* <Button type="submit" form="form-edit-repayment">
               Submit
-            </Button>
+            </Button> */}
           </Field>
         </AlertDialogFooter>
       </AlertDialogContent>

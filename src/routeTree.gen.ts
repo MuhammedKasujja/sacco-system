@@ -23,6 +23,8 @@ import { Route as AppLoanProductsIndexRouteImport } from './routes/_app/loan-pro
 import { Route as AppAccountsIndexRouteImport } from './routes/_app/accounts/index'
 import { Route as AppUsersEditRouteImport } from './routes/_app/users/edit'
 import { Route as AppLoansLoanIdRouteImport } from './routes/_app/loans/$loanId'
+import { Route as AppAccountsWithdrawalRouteImport } from './routes/_app/accounts/withdrawal'
+import { Route as AppAccountsDepositRouteImport } from './routes/_app/accounts/deposit'
 import { Route as AppReportsAuditIndexRouteImport } from './routes/_app/reports/audit/index'
 import { Route as AppMembersEditIndexRouteImport } from './routes/_app/members/edit/index'
 import { Route as AppLoansCreateIndexRouteImport } from './routes/_app/loans/create/index'
@@ -97,6 +99,16 @@ const AppLoansLoanIdRoute = AppLoansLoanIdRouteImport.update({
   path: '/loans/$loanId',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppAccountsWithdrawalRoute = AppAccountsWithdrawalRouteImport.update({
+  id: '/accounts/withdrawal',
+  path: '/accounts/withdrawal',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAccountsDepositRoute = AppAccountsDepositRouteImport.update({
+  id: '/accounts/deposit',
+  path: '/accounts/deposit',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppReportsAuditIndexRoute = AppReportsAuditIndexRouteImport.update({
   id: '/reports/audit/',
   path: '/reports/audit/',
@@ -123,6 +135,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/': typeof AppIndexRoute
+  '/accounts/deposit': typeof AppAccountsDepositRoute
+  '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/loans/$loanId': typeof AppLoansLoanIdRoute
   '/users/edit': typeof AppUsersEditRoute
   '/accounts': typeof AppAccountsIndexRoute
@@ -142,6 +156,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/': typeof AppIndexRoute
+  '/accounts/deposit': typeof AppAccountsDepositRoute
+  '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/loans/$loanId': typeof AppLoansLoanIdRoute
   '/users/edit': typeof AppUsersEditRoute
   '/accounts': typeof AppAccountsIndexRoute
@@ -163,6 +179,8 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/accounts/deposit': typeof AppAccountsDepositRoute
+  '/_app/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/_app/loans/$loanId': typeof AppLoansLoanIdRoute
   '/_app/users/edit': typeof AppUsersEditRoute
   '/_app/accounts/': typeof AppAccountsIndexRoute
@@ -184,6 +202,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/'
+    | '/accounts/deposit'
+    | '/accounts/withdrawal'
     | '/loans/$loanId'
     | '/users/edit'
     | '/accounts'
@@ -203,6 +223,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/'
+    | '/accounts/deposit'
+    | '/accounts/withdrawal'
     | '/loans/$loanId'
     | '/users/edit'
     | '/accounts'
@@ -223,6 +245,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/_app/'
+    | '/_app/accounts/deposit'
+    | '/_app/accounts/withdrawal'
     | '/_app/loans/$loanId'
     | '/_app/users/edit'
     | '/_app/accounts/'
@@ -345,6 +369,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLoansLoanIdRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/accounts/withdrawal': {
+      id: '/_app/accounts/withdrawal'
+      path: '/accounts/withdrawal'
+      fullPath: '/accounts/withdrawal'
+      preLoaderRoute: typeof AppAccountsWithdrawalRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/accounts/deposit': {
+      id: '/_app/accounts/deposit'
+      path: '/accounts/deposit'
+      fullPath: '/accounts/deposit'
+      preLoaderRoute: typeof AppAccountsDepositRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/reports/audit/': {
       id: '/_app/reports/audit/'
       path: '/reports/audit'
@@ -378,6 +416,8 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppAccountsDepositRoute: typeof AppAccountsDepositRoute
+  AppAccountsWithdrawalRoute: typeof AppAccountsWithdrawalRoute
   AppLoansLoanIdRoute: typeof AppLoansLoanIdRoute
   AppUsersEditRoute: typeof AppUsersEditRoute
   AppAccountsIndexRoute: typeof AppAccountsIndexRoute
@@ -396,6 +436,8 @@ interface AppRouteRouteChildren {
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppAccountsDepositRoute: AppAccountsDepositRoute,
+  AppAccountsWithdrawalRoute: AppAccountsWithdrawalRoute,
   AppLoansLoanIdRoute: AppLoansLoanIdRoute,
   AppUsersEditRoute: AppUsersEditRoute,
   AppAccountsIndexRoute: AppAccountsIndexRoute,

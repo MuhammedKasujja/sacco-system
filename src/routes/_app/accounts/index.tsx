@@ -1,8 +1,10 @@
 import { AccountEntity, fetchAccounts } from '@/actions/accounts'
 import { DataTable } from '@/components/data-table-old'
+import { Button } from '@/components/ui/button'
 import { formatMoney } from '@/lib/formatting'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
+import { Plus } from 'lucide-react'
 
 export const Route = createFileRoute('/_app/accounts/')({
   component: RouteComponent,
@@ -15,6 +17,32 @@ function RouteComponent() {
     <DataTable
       columns={columns}
       data={members}
+      tableActions={() => (
+        <div className='space-x-2'>
+          <Button>
+            <Link
+              to={'/accounts/deposit'}
+              className="inline-flex items-center gap-0.5"
+            >
+              <span>
+                <Plus />
+              </span>
+              Deposit
+            </Link>
+          </Button>
+          <Button>
+            <Link
+              to={'/accounts/withdrawal'}
+              className="inline-flex items-center gap-0.5"
+            >
+              <span>
+                <Plus />
+              </span>
+              Withdrawal
+            </Link>
+          </Button>
+        </div>
+      )}
       onSearch={(query) => {
         console.log('query: ', query)
       }}
