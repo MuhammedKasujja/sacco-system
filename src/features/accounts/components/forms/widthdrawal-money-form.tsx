@@ -5,23 +5,30 @@ import z from 'zod/v3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Field, FieldGroup } from '@/components/ui/field'
 import {
+  AutoCompleteField,
   NumberField,
   TextareaField,
-  TextField,
 } from '@/components/ui/form-fields'
 import { Button } from '@/components/ui/button'
 import { withdrawalMoneyFn } from '../../actions'
 import { toast } from 'sonner'
-import { MembersWithAccountsType } from '@/features/members/queries'
+import {
+  MemberAccount,
+  MembersWithAccountsType,
+} from '@/features/members/queries'
+import { useEffect, useState } from 'react'
 
 type WithdrawalMoneyFormProps = {
   members: MembersWithAccountsType[]
 }
 
 export function WithdrawalMoneyForm({ members }: WithdrawalMoneyFormProps) {
+  const [memberAccounts, setMemberAccounts] = useState<MemberAccount[]>([])
+
   const form = useForm<z.infer<typeof WithdrawalMoneySchema>>({
     resolver: zodResolver(WithdrawalMoneySchema),
   })
+  const selectedMemberId = form.watch('memberId')
 
   async function onSubmit(data: z.infer<typeof WithdrawalMoneySchema>) {
     try {
@@ -31,6 +38,22 @@ export function WithdrawalMoneyForm({ members }: WithdrawalMoneyFormProps) {
       toast.error(`${error}`)
     }
   }
+
+  useEffect(() => {
+    form.setValue('accountId', '')
+    if (selectedMemberId) {
+      const accounts = members.find(
+        (member) => member.id === selectedMemberId,
+      )?.accounts
+      if (accounts) {
+        setMemberAccounts(accounts)
+      } else {
+        setMemberAccounts([])
+      }
+    } else {
+      setMemberAccounts([])
+    }
+  }, [selectedMemberId])
 
   return (
     <Card>
@@ -44,15 +67,27 @@ export function WithdrawalMoneyForm({ members }: WithdrawalMoneyFormProps) {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-5"
           >
-            <TextField
+            <AutoCompleteField
               label="Member"
+              control={form.control}
               name={'memberId'}
-              control={form.control}
+              placeholder="Select Member"
+              emptyPlaceholder="No members found"
+              options={members.map((member) => ({
+                label: `${member.firstName} ${member.lastName}`,
+                value: member.id,
+              }))}
             />
-            <TextField
+            <AutoCompleteField
               label="Account"
-              name={'accountId'}
               control={form.control}
+              name={'accountId'}
+              placeholder="Select Deposit Account"
+              emptyPlaceholder="No Account found"
+              options={memberAccounts.map((account) => ({
+                label: account.accountNumber ?? '',
+                value: account.id,
+              }))}
             />
             <NumberField
               label="Amount"

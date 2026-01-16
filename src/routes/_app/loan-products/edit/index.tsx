@@ -11,7 +11,7 @@ import {
   CardFooter,
 } from '@/components/ui/card'
 import z from 'zod'
-import { NumberField, TextField } from '@/components/ui/form-fields'
+import { NumberField, TextareaField, TextField } from '@/components/ui/form-fields'
 import { Field, FieldGroup } from '@/components/ui/field'
 import { Button } from '@/components/ui/button'
 import {
@@ -79,7 +79,7 @@ function RouteComponent() {
               name={'repaymentPeriodMonths'}
               control={form.control}
             />
-            <TextField
+            <TextareaField
               label="Description"
               name={'description'}
               control={form.control}
