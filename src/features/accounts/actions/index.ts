@@ -6,6 +6,7 @@ import { getCurrentTime } from '@/lib/utils'
 import { getAccountByIdAndMemberId } from '../queries'
 import { eq } from 'drizzle-orm'
 import z from 'zod/v3'
+import { AuditSevice } from '@/server/services/audit_service'
 
 type TransactionType = 'withdrawal' | 'deposit'
 
@@ -37,22 +38,32 @@ const makeAccountTransaction = async (
     updatedBalance -= amount
   }
 
-  await db
+  const [updatedAccount] = await db
     .update(savingsAccounts)
     .set({
       balance: updatedBalance.toString(),
     })
     .where(eq(savingsAccounts.id, account.id))
+    .returning()
+  return updatedAccount
 }
 
 export const depositMoneyFn = createServerFn()
   .inputValidator(DepositMoneySchema.parse)
   .handler(async ({ data }) => {
-    await makeAccountTransaction(data, 'deposit')
+    const account = await makeAccountTransaction(data, 'deposit')
+    AuditSevice.createAccountAuditLog({
+      entityId: account.id,
+      eventType: 'ACCOUNT_DEPOSIT',
+    })
   })
 
 export const withdrawalMoneyFn = createServerFn()
   .inputValidator(WithdrawalMoneySchema.parse)
   .handler(async ({ data }) => {
-    await makeAccountTransaction(data, 'withdrawal')
+    const account = await makeAccountTransaction(data, 'withdrawal')
+    AuditSevice.createAccountAuditLog({
+      entityId: account.id,
+      eventType: 'ACCOUNT_WITHDRAWAL',
+    })
   })

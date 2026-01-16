@@ -30,12 +30,10 @@ const AUDIT_EVENTS = {
     'ACCOUNT_UPDATED',
     'ACCOUNT_REACTIVATED',
     'ACCOUNT_DEACTIVATED',
+    'ACCOUNT_DEPOSIT',
+    'ACCOUNT_WITHDRAWAL',
+    'ACCOUNT_REVERSAL',
   ],
-  savings:[
-    'SAVING_DEPOSIT',
-    'SAVING_WITHDRAWAL',
-    'SAVING_DEPOIT_REVERSED',
-  ]
 } as const
 
 type AuditEntityName = keyof typeof AUDIT_EVENTS
