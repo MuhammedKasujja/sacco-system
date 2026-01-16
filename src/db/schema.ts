@@ -170,6 +170,32 @@ export const transactions = pgTable('transactions', {
   deletedAt,
 })
 
+export const savingsTransactions = pgTable('savings_transactions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  date: date('date').notNull(),
+  memberId: uuid('member_id')
+    .notNull()
+    .references(() => members.id, {
+      onDelete: 'cascade',
+    }),
+  accountId: uuid('account_id').references(() => savingsAccounts.id, {
+    onDelete: 'cascade',
+  }),
+  //TODO: use enum
+  transactionType: varchar('transaction_type', { length: 50 }), // deposit, withdrawal, reversal
+  amount: decimal('amount').notNull(),
+  recordedBy: uuid('recorded_by').references(() => users.id, {
+    onDelete: 'cascade',
+  }),
+  payeeName: varchar(),
+  payeeTelephone: varchar(),
+  description: text('description'),
+  status: varchar('status').default('pending'),
+  createdAt,
+  updatedAt,
+  deletedAt,
+})
+
 // -- Audit Logs Table: Tracks all changes to important tables
 export const auditLogs = pgTable('audit_logs', {
   id: uuid('id').primaryKey().defaultRandom(),

@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { WithdrawalMoneySchema } from '../../schemas'
-import z from 'zod'
+import z from 'zod/v3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Field, FieldGroup } from '@/components/ui/field'
 import {
@@ -10,25 +10,39 @@ import {
   TextField,
 } from '@/components/ui/form-fields'
 import { Button } from '@/components/ui/button'
+import { withdrawalMoneyFn } from '../../actions'
+import { toast } from 'sonner'
+import { MembersWithAccountsType } from '@/features/members/queries'
 
-export function WithdrawalMoneyForm() {
+type WithdrawalMoneyFormProps = {
+  members: MembersWithAccountsType[]
+}
+
+export function WithdrawalMoneyForm({ members }: WithdrawalMoneyFormProps) {
   const form = useForm<z.infer<typeof WithdrawalMoneySchema>>({
     resolver: zodResolver(WithdrawalMoneySchema),
   })
 
-  function onSubmit(data: z.infer<typeof WithdrawalMoneySchema>) {}
+  async function onSubmit(data: z.infer<typeof WithdrawalMoneySchema>) {
+    try {
+      await withdrawalMoneyFn({ data })
+      toast.success('Withdrawal was successfully')
+    } catch (error) {
+      toast.error(`${error}`)
+    }
+  }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Withdrawal Money</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-5'>
-        <FieldGroup >
+      <CardContent className="space-y-5">
+        <FieldGroup>
           <form
             id="form-withdrawal-money"
             onSubmit={form.handleSubmit(onSubmit)}
-            className='space-y-5'
+            className="space-y-5"
           >
             <TextField
               label="Member"

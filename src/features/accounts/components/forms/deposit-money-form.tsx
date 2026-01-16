@@ -1,22 +1,60 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { DepositMoneySchema } from '../../schemas'
-import z from 'zod'
+import z from 'zod/v3'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Field, FieldGroup } from '@/components/ui/field'
 import {
+  AutoCompleteField,
   NumberField,
   TextareaField,
-  TextField,
 } from '@/components/ui/form-fields'
 import { Button } from '@/components/ui/button'
+import { depositMoneyFn } from '../../actions'
+import { toast } from 'sonner'
+import {
+  MemberAccount,
+  MembersWithAccountsType,
+} from '@/features/members/queries'
+import { useEffect, useState } from 'react'
 
-export function DepositMoneyForm() {
+type DepositMoneyFormProps = {
+  members: MembersWithAccountsType[]
+}
+
+export function DepositMoneyForm({ members }: DepositMoneyFormProps) {
+  const [memberAccounts, setMemberAccounts] = useState<MemberAccount[]>([])
+
   const form = useForm<z.infer<typeof DepositMoneySchema>>({
     resolver: zodResolver(DepositMoneySchema),
   })
 
-  function onSubmit(data: z.infer<typeof DepositMoneySchema>) {}
+  const selectedMemberId = form.watch('memberId')
+
+  async function onSubmit(data: z.infer<typeof DepositMoneySchema>) {
+    try {
+      await depositMoneyFn({ data })
+      toast.success('Deposit was successfully')
+    } catch (error) {
+      toast.error(`${error}`)
+    }
+  }
+
+  useEffect(() => {
+    form.setValue('accountId', '')
+    if (selectedMemberId) {
+      const accounts = members.find(
+        (member) => member.id === selectedMemberId,
+      )?.accounts
+      if (accounts) {
+        setMemberAccounts(accounts)
+      } else {
+        setMemberAccounts([])
+      }
+    } else {
+      setMemberAccounts([])
+    }
+  }, [selectedMemberId])
 
   return (
     <Card>
@@ -24,20 +62,29 @@ export function DepositMoneyForm() {
         <CardTitle>Deposit Money</CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
-        <form
-          id="form-withdrawal-money"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form id="form-withdrawal-money" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
-            <TextField
+            <AutoCompleteField
               label="Member"
+              control={form.control}
               name={'memberId'}
-              control={form.control}
+              placeholder="Select Member"
+              emptyPlaceholder="No members found"
+              options={members.map((member) => ({
+                label: `${member.firstName} ${member.lastName}`,
+                value: member.id,
+              }))}
             />
-            <TextField
+            <AutoCompleteField
               label="Account"
-              name={'accountId'}
               control={form.control}
+              name={'accountId'}
+              placeholder="Select Deposit Account"
+              emptyPlaceholder="No Account found"
+              options={memberAccounts.map((account) => ({
+                label: account.accountNumber ?? '',
+                value: account.id,
+              }))}
             />
             <NumberField
               label="Amount"
