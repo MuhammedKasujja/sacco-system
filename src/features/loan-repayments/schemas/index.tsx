@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const CreateLoanRepaymentsRequest = z.object({
+export const CreateLoanSchedulesRequest = z.object({
   loanId: z.string(),
   principalAmount: z.number(),
   interestRate: z.number(),

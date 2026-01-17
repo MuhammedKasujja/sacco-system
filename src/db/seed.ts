@@ -4,7 +4,7 @@ import 'dotenv/config'
 import {
   auditLogs,
   loanProducts,
-  loanRepayments,
+  loanSchedules,
   loans,
   members,
   savingsAccounts,
@@ -24,7 +24,7 @@ async function resetDb() {
     /// clear data base
     await db.delete(loans)
     await db.delete(loanProducts)
-    await db.delete(loanRepayments)
+    await db.delete(loanSchedules)
     await db.delete(savingsAccounts)
     await db.delete(savingsProducts)
     await db.delete(auditLogs)

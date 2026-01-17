@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import {
   auditLogs,
   loanProducts,
-  loanRepayments,
+  loanSchedules,
   loans,
   members,
   savingsAccounts,
@@ -18,7 +18,7 @@ type UserEntity = InferSelectModel<typeof users>
 type LoanEntity = InferSelectModel<typeof loans>
 type MemberEntity = InferSelectModel<typeof members>
 type AuditLogEntity = InferSelectModel<typeof auditLogs>
-type LoanRepaymentEntity = InferSelectModel<typeof loanRepayments>
+type LoanRepaymentEntity = InferSelectModel<typeof loanSchedules>
 type TransactionEntity = InferSelectModel<typeof transactions>
 type SavingAccountEntity = InferSelectModel<typeof savingsAccounts>
 type SavingProductEntity = InferSelectModel<typeof savingsProducts>
@@ -289,7 +289,7 @@ export class DatabaseSeeder {
     for (let i = 0; i < LOAN_REPAYMENTS_COUNT; i++) {
       const loan: LoanEntity = faker.helpers.arrayElement(this.mockLoans)
       const repayment = await db
-        .insert(loanRepayments)
+        .insert(loanSchedules)
         .values({
           loanId: loan.id,
           repaymentDate: faker.date.past().toISOString(),
@@ -333,7 +333,7 @@ export class DatabaseSeeder {
           changedBy: user.id,
           entityType: faker.helpers.arrayElement([
             getDbTableName(transactions),
-            getDbTableName(loanRepayments),
+            getDbTableName(loanSchedules),
             getDbTableName(loans),
             getDbTableName(members),
             getDbTableName(savingsProducts),

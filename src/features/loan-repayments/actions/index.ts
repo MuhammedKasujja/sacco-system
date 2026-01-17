@@ -1,11 +1,11 @@
 import { db } from '@/db'
-import { loanRepayments } from '@/db/schema'
+import { loanSchedules } from '@/db/schema'
 import { createServerFn } from '@tanstack/react-start'
 import { addDays } from 'date-fns'
 import z from 'zod'
-import { CreateLoanRepaymentsRequest } from '../schemas'
+import { CreateLoanSchedulesRequest } from '../schemas'
 
-type RepaymentStruct = {
+type ScheduleStruct = {
   loanId: string
   repaymentDate: string
   amountPaid: string
@@ -14,7 +14,7 @@ type RepaymentStruct = {
 }
 
 const generateLoanRepayments = async (
-  data: z.infer<typeof CreateLoanRepaymentsRequest>,
+  data: z.infer<typeof CreateLoanSchedulesRequest>,
 ) => {
   const {
     loanId,
@@ -29,11 +29,11 @@ const generateLoanRepayments = async (
   const interest = (principalAmount * (interestRate / 100)) / installmentCount
   const installment = interest + principalAmount / installmentCount
 
-  const repayments: RepaymentStruct[] = []
+  const schedules: ScheduleStruct[] = []
 
   for (let count = 1; count <= installmentCount; count++) {
     if (installmentType === 'month') {
-      repayments.push({
+      schedules.push({
         loanId: loanId,
         repaymentDate: addDays(date, 30 * count).toUTCString(),
         amountPaid: installment.toString(),
@@ -42,11 +42,11 @@ const generateLoanRepayments = async (
       })
     }
   }
-  return await db.insert(loanRepayments).values(repayments).returning()
+  return await db.insert(loanSchedules).values(schedules).returning()
 }
 
 export const generateLoanRepaymentsFn = createServerFn({ method: 'POST' })
-  .inputValidator(CreateLoanRepaymentsRequest.parse)
+  .inputValidator(CreateLoanSchedulesRequest.parse)
   .handler(async ({ data }) => {
     return generateLoanRepayments({ ...data })
   })

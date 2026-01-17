@@ -11,6 +11,7 @@ import {
   uuid,
   varchar,
   boolean,
+  serial,
 } from 'drizzle-orm/pg-core'
 
 const createdAt = timestamp('created_at', { withTimezone: true })
@@ -124,7 +125,7 @@ export const loans = pgTable('loans', {
 })
 
 // -- Loan Repayments: Scheduled or actual repayments
-export const loanRepayments = pgTable('loan_repayments', {
+export const loanSchedules = pgTable('loan_schedules', {
   id: uuid('id').primaryKey().defaultRandom(),
   loanId: uuid('loan_id')
     .notNull()
@@ -216,6 +217,14 @@ export const auditLogs = pgTable('audit_logs', {
   createdAt,
 })
 
+export const settings = pgTable('settings', {
+  id: serial('id'),
+  key: varchar('key').notNull(),
+  value: varchar('value'),
+})
+
+/// *****  RELATIONSHIPS BEGIN   ******* ///
+
 export const membersRelations = relations(members, ({ many }) => ({
   transactions: many(transactions),
   loans: many(loans),
@@ -235,7 +244,7 @@ export const loansRelations = relations(loans, ({ many, one }) => ({
     fields: [loans.loanProductId],
     references: [loanProducts.id],
   }),
-  repayments: many(loanRepayments),
+  repayments: many(loanSchedules),
 }))
 
 export const savingsAccountsRelations = relations(
@@ -259,9 +268,9 @@ export const auditLogsRelations = relations(auditLogs, ({ one }) => ({
   }),
 }))
 
-export const loanRepaymentsRelations = relations(loanRepayments, ({ one }) => ({
+export const loanRepaymentsRelations = relations(loanSchedules, ({ one }) => ({
   loan: one(loans, {
-    fields: [loanRepayments.loanId],
+    fields: [loanSchedules.loanId],
     references: [loans.id],
   }),
 }))
@@ -278,5 +287,20 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
   account: one(savingsAccounts, {
     fields: [transactions.accountId],
     references: [savingsAccounts.id],
+  }),
+}))
+
+export const savingsRelations = relations(savingsTransactions, ({ one }) => ({
+  member: one(members, {
+    fields: [savingsTransactions.memberId],
+    references: [members.id],
+  }),
+  account: one(savingsAccounts, {
+    fields: [savingsTransactions.accountId],
+    references: [savingsAccounts.id],
+  }),
+  user: one(users, {
+    fields: [savingsTransactions.recordedBy],
+    references: [users.id],
   }),
 }))
