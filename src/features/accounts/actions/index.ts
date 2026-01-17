@@ -54,7 +54,7 @@ export const depositMoneyFn = createServerFn()
     const account = await makeAccountTransaction(data, 'deposit')
     AuditSevice.createAccountAuditLog({
       entityId: account.id,
-      eventType: 'ACCOUNT_DEPOSIT',
+      eventType: 'ACCOUNT_DEPOSITED',
     })
   })
 

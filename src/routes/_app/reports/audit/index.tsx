@@ -1,7 +1,9 @@
 import { DataTable } from '@/components/data-table-old'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   getSystemAuditLogsFn,
   SystemAuditLogEntity,
+  getAuthLogsFn,
 } from '@/features/audit-logs/queries'
 import { formatDate } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
@@ -9,20 +11,40 @@ import { ColumnDef } from '@tanstack/react-table'
 
 export const Route = createFileRoute('/_app/reports/audit/')({
   component: RouteComponent,
-  loader: () => getSystemAuditLogsFn(),
+  loader: async () => ({
+    systemLogs: await getSystemAuditLogsFn(),
+    authLogs: await getAuthLogsFn(),
+  }),
 })
 
 function RouteComponent() {
-  const auditLogs = Route.useLoaderData()
+  const { systemLogs, authLogs } = Route.useLoaderData()
 
   return (
-    <DataTable
-      columns={columns}
-      data={auditLogs}
-      onSearch={(query) => {
-        console.log('query: ', query)
-      }}
-    />
+    <Tabs defaultValue="general">
+      <TabsList>
+        <TabsTrigger value="general">General Logs</TabsTrigger>
+        <TabsTrigger value="auth">Auth Logs</TabsTrigger>
+      </TabsList>
+      <TabsContent value="general">
+        <DataTable
+          columns={columns}
+          data={systemLogs}
+          onSearch={(query) => {
+            console.log('query: ', query)
+          }}
+        />
+      </TabsContent>
+      <TabsContent value="auth">
+        <DataTable
+          columns={columns}
+          data={authLogs}
+          onSearch={(query) => {
+            console.log('query: ', query)
+          }}
+        />
+      </TabsContent>
+    </Tabs>
   )
 }
 

@@ -38,7 +38,6 @@ export const loginFn = createServerFn({ method: 'POST' })
     AuditSevice.createAuthAuditLog({
       entityId: user.id,
       eventType: 'AUTH_LOGGED_IN',
-      isSystem: true,
     })
   })
 
@@ -50,7 +49,7 @@ export const logoutFn = createServerFn({ method: 'POST' }).handler(async () => {
   AuditSevice.createAuthAuditLog({
     entityId: userId!,
     eventType: 'AUTH_LOGOUT',
-    isSystem: true,
+    // isSystem: true,
   })
   throw redirect({ href: '/login' })
 })
