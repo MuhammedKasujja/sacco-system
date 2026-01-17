@@ -3,8 +3,9 @@ import {
   LoanTransactionEntity,
 } from '@/actions/transactions'
 import { DataTable } from '@/components/data-table-old'
+import { MemberDetailsLink } from '@/features/members/components/member-details-link'
 import { formatDate, formatMoney } from '@/lib/formatting'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
 
 export const Route = createFileRoute('/_app/transactions/')({
@@ -21,15 +22,23 @@ const columns: ColumnDef<LoanTransactionEntity>[] = [
   {
     id: 'loan_number',
     header: 'Loan',
-    cell: ({ row }) => <div>{row.original.loans.number}</div>,
+    cell: ({ row }) => (
+      <Link
+        className="font-semibold"
+        to={'/loans/$loanId'}
+        params={{ loanId: row.original.loans.id }}
+      >
+        {row.original.loans.number}
+      </Link>
+    ),
   },
   {
     id: 'member',
     header: 'Member',
     cell: ({ row }) => (
-      <div>
+      <MemberDetailsLink memberId={row.original.members.id}>
         {row.original.members?.firstName} {row.original.members?.lastName}
-      </div>
+      </MemberDetailsLink>
     ),
   },
   {

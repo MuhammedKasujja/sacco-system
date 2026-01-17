@@ -9,6 +9,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { getAccountTransactionsTableColumns } from '@/features/accounts/components/account-transactions-table-columns'
 import { getAccountDetailsFn } from '@/features/accounts/queries'
+import { MemberDetailsLink } from '@/features/members/components/member-details-link'
 import { formatMoney } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
 import { useMemo } from 'react'
@@ -34,7 +35,12 @@ function RouteComponent() {
         <Card>
           <CardHeader>
             <CardTitle>
-              {account.member.firstName} {account.member.lastName}
+              <MemberDetailsLink
+                className="font-medium"
+                memberId={account.member.id}
+              >
+                {account.member.firstName} {account.member.lastName}
+              </MemberDetailsLink>
             </CardTitle>
             <CardDescription>{account.member.phone}</CardDescription>
           </CardHeader>

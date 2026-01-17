@@ -22,6 +22,7 @@ import { Route as AppLoansIndexRouteImport } from './routes/_app/loans/index'
 import { Route as AppLoanProductsIndexRouteImport } from './routes/_app/loan-products/index'
 import { Route as AppAccountsIndexRouteImport } from './routes/_app/accounts/index'
 import { Route as AppUsersEditRouteImport } from './routes/_app/users/edit'
+import { Route as AppMembersMemberIdRouteImport } from './routes/_app/members/$memberId'
 import { Route as AppLoansLoanIdRouteImport } from './routes/_app/loans/$loanId'
 import { Route as AppAccountsWithdrawalRouteImport } from './routes/_app/accounts/withdrawal'
 import { Route as AppAccountsDepositRouteImport } from './routes/_app/accounts/deposit'
@@ -95,6 +96,11 @@ const AppUsersEditRoute = AppUsersEditRouteImport.update({
   path: '/users/edit',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppMembersMemberIdRoute = AppMembersMemberIdRouteImport.update({
+  id: '/members/$memberId',
+  path: '/members/$memberId',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppLoansLoanIdRoute = AppLoansLoanIdRouteImport.update({
   id: '/loans/$loanId',
   path: '/loans/$loanId',
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/accounts/deposit': typeof AppAccountsDepositRoute
   '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/loans/$loanId': typeof AppLoansLoanIdRoute
+  '/members/$memberId': typeof AppMembersMemberIdRoute
   '/users/edit': typeof AppUsersEditRoute
   '/accounts': typeof AppAccountsIndexRoute
   '/loan-products': typeof AppLoanProductsIndexRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByTo {
   '/accounts/deposit': typeof AppAccountsDepositRoute
   '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/loans/$loanId': typeof AppLoansLoanIdRoute
+  '/members/$memberId': typeof AppMembersMemberIdRoute
   '/users/edit': typeof AppUsersEditRoute
   '/accounts': typeof AppAccountsIndexRoute
   '/loan-products': typeof AppLoanProductsIndexRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/_app/accounts/deposit': typeof AppAccountsDepositRoute
   '/_app/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/_app/loans/$loanId': typeof AppLoansLoanIdRoute
+  '/_app/members/$memberId': typeof AppMembersMemberIdRoute
   '/_app/users/edit': typeof AppUsersEditRoute
   '/_app/accounts/': typeof AppAccountsIndexRoute
   '/_app/loan-products/': typeof AppLoanProductsIndexRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/accounts/deposit'
     | '/accounts/withdrawal'
     | '/loans/$loanId'
+    | '/members/$memberId'
     | '/users/edit'
     | '/accounts'
     | '/loan-products'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/accounts/deposit'
     | '/accounts/withdrawal'
     | '/loans/$loanId'
+    | '/members/$memberId'
     | '/users/edit'
     | '/accounts'
     | '/loan-products'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/_app/accounts/deposit'
     | '/_app/accounts/withdrawal'
     | '/_app/loans/$loanId'
+    | '/_app/members/$memberId'
     | '/_app/users/edit'
     | '/_app/accounts/'
     | '/_app/loan-products/'
@@ -374,6 +386,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUsersEditRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/members/$memberId': {
+      id: '/_app/members/$memberId'
+      path: '/members/$memberId'
+      fullPath: '/members/$memberId'
+      preLoaderRoute: typeof AppMembersMemberIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/loans/$loanId': {
       id: '/_app/loans/$loanId'
       path: '/loans/$loanId'
@@ -439,6 +458,7 @@ interface AppRouteRouteChildren {
   AppAccountsDepositRoute: typeof AppAccountsDepositRoute
   AppAccountsWithdrawalRoute: typeof AppAccountsWithdrawalRoute
   AppLoansLoanIdRoute: typeof AppLoansLoanIdRoute
+  AppMembersMemberIdRoute: typeof AppMembersMemberIdRoute
   AppUsersEditRoute: typeof AppUsersEditRoute
   AppAccountsIndexRoute: typeof AppAccountsIndexRoute
   AppLoanProductsIndexRoute: typeof AppLoanProductsIndexRoute
@@ -460,6 +480,7 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAccountsDepositRoute: AppAccountsDepositRoute,
   AppAccountsWithdrawalRoute: AppAccountsWithdrawalRoute,
   AppLoansLoanIdRoute: AppLoansLoanIdRoute,
+  AppMembersMemberIdRoute: AppMembersMemberIdRoute,
   AppUsersEditRoute: AppUsersEditRoute,
   AppAccountsIndexRoute: AppAccountsIndexRoute,
   AppLoanProductsIndexRoute: AppLoanProductsIndexRoute,

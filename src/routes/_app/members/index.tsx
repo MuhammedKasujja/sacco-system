@@ -1,6 +1,7 @@
 import { fetchMembers, MemberEntity } from '@/actions/members'
 import { DataTable } from '@/components/data-table-old'
 import { Button } from '@/components/ui/button'
+import { MemberDetailsLink } from '@/features/members/components/member-details-link'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
@@ -18,7 +19,10 @@ function RouteComponent() {
       data={members}
       tableActions={() => (
         <Button>
-          <Link to={'/members/edit'} className="inline-flex items-center gap-0.5">
+          <Link
+            to={'/members/edit'}
+            className="inline-flex items-center gap-0.5"
+          >
             <span>
               <Plus />
             </span>
@@ -39,9 +43,9 @@ const columns: ColumnDef<MemberEntity>[] = [
     id: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <div className="font-semibold">
+      <MemberDetailsLink memberId={row.original.id}>
         {row.original.firstName} {row.original.lastName}
-      </div>
+      </MemberDetailsLink>
     ),
   },
   {
