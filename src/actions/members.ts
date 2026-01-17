@@ -1,6 +1,6 @@
 import { db } from '@/db'
 import { members } from '@/db/schema'
-import { getCurrentTime, hashPassword } from '@/lib/utils'
+import { generateRandomString, getCurrentTime, hashPassword } from '@/lib/utils'
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createMemberAccountFn } from './accounts'
@@ -43,7 +43,7 @@ export const createMemberFn = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     const encryptedPassword = await hashPassword(data.password)
 
-    const idNumber = 'M-002'
+    const idNumber = generateRandomString(8)
     const number = await generateNextMemberNumber()
 
     const [createdMember] = await db

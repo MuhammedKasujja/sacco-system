@@ -44,3 +44,23 @@ export const getAccountByIdAndMemberId = createServerFn()
       throw new AccountNotFoundException()
     }
   })
+
+export const getAccountDetailsFn = createServerFn()
+  .inputValidator(AccountIdSchema.parse)
+  .handler(async ({ data }) => {
+    try {
+      const account = await db.query.savingsAccounts.findFirst({
+        where: eq(savingsAccounts.id, data.accountId),
+        with: {
+          member: true,
+          transactions: true,
+        },
+      })
+      if (!account) {
+        throw new AccountNotFoundException()
+      }
+      return account
+    } catch (error) {
+      throw new AccountNotFoundException()
+    }
+  })

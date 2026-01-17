@@ -18,7 +18,7 @@ function RouteComponent() {
       columns={columns}
       data={members}
       tableActions={() => (
-        <div className='space-x-2'>
+        <div className="space-x-2">
           <Button>
             <Link
               to={'/accounts/deposit'}
@@ -58,7 +58,15 @@ const columns: ColumnDef<AccountEntity>[] = [
   {
     id: 'number',
     header: 'Acc Number',
-    cell: ({ row }) => <div>{row.original.accountNumber}</div>,
+    cell: ({ row }) => (
+      <Link
+        className="font-semibold"
+        to={'/accounts/$accountId'}
+        params={{ accountId: row.original.id }}
+      >
+        {row.original.accountNumber}
+      </Link>
+    ),
   },
   {
     id: 'member',

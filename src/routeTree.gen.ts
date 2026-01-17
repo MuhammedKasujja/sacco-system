@@ -25,6 +25,7 @@ import { Route as AppUsersEditRouteImport } from './routes/_app/users/edit'
 import { Route as AppLoansLoanIdRouteImport } from './routes/_app/loans/$loanId'
 import { Route as AppAccountsWithdrawalRouteImport } from './routes/_app/accounts/withdrawal'
 import { Route as AppAccountsDepositRouteImport } from './routes/_app/accounts/deposit'
+import { Route as AppAccountsAccountIdRouteImport } from './routes/_app/accounts/$accountId'
 import { Route as AppReportsAuditIndexRouteImport } from './routes/_app/reports/audit/index'
 import { Route as AppMembersEditIndexRouteImport } from './routes/_app/members/edit/index'
 import { Route as AppLoansCreateIndexRouteImport } from './routes/_app/loans/create/index'
@@ -109,6 +110,11 @@ const AppAccountsDepositRoute = AppAccountsDepositRouteImport.update({
   path: '/accounts/deposit',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppAccountsAccountIdRoute = AppAccountsAccountIdRouteImport.update({
+  id: '/accounts/$accountId',
+  path: '/accounts/$accountId',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppReportsAuditIndexRoute = AppReportsAuditIndexRouteImport.update({
   id: '/reports/audit/',
   path: '/reports/audit/',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/': typeof AppIndexRoute
+  '/accounts/$accountId': typeof AppAccountsAccountIdRoute
   '/accounts/deposit': typeof AppAccountsDepositRoute
   '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/loans/$loanId': typeof AppLoansLoanIdRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/': typeof AppIndexRoute
+  '/accounts/$accountId': typeof AppAccountsAccountIdRoute
   '/accounts/deposit': typeof AppAccountsDepositRoute
   '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/loans/$loanId': typeof AppLoansLoanIdRoute
@@ -179,6 +187,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/accounts/$accountId': typeof AppAccountsAccountIdRoute
   '/_app/accounts/deposit': typeof AppAccountsDepositRoute
   '/_app/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/_app/loans/$loanId': typeof AppLoansLoanIdRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/'
+    | '/accounts/$accountId'
     | '/accounts/deposit'
     | '/accounts/withdrawal'
     | '/loans/$loanId'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/'
+    | '/accounts/$accountId'
     | '/accounts/deposit'
     | '/accounts/withdrawal'
     | '/loans/$loanId'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/_app/'
+    | '/_app/accounts/$accountId'
     | '/_app/accounts/deposit'
     | '/_app/accounts/withdrawal'
     | '/_app/loans/$loanId'
@@ -383,6 +395,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAccountsDepositRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/accounts/$accountId': {
+      id: '/_app/accounts/$accountId'
+      path: '/accounts/$accountId'
+      fullPath: '/accounts/$accountId'
+      preLoaderRoute: typeof AppAccountsAccountIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/reports/audit/': {
       id: '/_app/reports/audit/'
       path: '/reports/audit'
@@ -416,6 +435,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppAccountsAccountIdRoute: typeof AppAccountsAccountIdRoute
   AppAccountsDepositRoute: typeof AppAccountsDepositRoute
   AppAccountsWithdrawalRoute: typeof AppAccountsWithdrawalRoute
   AppLoansLoanIdRoute: typeof AppLoansLoanIdRoute
@@ -436,6 +456,7 @@ interface AppRouteRouteChildren {
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppAccountsAccountIdRoute: AppAccountsAccountIdRoute,
   AppAccountsDepositRoute: AppAccountsDepositRoute,
   AppAccountsWithdrawalRoute: AppAccountsWithdrawalRoute,
   AppLoansLoanIdRoute: AppLoansLoanIdRoute,

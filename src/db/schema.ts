@@ -249,7 +249,7 @@ export const loansRelations = relations(loans, ({ many, one }) => ({
 
 export const savingsAccountsRelations = relations(
   savingsAccounts,
-  ({ one }) => ({
+  ({ one, many }) => ({
     member: one(members, {
       fields: [savingsAccounts.memberId],
       references: [members.id],
@@ -258,6 +258,7 @@ export const savingsAccountsRelations = relations(
       fields: [savingsAccounts.productId],
       references: [loanProducts.id],
     }),
+    transactions: many(savingsTransactions),
   }),
 )
 

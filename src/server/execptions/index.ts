@@ -9,6 +9,7 @@ export class AccountNotFoundException extends Error {
   constructor() {
     super()
     this.message = 'Account details Not found'
+    this.name = AccountNotFoundException.name
   }
 }
 
