@@ -40,8 +40,9 @@ export function MakeLoanRepayment({
   const form = useForm<z.infer<typeof EditLoanRepaymentTransactionSchema>>({
     resolver: zodResolver(EditLoanRepaymentTransactionSchema),
     defaultValues: {
-      amount: Number(repayment.amountPaid),
+      amount: Number(repayment.balanceAfter),
       loanId: repayment.loanId,
+      scheduleId: repayment.id,
     },
   })
 

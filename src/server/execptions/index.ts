@@ -11,3 +11,10 @@ export class AccountNotFoundException extends Error {
     this.message = 'Account details Not found'
   }
 }
+
+export class LoanScheduleNotFoundException extends Error {
+  constructor() {
+    super()
+    this.message = 'Loan Schedule not found'
+  }
+}

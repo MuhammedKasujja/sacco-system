@@ -30,7 +30,7 @@ const testMemberPassword = 'Password2!'
 
 /// Row counts for test data per table
 const USERS_COUNT = 10
-const MEMBERS_COUNT = 15
+const MEMBERS_COUNT = 5
 const LOANS_COUNT = 10
 const LOAN_PRODUCTS_COUNT = 10
 const LOAN_REPAYMENTS_COUNT = 52
@@ -288,28 +288,28 @@ export class DatabaseSeeder {
   private async generateLoanRepayments() {
     for (let i = 0; i < LOAN_REPAYMENTS_COUNT; i++) {
       const loan: LoanEntity = faker.helpers.arrayElement(this.mockLoans)
+      const amount = faker.finance.amount({
+        min: 100_000,
+        max: 1_000_000,
+        dec: 2,
+      })
       const repayment = await db
         .insert(loanSchedules)
         .values({
           loanId: loan.id,
           repaymentDate: faker.date.past().toISOString(),
-          amountPaid: faker.finance.amount({ min: 2, max: 20, dec: 2 }),
-          principalPaid: faker.finance.amount({ min: 2, max: 20, dec: 2 }),
+          totalAmountPaid: '0',
+          amount: amount,
           interestPaid: faker.finance.amount({
             min: 10,
             max: 20,
             dec: 0,
           }),
-          balanceAfter: faker.finance.amount({
-            min: 100_000,
-            max: 1_000_000,
-            dec: 2,
-          }),
+          balanceAfter: amount,
           status: faker.helpers.arrayElement([
             'pending',
             'approved',
             'rejected',
-            'repaid',
           ]),
           createdAt: faker.date.recent({ days: 500 }),
         })

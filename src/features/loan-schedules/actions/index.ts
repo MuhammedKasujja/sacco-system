@@ -5,10 +5,12 @@ import { addDays } from 'date-fns'
 import z from 'zod'
 import { CreateLoanSchedulesRequest } from '../schemas'
 
-type ScheduleStruct = {
+type LoanScheduleStruct = {
   loanId: string
   repaymentDate: string
   amountPaid: string
+  balanceAfter: string,
+  amount: string,
   interestPaid: string
   status: string
 }
@@ -29,15 +31,17 @@ const generateLoanSchedules = async (
   const interest = (principalAmount * (interestRate / 100)) / installmentCount
   const installment = interest + principalAmount / installmentCount
 
-  const schedules: ScheduleStruct[] = []
+  const schedules: LoanScheduleStruct[] = []
 
   for (let count = 1; count <= installmentCount; count++) {
     if (installmentType === 'month') {
       schedules.push({
         loanId: loanId,
         repaymentDate: addDays(date, 30 * count).toUTCString(),
-        amountPaid: installment.toString(),
+        amountPaid: '0',
         interestPaid: interestRate.toString(),
+        balanceAfter: installment.toString(),
+        amount: installment.toString(),
         status: 'pending',
       })
     }

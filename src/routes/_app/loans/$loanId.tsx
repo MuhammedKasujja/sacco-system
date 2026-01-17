@@ -64,9 +64,9 @@ function getLoanRemaymentColumns({
 }): ColumnDef<LoanRepaymentEntitty>[] {
   return [
     {
-      id: 'aamount',
+      id: 'amount',
       header: 'Amount',
-      cell: ({ row }) => <div>{formatMoney(row.original.amountPaid)}</div>,
+      cell: ({ row }) => <div>{formatMoney(row.original.amount)}</div>,
     },
     {
       id: 'interestRate',
@@ -87,9 +87,11 @@ function getLoanRemaymentColumns({
       id: 'actions',
       cell: ({ row }) => {
         const repayment = row.original
-        return (
-          <MakeLoanRepayment repayment={repayment} loanNumber={loanNumber} />
-        )
+        if (repayment.balanceAfter !== '0') {
+          return (
+            <MakeLoanRepayment repayment={repayment} loanNumber={loanNumber} />
+          )
+        }
       },
     },
   ]
