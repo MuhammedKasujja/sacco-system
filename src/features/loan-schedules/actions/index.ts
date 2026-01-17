@@ -13,7 +13,7 @@ type ScheduleStruct = {
   status: string
 }
 
-const generateLoanRepayments = async (
+const generateLoanSchedules = async (
   data: z.infer<typeof CreateLoanSchedulesRequest>,
 ) => {
   const {
@@ -45,8 +45,8 @@ const generateLoanRepayments = async (
   return await db.insert(loanSchedules).values(schedules).returning()
 }
 
-export const generateLoanRepaymentsFn = createServerFn({ method: 'POST' })
+export const generateLoanSchedulessFn = createServerFn({ method: 'POST' })
   .inputValidator(CreateLoanSchedulesRequest.parse)
   .handler(async ({ data }) => {
-    return generateLoanRepayments({ ...data })
+    return generateLoanSchedules({ ...data })
   })

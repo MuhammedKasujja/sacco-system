@@ -1,6 +1,6 @@
 import { db } from '@/db'
 import { loans } from '@/db/schema'
-import { generateLoanRepaymentsFn } from '@/features/loan-repayments/actions'
+import { generateLoanSchedulessFn } from '@/features/loan-schedules/actions'
 import { AuditSevice } from '@/server/services/audit_service'
 import { createServerFn } from '@tanstack/react-start'
 import { eq } from 'drizzle-orm'
@@ -31,7 +31,7 @@ export const createLoanFn = createServerFn({ method: 'POST' })
         status: 'pending',
       })
       .returning()
-    await generateLoanRepaymentsFn({
+    await generateLoanSchedulessFn({
       data: {
         loanId: latestLoan.id,
         principalAmount: Number(latestLoan.principalAmount),
