@@ -11,6 +11,7 @@ import {
   getLoanDetailsFn,
   LoanRepaymentEntitty,
 } from '@/features/loans/queries'
+import { MemberDetailsLink } from '@/features/members/components/member-details-link'
 import { formatDate, formatMoney } from '@/lib/formatting'
 import { createFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
@@ -42,7 +43,12 @@ function RouteComponent() {
         <Card>
           <CardHeader>
             <CardTitle>
-              {loan.member.firstName} {loan.member.lastName}
+              <MemberDetailsLink
+                className="font-medium"
+                memberId={loan.member.id}
+              >
+                {loan.member.firstName} {loan.member.lastName}
+              </MemberDetailsLink>
             </CardTitle>
             <CardDescription>{loan.member.phone}</CardDescription>
           </CardHeader>

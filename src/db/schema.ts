@@ -62,6 +62,7 @@ export const savingsProducts = pgTable('savings_products', {
   createdAt,
   updatedAt,
   deletedAt,
+  ///TODO: add minimum account withdrawal balance column
 })
 
 export const savingsAccounts = pgTable('savings_accounts', {

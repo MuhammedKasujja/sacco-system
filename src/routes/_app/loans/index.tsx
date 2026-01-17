@@ -1,6 +1,7 @@
 import { fetchLoans, LoanEntity } from '@/actions/loans'
 import { DataTable } from '@/components/data-table-old'
 import { Button } from '@/components/ui/button'
+import { MemberDetailsLink } from '@/features/members/components/member-details-link'
 import { formatDate, formatMoney } from '@/lib/formatting'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
@@ -48,9 +49,12 @@ const columns: ColumnDef<LoanEntity>[] = [
     id: 'member',
     header: 'Member',
     cell: ({ row }) => (
-      <div>
+      <MemberDetailsLink
+        className="font-normal"
+        memberId={row.original.member.id}
+      >
         {row.original.member?.firstName} {row.original.member?.lastName}
-      </div>
+      </MemberDetailsLink>
     ),
   },
   {
