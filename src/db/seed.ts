@@ -43,7 +43,7 @@ const main = async () => {
 
   await resetDb()
 
-  await new DatabaseSeeder().build()
+  await new DatabaseSeeder().build({ includeTestData: false })
 }
 
 main().finally(async () => {
