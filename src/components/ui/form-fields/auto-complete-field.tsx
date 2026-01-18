@@ -1,30 +1,36 @@
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from '../combobox'
-import { Field, FieldDescription, FieldError, FieldLabel } from '../field'
-import { AsteriskIcon } from 'lucide-react'
+import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { AsteriskIcon } from 'lucide-react'
+import { Field, FieldDescription, FieldError, FieldLabel } from '../field'
+import React from 'react'
 
-type AutoCompleteFieldProps<F extends FieldValues> = {
+type Option = { label: string; value: string | number }
+
+type AutoCompleteFieldProps<T extends FieldValues> = {
   label?: string
-  options: Readonly<
-    {
-      label: string
-      value: string | number
-    }[]
-  >
-  control: Control<F>
-  name: FieldPath<F>
+  options: readonly Option[]
+  control: Control<T>
+  name: FieldPath<T>
   placeholder?: string
   description?: string
   required?: boolean
   emptyPlaceholder?: string
+  className?: string
 }
 
 export function AutoCompleteField<T extends FieldValues>({
@@ -32,65 +38,174 @@ export function AutoCompleteField<T extends FieldValues>({
   control,
   name,
   label,
-  placeholder,
+  placeholder = 'Select...',
   required = true,
   description,
-  emptyPlaceholder,
-}: Readonly<AutoCompleteFieldProps<T>>) {
+  emptyPlaceholder = 'No results found.',
+  className,
+}: AutoCompleteFieldProps<T>) {
+  const [open, setOpen] = React.useState(false)
+
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState }) => (
-        <Field data-invalid={fieldState.invalid}>
-          <FieldLabel htmlFor={field.name}>
-            {label}
-            {required && (
-              <AsteriskIcon
-                className={cn('text-destructive inline size-2.5 align-top')}
-              />
-            )}
-          </FieldLabel>
-          <Combobox
-            items={options}
-            //TODO: fix changing from uncontrolled to controlled component
-            // value={field.value}
-            onValueChange={(val) => {
-              field.onChange(val)
-            }}
-          >
-            <ComboboxInput
-              //TODO: fix changing from uncontrolled to controlled component
-              // {...field}
-              id={field.name}
-              placeholder={placeholder}
-              aria-invalid={fieldState.invalid}
-            />
-            <ComboboxContent>
-              <ComboboxEmpty>{emptyPlaceholder}</ComboboxEmpty>
-              <ComboboxList>
-                {(item) => (
-                  <ComboboxItem
-                    key={item.value}
-                    value={item.value}
-                    // onSelect={() => {
-                    //   console.log("Selected Value", item)
-                    //   field.onChange(item.value)
-                    // }}
-                  >
-                    {item.label}
-                  </ComboboxItem>
-                )}
-              </ComboboxList>
-            </ComboboxContent>
-          </Combobox>
-          {description && <FieldDescription>{description}</FieldDescription>}
-          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-        </Field>
-      )}
+      render={({ field, fieldState }) => {
+        const currentOption = options.find((o) => o.value === field.value)
+
+        return (
+          <Field data-invalid={fieldState.invalid} className={className}>
+            <FieldLabel htmlFor={name}>
+              {label}
+              {required && (
+                <AsteriskIcon className="text-destructive inline size-2.5 align-top ml-0.5" />
+              )}
+            </FieldLabel>
+
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={undefined} // you can manage open state if you want
+                  className={cn(
+                    'w-full justify-between text-left font-normal',
+                    !field.value && 'text-muted-foreground',
+                    fieldState.invalid && 'border-destructive',
+                  )}
+                >
+                  {currentOption ? currentOption.label : placeholder}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+
+              <PopoverContent className="p-0 w-(--radix-popover-trigger-width)">
+                <Command>
+                  <CommandInput placeholder={placeholder} />
+                  <CommandList>
+                    <CommandEmpty>{emptyPlaceholder}</CommandEmpty>
+                    <CommandGroup>
+                      {options.map((option) => (
+                        <CommandItem
+                          key={option.value}
+                          value={option.label.toLowerCase()} // cmdk expects string // this is used for filtering
+                          onSelect={() => {
+                            field.onChange(option.value)
+                            setOpen(false)
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              'mr-2 h-4 w-4',
+                              field.value === option.value
+                                ? 'opacity-100'
+                                : 'opacity-0',
+                            )}
+                          />
+                          {option.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {description && <FieldDescription>{description}</FieldDescription>}
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )
+      }}
     />
   )
 }
+
+// import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
+// import {
+//   Combobox,
+//   ComboboxContent,
+//   ComboboxEmpty,
+//   ComboboxInput,
+//   ComboboxItem,
+//   ComboboxList,
+// } from '../combobox'
+// import { Field, FieldDescription, FieldError, FieldLabel } from '../field'
+// import { AsteriskIcon } from 'lucide-react'
+// import { cn } from '@/lib/utils'
+
+// type AutoCompleteFieldProps<F extends FieldValues> = {
+//   label?: string
+//   options: Readonly<
+//     {
+//       label: string
+//       value: string | number
+//     }[]
+//   >
+//   control: Control<F>
+//   name: FieldPath<F>
+//   placeholder?: string
+//   description?: string
+//   required?: boolean
+//   emptyPlaceholder?: string
+// }
+
+// export function AutoCompleteField<T extends FieldValues>({
+//   options,
+//   control,
+//   name,
+//   label,
+//   placeholder,
+//   required = true,
+//   description,
+//   emptyPlaceholder = 'No results found.',
+// }: Readonly<AutoCompleteFieldProps<T>>) {
+//   return (
+//     <Controller
+//       name={name}
+//       control={control}
+//       render={({ field, fieldState }) => (
+//         <Field data-invalid={fieldState.invalid}>
+//           <FieldLabel htmlFor={field.name}>
+//             {label}
+//             {required && (
+//               <AsteriskIcon
+//                 className={cn('text-destructive inline size-2.5 align-top')}
+//               />
+//             )}
+//           </FieldLabel>
+//           <Combobox
+//             items={options}
+//             //TODO: fix changing from uncontrolled to controlled component
+//             // value={field.value}
+//             onValueChange={(val) => {
+//               field.onChange(val)
+//             }}
+//           >
+//             <ComboboxInput
+//               //TODO: fix changing from uncontrolled to controlled component
+//               // {...field}
+//               id={field.name}
+//               placeholder={placeholder}
+//               aria-invalid={fieldState.invalid}
+//             />
+//             <ComboboxContent>
+//               <ComboboxEmpty>{emptyPlaceholder}</ComboboxEmpty>
+//               <ComboboxList>
+//                 {(item) => (
+//                   <ComboboxItem key={item.value} value={item.value}>
+//                     {item.label}
+//                   </ComboboxItem>
+//                 )}
+//               </ComboboxList>
+//             </ComboboxContent>
+//           </Combobox>
+//           {description && <FieldDescription>{description}</FieldDescription>}
+//           {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+//         </Field>
+//       )}
+//     />
+//   )
+// }
 
 {
   /* <Field>

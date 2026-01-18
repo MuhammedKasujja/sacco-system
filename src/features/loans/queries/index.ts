@@ -15,7 +15,9 @@ export const getLoanDetailsFn = createServerFn({ method: 'POST' })
       where: eq(loans.id, data.loanId),
       with: {
         member: true,
-        repayments: true,
+        repayments: {
+          orderBy: (repayments, { asc }) => [asc(repayments.repaymentDate)],
+        },
         loanProduct: true,
       },
     })
