@@ -1,6 +1,6 @@
 import {
-  fetchLoanTransactions,
-  LoanTransactionEntity,
+  getTransactions,
+  TransactionEntity,
 } from '@/actions/transactions'
 import { DataTable } from '@/components/data-table-old'
 import { MemberDetailsLink } from '@/features/members/components/member-details-link'
@@ -10,7 +10,7 @@ import { ColumnDef } from '@tanstack/react-table'
 
 export const Route = createFileRoute('/_app/transactions/')({
   component: RouteComponent,
-  loader: () => fetchLoanTransactions(),
+  loader: () => getTransactions(),
 })
 
 function RouteComponent() {
@@ -18,7 +18,7 @@ function RouteComponent() {
   return <DataTable columns={columns} data={transactions} />
 }
 
-const columns: ColumnDef<LoanTransactionEntity>[] = [
+const columns: ColumnDef<TransactionEntity>[] = [
   {
     id: 'loan_number',
     header: 'Loan',

@@ -37,7 +37,7 @@ function RouteComponent() {
       </TabsContent>
       <TabsContent value="auth">
         <DataTable
-          columns={columns}
+          columns={getAuthLogsColumns()}
           data={authLogs}
           onSearch={(query) => {
             console.log('query: ', query)
@@ -51,8 +51,8 @@ function RouteComponent() {
 const columns: ColumnDef<SystemAuditLogEntity>[] = [
   {
     id: 'number',
-    header: 'ID',
-    cell: ({ row }) => <div>{row.original.entityId}</div>,
+    header: 'No.',
+    cell: ({ row }) => <div>{row.index + 1}</div>,
   },
   {
     id: 'entity',
@@ -79,3 +79,32 @@ const columns: ColumnDef<SystemAuditLogEntity>[] = [
     cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
   },
 ]
+
+function getAuthLogsColumns(): ColumnDef<SystemAuditLogEntity>[] {
+  return [
+    {
+      id: 'number',
+      header: 'No.',
+      cell: ({ row }) => <div>{row.index + 1}</div>,
+    },
+    {
+      id: 'operation',
+      header: 'Operation',
+      cell: ({ row }) => <div>{row.original.eventType}</div>,
+    },
+    {
+      id: 'user',
+      header: 'User',
+      cell: ({ row }) => (
+        <div>
+          {row.original.user?.firstName} {row.original.user?.lastName}
+        </div>
+      ),
+    },
+    {
+      id: 'createdAt',
+      header: 'Date',
+      cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
+    },
+  ]
+}

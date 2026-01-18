@@ -19,5 +19,6 @@ export const fetchLoans = createServerFn().handler(() => {
         },
       },
     },
+    orderBy: (loans, { desc }) => [desc(loans.createdAt)],
   })
 })

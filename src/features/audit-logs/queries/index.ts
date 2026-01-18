@@ -26,6 +26,7 @@ export const getSystemAuditLogsFn = createServerFn().handler(async () => {
         },
       },
     },
+    orderBy: (auditLogs, { desc }) => [desc(auditLogs.createdAt)],
   })
 })
 
@@ -50,5 +51,6 @@ export const getAuthLogsFn = createServerFn().handler(async () => {
         },
       },
     },
+    orderBy: (auditLogs, { desc }) => [desc(auditLogs.createdAt)],
   })
 })
