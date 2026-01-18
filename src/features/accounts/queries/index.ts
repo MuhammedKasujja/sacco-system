@@ -1,9 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
 import { AccountIdSchema, AccountWithMemberSchema } from '../schemas'
 import { db } from '@/db'
-import { members, savingsAccounts } from '@/db/schema'
-import { and, eq } from 'drizzle-orm'
+import { members, savingsAccounts, savingsTransactions } from '@/db/schema'
+import { and, eq, desc } from 'drizzle-orm'
 import { AccountNotFoundException } from '@/server/execptions'
+import { MemberIdSchema } from '@/features/members/schemas'
 
 export const getAccountById = createServerFn()
   .inputValidator(AccountIdSchema.parse)
@@ -63,4 +64,20 @@ export const getAccountDetailsFn = createServerFn()
     } catch (error) {
       throw new AccountNotFoundException()
     }
+  })
+
+export const getAccountTransactionsByMemberId = createServerFn()
+  .inputValidator(MemberIdSchema.parse)
+  .handler(async ({ data }) => {
+    const memberTransactions = await db
+      .select()
+      .from(savingsTransactions)
+      .where(eq(savingsTransactions.memberId, data.memberId))
+      .innerJoin(
+        savingsAccounts,
+        eq(savingsTransactions.accountId, savingsAccounts.id),
+      )
+      .orderBy(desc(savingsTransactions.createdAt))
+      .limit(10)
+    return memberTransactions
   })

@@ -7,8 +7,9 @@ import { getCurrentUserFn } from '@/actions/auth'
 import { getCurrentTime } from '@/lib/utils'
 import { getMemberByLoanIdFn } from '@/features/members/queries'
 import { AuditSevice } from '@/server/services/audit_service'
-import { eq } from 'drizzle-orm'
+import { desc, eq } from 'drizzle-orm'
 import { LoanScheduleNotFoundException } from '@/server/execptions'
+import { MemberIdSchema } from '@/features/members/schemas'
 
 const makeLoanRepaymentTransaction = async (
   data: z.infer<typeof EditLoanRepaymentTransactionSchema>,
@@ -133,3 +134,17 @@ const updateLoanStatus = async (loanId: string) => {
       .where(eq(loans.id, loanId))
   }
 }
+
+export const getLoanTransactionsByMemberId = createServerFn()
+  .inputValidator(MemberIdSchema.parse)
+  .handler(async ({ data }) => {
+    const list = await db.query.transactions.findMany({
+      where: eq(transactions.memberId, data.memberId),
+      with:{
+        loan:true 
+      },
+      limit: 10,
+      orderBy: desc(transactions.createdAt),
+    })
+    return list
+  })
