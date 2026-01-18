@@ -52,6 +52,7 @@ const columns: ColumnDef<LoanEntity>[] = [
       <MemberDetailsLink
         className="font-normal"
         memberId={row.original.member.id}
+        maskLabel={`${row.original.member.firstName} ${row.original.member.lastName}`}
       >
         {row.original.member?.firstName} {row.original.member?.lastName}
       </MemberDetailsLink>

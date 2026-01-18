@@ -51,6 +51,7 @@ function RouteComponent() {
               <MemberDetailsLink
                 className="font-medium"
                 memberId={loan.member.id}
+                maskLabel={`${loan.member.firstName} ${loan.member.lastName}`}
               >
                 {loan.member.firstName} {loan.member.lastName}
               </MemberDetailsLink>

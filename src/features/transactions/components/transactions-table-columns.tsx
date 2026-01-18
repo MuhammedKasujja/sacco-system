@@ -23,7 +23,10 @@ export function getTransactionsTableColumns(): ColumnDef<TransactionEntity>[] {
       id: 'member',
       header: 'Member',
       cell: ({ row }) => (
-        <MemberDetailsLink memberId={row.original.members.id}>
+        <MemberDetailsLink
+          memberId={row.original.members.id}
+          maskLabel={`${row.original.members.firstName} ${row.original.members.lastName}`}
+        >
           {row.original.members?.firstName} {row.original.members?.lastName}
         </MemberDetailsLink>
       ),

@@ -8,11 +8,13 @@ import z from 'zod/v3'
 
 export const EditLoanSchema = z.object({
   id: z.string().optional(),
-  principalAmount: z.coerce.number(),
+  principalAmount: z.coerce
+    .number({ message: 'Principal amount is required' })
+    .min(1, { message: 'Principal amount must be at least 1' }),
   memberId: z.string(),
   loanProductId: z.string(),
   interestRate: z.coerce.number(),
-  repaymentPeriodInMonths: z.coerce.number().min(1),
+  repaymentPeriodInMonths: z.coerce.number({message: 'Required'}).min(1),
 })
 
 export const createLoanFn = createServerFn({ method: 'POST' })

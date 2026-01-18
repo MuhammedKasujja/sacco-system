@@ -1,5 +1,5 @@
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
-import { Check, ChevronsUpDown } from 'lucide-react'
+import { Check, ChevronDown, AsteriskIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,7 +15,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { AsteriskIcon } from 'lucide-react'
 import { Field, FieldDescription, FieldError, FieldLabel } from '../field'
 import React from 'react'
 
@@ -55,7 +54,7 @@ export function AutoCompleteField<T extends FieldValues>({
 
         return (
           <Field data-invalid={fieldState.invalid} className={className}>
-            <FieldLabel htmlFor={name}>
+            <FieldLabel htmlFor={field.name}>
               {label}
               {required && (
                 <AsteriskIcon className="text-destructive inline size-2.5 align-top ml-0.5" />
@@ -75,13 +74,17 @@ export function AutoCompleteField<T extends FieldValues>({
                   )}
                 >
                   {currentOption ? currentOption.label : placeholder}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
 
               <PopoverContent className="p-0 w-(--radix-popover-trigger-width)">
                 <Command>
-                  <CommandInput placeholder={placeholder} />
+                  <CommandInput
+                    id={field.name}
+                    placeholder={placeholder}
+                    // aria-invalid={fieldState.invalid}
+                  />
                   <CommandList>
                     <CommandEmpty>{emptyPlaceholder}</CommandEmpty>
                     <CommandGroup>
