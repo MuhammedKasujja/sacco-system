@@ -43,9 +43,14 @@ export const Route = createFileRoute('/_app')({
 })
 
 function RouteComponent() {
-  const currentPath = useLocation({ select: (loc) => loc.pathname })
-  // console.log(currentPath.trim().split('/'))
-  console.log(currentPath.trim())
+  // const currentPath = useLocation({ select: (loc) => loc.pathname })
+
+  const currentPath = useLocation({
+    select: (loc) => {
+      return loc.maskedLocation?.pathname ?? loc.pathname
+    },
+  })
+
   return (
     <AuthProvider>
       <SidebarProvider>
@@ -65,16 +70,20 @@ function RouteComponent() {
                       <Link to={'/'}>Dashboard</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  {currentPath.trim().split('/').map((path) => (
-                    <React.Fragment key={path}>
-                      <BreadcrumbSeparator className="block" />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage className="capitalize">
-                          {path}
-                        </BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </React.Fragment>
-                  ))}
+                  {currentPath
+                    .trim()
+                    .split('/')
+                    .filter(Boolean)
+                    .map((path) => (
+                      <React.Fragment key={path}>
+                        <BreadcrumbSeparator className="block" />
+                        <BreadcrumbItem>
+                          <BreadcrumbPage className="capitalize">
+                            {path}
+                          </BreadcrumbPage>
+                        </BreadcrumbItem>
+                      </React.Fragment>
+                    ))}
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
