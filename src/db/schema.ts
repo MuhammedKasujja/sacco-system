@@ -14,6 +14,8 @@ import {
   serial,
 } from 'drizzle-orm/pg-core'
 
+export const installmentTypeEnums = pgEnum('installment_types', ['month', 'week', 'year'])
+
 const createdAt = timestamp('created_at', { withTimezone: true })
   .defaultNow()
   .notNull()
@@ -92,8 +94,6 @@ export const loanProducts = pgTable('loan_products', {
   ...timestamps,
 })
 
-const enums = pgEnum('installment_type', ['month', 'week', 'year'])
-
 export const loans = pgTable('loans', {
   id: uuid('id').primaryKey().defaultRandom(),
   loanProductId: uuid('loan_product_id').references(() => loanProducts.id, {
@@ -110,7 +110,7 @@ export const loans = pgTable('loans', {
   totalAmount: decimal('total_amount'),
   installmentCount: decimal('installment_count'),
   // installmentType: enums,
-  installmentType: varchar('installment_type').default('month'),
+  installmentType: installmentTypeEnums('installment_type').default('month'),
   disbursementDate: date('disbursement_date'),
   status: varchar('status', { length: 20 }),
   approvedBy: uuid('approved_by').references(() => users.id, {
@@ -207,7 +207,7 @@ export const auditLogs = pgTable('audit_logs', {
 })
 
 export const settings = pgTable('settings', {
-  id: serial('id'),
+  id: serial('id').primaryKey(),
   key: varchar('key').notNull(),
   value: varchar('value'),
 })
