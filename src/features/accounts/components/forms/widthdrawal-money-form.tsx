@@ -17,6 +17,7 @@ import {
   MembersWithAccountsType,
 } from '@/features/members/queries'
 import { useEffect, useState } from 'react'
+import { useRouterState } from '@tanstack/react-router'
 
 type WithdrawalMoneyFormProps = {
   members: MembersWithAccountsType[]
@@ -24,9 +25,14 @@ type WithdrawalMoneyFormProps = {
 
 export function WithdrawalMoneyForm({ members }: WithdrawalMoneyFormProps) {
   const [memberAccounts, setMemberAccounts] = useState<MemberAccount[]>([])
+  const state = useRouterState({ select: (s) => s.location.state })
 
   const form = useForm<z.infer<typeof WithdrawalMoneySchema>>({
     resolver: zodResolver(WithdrawalMoneySchema),
+    defaultValues: {
+      memberId: state.memberId || '',
+      accountId: state.accountId || '',
+    },
   })
   const selectedMemberId = form.watch('memberId')
 

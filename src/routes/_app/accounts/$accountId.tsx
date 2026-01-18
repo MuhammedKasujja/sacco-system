@@ -34,7 +34,11 @@ function RouteComponent() {
           </CardHeader>
           <CardFooter className="gap-4">
             <Button variant={'outline'} asChild>
-              <Link to={'/accounts/deposit'} params={{ accountId: account.id }}>
+              <Link
+                to={'/accounts/deposit'}
+                params={{ accountId: account.id }}
+                state={{ memberId: account.member.id, accountId: account.id }}
+              >
                 Deposit
               </Link>
             </Button>
@@ -42,6 +46,7 @@ function RouteComponent() {
               <Link
                 to={'/accounts/withdrawal'}
                 params={{ accountId: account.id }}
+                state={{ memberId: account.member.id, accountId: account.id }}
               >
                 Withdrawal
               </Link>

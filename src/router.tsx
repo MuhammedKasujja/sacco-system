@@ -16,8 +16,12 @@ export const getRouter = () => {
 
 declare module '@tanstack/react-router' {
   interface HistoryState {
-    activeEntityId?: string,
-    entityLabel?: string,
+    activeEntityId?: string
+    entityLabel?: string
     extraData?: Record<string, unknown>
+    memberId?: string
+    accountId?: string
+    loanId?: string
+    userId?: string
   }
 }

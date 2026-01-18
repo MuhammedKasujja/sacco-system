@@ -68,7 +68,7 @@ function RouteComponent() {
                 </Button>
               ) : (
                 <Button asChild>
-                  <Link to={'/loans/apply'} state={{ activeEntityId: member.id }}>
+                  <Link to={'/loans/apply'} state={{ memberId: member.id }}>
                     Apply
                   </Link>
                 </Button>

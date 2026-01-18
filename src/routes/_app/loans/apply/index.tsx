@@ -35,8 +35,6 @@ export const Route = createFileRoute('/_app/loans/apply/')({
 function RouteComponent() {
   const state = useRouterState({ select: (s) => s.location.state })
 
-  console.log('state', state['activeEntityId'])
-
   const { loanProducts, members } = Route.useLoaderData()
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
@@ -44,7 +42,7 @@ function RouteComponent() {
   const form = useForm<z.infer<typeof EditLoanSchema>>({
     resolver: zodResolver(EditLoanSchema),
     defaultValues: {
-      memberId: state['activeEntityId'] || '',
+      memberId: state.memberId || '',
     },
   })
 
