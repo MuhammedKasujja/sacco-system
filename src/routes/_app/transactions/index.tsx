@@ -51,7 +51,7 @@ const columns: ColumnDef<LoanTransactionEntity>[] = [
   {
     id: 'status',
     header: 'Status',
-    cell: ({ row }) => <div>{row.original.loans.status}</div>,
+    cell: ({ row }) => <div>{row.original.transactions.status}</div>,
   },
   {
     accessorKey: 'transactions.createdAt',

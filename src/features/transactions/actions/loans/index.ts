@@ -16,8 +16,8 @@ const makeLoanRepaymentTransaction = async (
   const { loanId, amount, payeeName, payeeTelephone, scheduleId } = data
 
   const loggedInUser = await getCurrentUserFn()
-  const loanMember = await getMemberByLoanIdFn({ data: { loanId } })
-  await updateLoanScheduleBalnce(scheduleId, amount)
+  const { member } = await getMemberByLoanIdFn({ data: { loanId } })
+  await updateLoanScheduleBalance(scheduleId, amount)
 
   const [latestTransaction] = await db
     .insert(transactions)
@@ -28,7 +28,7 @@ const makeLoanRepaymentTransaction = async (
       date: getCurrentTime(),
       payeeName,
       payeeTelephone,
-      memberId: loanMember.id,
+      memberId: member.id,
       recordedBy: loggedInUser?.id,
       status: 'paid',
     })
@@ -70,7 +70,7 @@ const getLoanScheduleById = async (scheduleId: string) => {
   }
 }
 
-const updateLoanScheduleBalnce = async (
+const updateLoanScheduleBalance = async (
   scheduleId: string,
   amountToPay: number,
 ) => {

@@ -30,7 +30,7 @@ export const getMemberByLoanIdFn = createServerFn({ method: 'POST' })
       throw new MemberNotFoundException()
     }
 
-    return firstMember.members
+    return { member: firstMember.members, loan: firstMember.loans }
   })
 
 export const getMemberById = createServerFn()

@@ -1,4 +1,5 @@
 import { DataTable } from '@/components/data-table-old'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardDescription,
@@ -11,7 +12,7 @@ import { getAccountTransactionsTableColumns } from '@/features/accounts/componen
 import { getAccountDetailsFn } from '@/features/accounts/queries'
 import { MemberDetailsLink } from '@/features/members/components/member-details-link'
 import { formatMoney } from '@/lib/formatting'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMemo } from 'react'
 
 export const Route = createFileRoute('/_app/accounts/$accountId')({
@@ -29,8 +30,23 @@ function RouteComponent() {
         <Card>
           <CardHeader>
             <CardTitle>{account.accountNumber}</CardTitle>
+            <CardDescription>{formatMoney(account.balance)}</CardDescription>
           </CardHeader>
-          <CardFooter>{formatMoney(account.balance)}</CardFooter>
+          <CardFooter className="gap-4">
+            <Button variant={'outline'} asChild>
+              <Link to={'/accounts/deposit'} params={{ accountId: account.id }}>
+                Deposit
+              </Link>
+            </Button>
+            <Button variant={'outline'} asChild>
+              <Link
+                to={'/accounts/withdrawal'}
+                params={{ accountId: account.id }}
+              >
+                Withdrawal
+              </Link>
+            </Button>
+          </CardFooter>
         </Card>
         <Card>
           <CardHeader>

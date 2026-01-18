@@ -54,6 +54,7 @@ export function MakeLoanRepayment({
       await makeLoanRepaymentTransactionFn({ data })
       toast.message('Payment created successfully')
       setOpen(false)
+      form.reset()
     } catch (error) {
       toast.error(`${error}`)
     }
