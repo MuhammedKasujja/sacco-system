@@ -1,7 +1,13 @@
 import { db } from '@/db'
-import { loans, members, savingsAccounts, transactions } from '@/db/schema'
+import {
+  loans,
+  members,
+  savingsAccounts,
+  savingsTransactions,
+  transactions,
+} from '@/db/schema'
 import { createServerFn } from '@tanstack/react-start'
-import { sum } from 'drizzle-orm'
+import { sum, desc, eq } from 'drizzle-orm'
 
 export const getDashboardStatistics = createServerFn().handler(async () => {
   const memberCount = await db.$count(members)
@@ -21,10 +27,30 @@ export const getDashboardStatistics = createServerFn().handler(async () => {
 
   const loanRepaymentCount = await db.$count(transactions)
 
+  const recentSavings = await db
+    .select()
+    .from(savingsTransactions)
+    .innerJoin(
+      savingsAccounts,
+      eq(savingsTransactions.accountId, savingsAccounts.id),
+    )
+    .orderBy(desc(savingsTransactions.createdAt))
+    .limit(10)
+
+  const recentLoanPayments = await db.query.transactions.findMany({
+    with: {
+      loan: true,
+    },
+    limit: 10,
+    orderBy: desc(transactions.createdAt),
+  })
+
   return {
     totalMembers: memberCount,
     totalLoanAmount: loansTotal[0].total ?? 0,
     totalSavingsAmount: savingsTotal[0].total ?? 0,
     totalLoanRepayments: loanRepaymentCount,
+    recentSavings,
+    recentLoanPayments,
   }
 })
