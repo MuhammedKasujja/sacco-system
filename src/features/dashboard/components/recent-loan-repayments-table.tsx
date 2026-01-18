@@ -37,9 +37,11 @@ export function getLoanRepaymentsTableColumns(): ColumnDef<RecentLoanRepaymentTr
       id: 'loan',
       header: 'Loan',
       cell: ({ row }) => (
-        <Link to={'/loans/$loanId'} params={{ loanId: row.original.loanId! }}>
-          {row.original.loan?.number}
-        </Link>
+        <Button asChild variant={'link'}>
+          <Link to={'/loans/$loanId'} params={{ loanId: row.original.loanId! }}>
+            {row.original.loan?.number}
+          </Link>
+        </Button>
       ),
     },
     {
@@ -56,12 +58,14 @@ export function getLoanRepaymentsTableColumns(): ColumnDef<RecentLoanRepaymentTr
       id: 'member',
       header: 'Member',
       cell: ({ row }) => (
-        <MemberDetailsLink
-          className="font-normal"
-          memberId={row.original.memberId}
-        >
-          {row.original.member?.firstName} {row.original.member?.lastName}
-        </MemberDetailsLink>
+        <Button asChild variant={'link'}>
+          <MemberDetailsLink
+            className="font-normal"
+            memberId={row.original.memberId}
+          >
+            {row.original.member?.firstName} {row.original.member?.lastName}
+          </MemberDetailsLink>
+        </Button>
       ),
     },
     {

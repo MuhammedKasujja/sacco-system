@@ -43,12 +43,14 @@ const columns: ColumnDef<MemberEntity>[] = [
     id: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <MemberDetailsLink
-        memberId={row.original.id}
-        maskLabel={`${row.original.firstName} ${row.original.lastName}`}
-      >
-        {row.original.firstName} {row.original.lastName}
-      </MemberDetailsLink>
+      <Button asChild variant={'link'}>
+        <MemberDetailsLink
+          memberId={row.original.id}
+          maskLabel={`${row.original.firstName} ${row.original.lastName}`}
+        >
+          {row.original.firstName} {row.original.lastName}
+        </MemberDetailsLink>
+      </Button>
     ),
   },
   {

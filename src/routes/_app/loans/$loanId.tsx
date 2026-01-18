@@ -1,5 +1,6 @@
 import { DataTable } from '@/components/data-table-old'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardAction,
@@ -48,13 +49,15 @@ function RouteComponent() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <MemberDetailsLink
-                className="font-medium"
-                memberId={loan.member.id}
-                maskLabel={`${loan.member.firstName} ${loan.member.lastName}`}
-              >
-                {loan.member.firstName} {loan.member.lastName}
-              </MemberDetailsLink>
+              <Button asChild variant={'link'}>
+                <MemberDetailsLink
+                  className="font-medium"
+                  memberId={loan.member.id}
+                  maskLabel={`${loan.member.firstName} ${loan.member.lastName}`}
+                >
+                  {loan.member.firstName} {loan.member.lastName}
+                </MemberDetailsLink>
+              </Button>
             </CardTitle>
             <CardDescription>{loan.member.phone}</CardDescription>
           </CardHeader>

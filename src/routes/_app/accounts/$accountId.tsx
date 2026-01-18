@@ -56,13 +56,15 @@ function RouteComponent() {
         <Card>
           <CardHeader>
             <CardTitle>
-              <MemberDetailsLink
-                className="font-medium"
-                memberId={account.member.id}
-                maskLabel={`${account.member.firstName} ${account.member.lastName}`}
-              >
-                {account.member.firstName} {account.member.lastName}
-              </MemberDetailsLink>
+              <Button asChild variant={'link'}>
+                <MemberDetailsLink
+                  className="font-medium"
+                  memberId={account.member.id}
+                  maskLabel={`${account.member.firstName} ${account.member.lastName}`}
+                >
+                  {account.member.firstName} {account.member.lastName}
+                </MemberDetailsLink>
+              </Button>
             </CardTitle>
             <CardDescription>{account.member.phone}</CardDescription>
           </CardHeader>

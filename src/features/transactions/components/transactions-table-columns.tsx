@@ -1,4 +1,5 @@
 import { TransactionEntity } from '@/actions/transactions'
+import { Button } from '@/components/ui/button'
 import { MemberDetailsLink } from '@/features/members/components/member-details-link'
 import { formatDate, formatMoney } from '@/lib/formatting'
 import { Link } from '@tanstack/react-router'
@@ -10,25 +11,29 @@ export function getTransactionsTableColumns(): ColumnDef<TransactionEntity>[] {
       id: 'loan_number',
       header: 'Loan',
       cell: ({ row }) => (
-        <Link
-          className="font-semibold"
-          to={'/loans/$loanId'}
-          params={{ loanId: row.original.loans.id }}
-        >
-          {row.original.loans.number}
-        </Link>
+        <Button asChild variant={'link'}>
+          <Link
+            className="font-semibold"
+            to={'/loans/$loanId'}
+            params={{ loanId: row.original.loans.id }}
+          >
+            {row.original.loans.number}
+          </Link>
+        </Button>
       ),
     },
     {
       id: 'member',
       header: 'Member',
       cell: ({ row }) => (
-        <MemberDetailsLink
-          memberId={row.original.members.id}
-          maskLabel={`${row.original.members.firstName} ${row.original.members.lastName}`}
-        >
-          {row.original.members?.firstName} {row.original.members?.lastName}
-        </MemberDetailsLink>
+        <Button asChild variant={'link'}>
+          <MemberDetailsLink
+            memberId={row.original.members.id}
+            maskLabel={`${row.original.members.firstName} ${row.original.members.lastName}`}
+          >
+            {row.original.members?.firstName} {row.original.members?.lastName}
+          </MemberDetailsLink>
+        </Button>
       ),
     },
     {

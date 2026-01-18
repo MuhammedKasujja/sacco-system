@@ -37,23 +37,28 @@ function getRecentTransactionsTableColumns(): ColumnDef<RecentAccountTransaction
       id: 'member',
       header: 'Member',
       cell: ({ row }) => (
-        <MemberDetailsLink
-          className='font-normal'
-          memberId={row.original.savings_accounts.memberId}        >
-          {row.original.members.firstName} {row.original.members.lastName}
-        </MemberDetailsLink>
+        <Button asChild variant={'link'}>
+          <MemberDetailsLink
+            className="font-normal"
+            memberId={row.original.savings_accounts.memberId}
+          >
+            {row.original.members.firstName} {row.original.members.lastName}
+          </MemberDetailsLink>
+        </Button>
       ),
     },
     {
       id: 'account',
       header: 'Account',
       cell: ({ row }) => (
-        <Link
-          to="/accounts/$accountId"
-          params={{ accountId: row.original.savings_accounts.id }}
-        >
-          {row.original.savings_accounts.accountNumber}
-        </Link>
+        <Button asChild variant={'link'}>
+          <Link
+            to="/accounts/$accountId"
+            params={{ accountId: row.original.savings_accounts.id }}
+          >
+            {row.original.savings_accounts.accountNumber}
+          </Link>
+        </Button>
       ),
     },
     {

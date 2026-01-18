@@ -40,22 +40,26 @@ const columns: ColumnDef<LoanEntity>[] = [
     id: 'loan_number',
     header: 'Loan',
     cell: ({ row }) => (
-      <Link to={`/loans/$loanId`} params={{ loanId: row.original.id }}>
-        {row.original.number}
-      </Link>
+      <Button asChild variant={'link'}>
+        <Link to={`/loans/$loanId`} params={{ loanId: row.original.id }}>
+          {row.original.number}
+        </Link>
+      </Button>
     ),
   },
   {
     id: 'member',
     header: 'Member',
     cell: ({ row }) => (
-      <MemberDetailsLink
-        className="font-normal"
-        memberId={row.original.member.id}
-        maskLabel={`${row.original.member.firstName} ${row.original.member.lastName}`}
-      >
-        {row.original.member?.firstName} {row.original.member?.lastName}
-      </MemberDetailsLink>
+      <Button asChild variant={'link'}>
+        <MemberDetailsLink
+          className="font-normal"
+          memberId={row.original.member.id}
+          maskLabel={`${row.original.member.firstName} ${row.original.member.lastName}`}
+        >
+          {row.original.member?.firstName} {row.original.member?.lastName}
+        </MemberDetailsLink>
+      </Button>
     ),
   },
   {

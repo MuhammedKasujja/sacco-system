@@ -60,26 +60,30 @@ const columns: ColumnDef<AccountEntity>[] = [
     id: 'number',
     header: 'Acc Number',
     cell: ({ row }) => (
-      <Link
-        className="font-semibold"
-        to={'/accounts/$accountId'}
-        params={{ accountId: row.original.id }}
-      >
-        {row.original.accountNumber}
-      </Link>
+      <Button asChild variant={'link'}>
+        <Link
+          className="font-semibold"
+          to={'/accounts/$accountId'}
+          params={{ accountId: row.original.id }}
+        >
+          {row.original.accountNumber}
+        </Link>
+      </Button>
     ),
   },
   {
     id: 'member',
     header: 'Member',
     cell: ({ row }) => (
-      <MemberDetailsLink
-        className="font-normal"
-        memberId={row.original.member.id}
-        maskLabel={`${row.original.member.firstName} ${row.original.member.lastName}`}
-      >
-        {row.original.member.firstName} {row.original.member.lastName}
-      </MemberDetailsLink>
+      <Button asChild variant={'link'}>
+        <MemberDetailsLink
+          className="font-normal"
+          memberId={row.original.member.id}
+          maskLabel={`${row.original.member.firstName} ${row.original.member.lastName}`}
+        >
+          {row.original.member.firstName} {row.original.member.lastName}
+        </MemberDetailsLink>
+      </Button>
     ),
   },
   {
