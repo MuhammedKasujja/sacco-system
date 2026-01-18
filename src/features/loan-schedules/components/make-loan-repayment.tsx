@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/form-fields'
 import { Field, FieldGroup } from '@/components/ui/field'
 import { useState } from 'react'
+import { useRouter } from '@tanstack/react-router'
 
 type MakeLoanRepaymentProps = {
   repayment: LoanRepaymentEntitty
@@ -35,6 +36,7 @@ export function MakeLoanRepayment({
   repayment,
   loanNumber,
 }: MakeLoanRepaymentProps) {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
 
@@ -55,6 +57,7 @@ export function MakeLoanRepayment({
       toast.message('Payment created successfully')
       setOpen(false)
       form.reset()
+      router.invalidate()
     } catch (error) {
       toast.error(`${error}`)
     }
