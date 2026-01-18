@@ -34,12 +34,14 @@ export const getDashboardStatistics = createServerFn().handler(async () => {
       savingsAccounts,
       eq(savingsTransactions.accountId, savingsAccounts.id),
     )
+    .innerJoin(members, eq(savingsTransactions.memberId, members.id))
     .orderBy(desc(savingsTransactions.createdAt))
     .limit(10)
 
   const recentLoanPayments = await db.query.transactions.findMany({
     with: {
       loan: true,
+      member: true,
     },
     limit: 10,
     orderBy: desc(transactions.createdAt),

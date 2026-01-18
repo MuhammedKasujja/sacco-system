@@ -38,7 +38,7 @@ function RouteComponent() {
 const columns: ColumnDef<LoanEntity>[] = [
   {
     id: 'loan_number',
-    header: 'Loan No.',
+    header: 'Loan',
     cell: ({ row }) => (
       <Link to={`/loans/$loanId`} params={{ loanId: row.original.id }}>
         {row.original.number}

@@ -24,12 +24,12 @@ function RouteComponent() {
   return (
     <div className='space-y-5'>
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-        <Card className="bg-muted/50">
+        <Card className="bg-muted/50 text-2xl font-semibold">
           <CardHeader>
             <CardDescription>Total Members</CardDescription>
-            <CardTitle>{statistics.totalMembers}</CardTitle>
+            <CardTitle className='text-2xl font-semibold'>{statistics.totalMembers}</CardTitle>
             <CardAction>
-              <Button variant={'secondary'} size={'sm'} asChild>
+              <Button variant={'secondary'} size={'sm'} className='shadow-sm' asChild>
                 <Link to="/members">
                   <ArrowUpRight />
                 </Link>
@@ -37,12 +37,12 @@ function RouteComponent() {
             </CardAction>
           </CardHeader>
         </Card>
-        <Card className="bg-muted/50">
+        <Card className="bg-muted/50 text-2xl font-semibold">
           <CardHeader>
             <CardDescription>Loans</CardDescription>
-            <CardTitle>{formatMoney(statistics.totalLoanAmount)}</CardTitle>
+            <CardTitle className='text-2xl font-semibold'>{formatMoney(statistics.totalLoanAmount)}</CardTitle>
             <CardAction>
-              <Button variant={'secondary'} size={'sm'} asChild>
+              <Button variant={'secondary'} size={'sm'} className='shadow-sm' asChild>
                 <Link to="/loans">
                   <ArrowUpRight />
                 </Link>
@@ -50,10 +50,10 @@ function RouteComponent() {
             </CardAction>
           </CardHeader>
         </Card>
-        <Card className="bg-muted/50">
+        <Card className="bg-muted/50 text-2xl font-semibold">
           <CardHeader>
             <CardDescription>Total Savings</CardDescription>
-            <CardTitle>{formatMoney(statistics.totalSavingsAmount)}</CardTitle>
+            <CardTitle className='text-2xl font-semibold'>{formatMoney(statistics.totalSavingsAmount)}</CardTitle>
           </CardHeader>
         </Card>
         {/* <div className="bg-muted/50 aspect-video rounded-xl" />
@@ -63,7 +63,6 @@ function RouteComponent() {
       {/* <h2>Recent Savings</h2> */}
       <Card>
         <CardHeader>
-
           <CardTitle>Recent Savings</CardTitle>
           <CardDescription>
             Latest savings transactions made by members

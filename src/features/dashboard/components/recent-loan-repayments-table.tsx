@@ -1,6 +1,7 @@
 import { getDashboardStatistics } from '@/actions/dashboard-statistics'
 import { DataTable } from '@/components/data-table-old'
 import { Button } from '@/components/ui/button'
+import { MemberDetailsLink } from '@/features/members/components/member-details-link'
 import { formatDate, formatMoney } from '@/lib/formatting'
 import { Link } from '@tanstack/react-router'
 import { ColumnDef } from '@tanstack/react-table'
@@ -52,8 +53,20 @@ export function getLoanRepaymentsTableColumns(): ColumnDef<RecentLoanRepaymentTr
       cell: ({ row }) => <div>{row.original.status}</div>,
     },
     {
+      id: 'member',
+      header: 'Member',
+      cell: ({ row }) => (
+        <MemberDetailsLink
+          className="font-normal"
+          memberId={row.original.memberId}
+        >
+          {row.original.member?.firstName} {row.original.member?.lastName}
+        </MemberDetailsLink>
+      ),
+    },
+    {
       id: 'createdAt',
-      header: 'Repayment Date',
+      header: 'Date',
       cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
     },
     {
