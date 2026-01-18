@@ -76,6 +76,9 @@ const updateLoanScheduleBalnce = async (
 ) => {
   const repaymentSchedule = await getLoanScheduleById(scheduleId)
   const balance = Number(repaymentSchedule.balanceAfter)
+  if (balance <= 0) {
+    throw new Error('This repayment schedule is already paid')
+  }
   let amountPaid = Number(repaymentSchedule.totalAmountPaid)
   const remainingBalance = balance - amountToPay
   let update = false

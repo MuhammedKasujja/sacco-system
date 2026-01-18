@@ -29,6 +29,7 @@ export const createLoanFn = createServerFn({ method: 'POST' })
         interestRate: data.interestRate.toString(),
         number: loanNumber,
         status: 'pending',
+        installmentType: 'month',
       })
       .returning()
     await generateLoanSchedulessFn({

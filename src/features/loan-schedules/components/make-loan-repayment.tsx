@@ -2,7 +2,6 @@ import { LoanRepaymentEntitty } from '@/features/loans/queries'
 import { useIsMobile } from '@/hooks/use-mobile'
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -25,6 +24,7 @@ import {
   TextField,
 } from '@/components/ui/form-fields'
 import { Field, FieldGroup } from '@/components/ui/field'
+import { useState } from 'react'
 
 type MakeLoanRepaymentProps = {
   repayment: LoanRepaymentEntitty
@@ -35,6 +35,7 @@ export function MakeLoanRepayment({
   repayment,
   loanNumber,
 }: MakeLoanRepaymentProps) {
+  const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
 
   const form = useForm<z.infer<typeof EditLoanRepaymentTransactionSchema>>({
@@ -52,13 +53,14 @@ export function MakeLoanRepayment({
     try {
       await makeLoanRepaymentTransactionFn({ data })
       toast.message('Payment created successfully')
+      setOpen(false)
     } catch (error) {
       toast.error(`${error}`)
     }
   }
 
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant={'outline'} size={'sm'}>
           <CreditCardIcon data-icon="inline-start" />
@@ -98,12 +100,9 @@ export function MakeLoanRepayment({
         <AlertDialogFooter>
           <Field orientation={'horizontal'} className="justify-end">
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction type="submit" form="form-edit-repayment">
+            <Button type="submit" form="form-edit-repayment">
               Submit
-            </AlertDialogAction>
-            {/* <Button type="submit" form="form-edit-repayment">
-              Submit
-            </Button> */}
+            </Button>
           </Field>
         </AlertDialogFooter>
       </AlertDialogContent>
