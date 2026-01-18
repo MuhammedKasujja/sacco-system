@@ -2,7 +2,7 @@ import z from 'zod'
 import { EditLoanRepaymentTransactionSchema } from '../../schemas'
 import { db } from '@/db'
 import { createServerFn } from '@tanstack/react-start'
-import { loanSchedules, transactions } from '@/db/schema'
+import { loans, loanSchedules, transactions } from '@/db/schema'
 import { getCurrentUserFn } from '@/actions/auth'
 import { getCurrentTime } from '@/lib/utils'
 import { getMemberByLoanIdFn } from '@/features/members/queries'
@@ -33,6 +33,9 @@ const makeLoanRepaymentTransaction = async (
       status: 'paid',
     })
     .returning()
+  // mark the loan as paid if all schedules are paid
+  await updateLoanStatus(loanId)
+
   AuditSevice.createTransactionAuditLog({
     eventType: 'TRANSACTION_CREATED',
     entityId: latestTransaction.id,
@@ -105,5 +108,28 @@ const updateLoanScheduleBalance = async (
         balanceAfter,
       })
       .where(eq(loanSchedules.id, scheduleId))
+  }
+}
+
+const updateLoanStatus = async (loanId: string) => {
+  const pendingSchedules = await db.query.loanSchedules.findMany({
+    where: eq(loanSchedules.loanId, loanId),
+    columns: {
+      id: true,
+      status: true,
+    },
+  })
+
+  const hasPending = pendingSchedules.some(
+    (schedule) => schedule.status !== 'paid',
+  )
+
+  if (!hasPending) {
+    await db.update(loans).set({ status: 'paid' }).where(eq(loans.id, loanId))
+  } else {
+    await db
+      .update(loans)
+      .set({ status: 'partial' })
+      .where(eq(loans.id, loanId))
   }
 }

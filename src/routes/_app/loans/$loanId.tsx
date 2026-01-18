@@ -1,6 +1,8 @@
 import { DataTable } from '@/components/data-table-old'
+import { Badge } from '@/components/ui/badge'
 import {
   Card,
+  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -35,6 +37,9 @@ function RouteComponent() {
             <CardDescription>
               {formatMoney(loan.principalAmount)}
             </CardDescription>
+            <CardAction>
+              <Badge>{loan.status}</Badge>
+            </CardAction>
           </CardHeader>
           <CardFooter>
             {loan.installmentCount} {loan.installmentType}
