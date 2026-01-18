@@ -18,7 +18,7 @@ import {
 import { createLoanFn, EditLoanSchema } from '@/features/loans/actions'
 import { formatMoney } from '@/lib/formatting'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useRouterState } from '@tanstack/react-router'
 import { Activity, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -33,12 +33,19 @@ export const Route = createFileRoute('/_app/loans/apply/')({
 })
 
 function RouteComponent() {
+  const state = useRouterState({ select: (s) => s.location.state })
+
+  console.log('state', state['activeEntityId'])
+
   const { loanProducts, members } = Route.useLoaderData()
   const [minAmount, setMinAmount] = useState(0)
   const [maxAmount, setMaxAmount] = useState(0)
 
   const form = useForm<z.infer<typeof EditLoanSchema>>({
     resolver: zodResolver(EditLoanSchema),
+    defaultValues: {
+      memberId: state['activeEntityId'] || '',
+    },
   })
 
   const selectedLoanProductId = form.watch('loanProductId')
