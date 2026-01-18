@@ -24,7 +24,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod/v3'
 
-export const Route = createFileRoute('/_app/loans/create/')({
+export const Route = createFileRoute('/_app/loans/apply/')({
   loader: async () => ({
     loanProducts: await fetchLoanProducts(),
     members: await fetchMembers(),

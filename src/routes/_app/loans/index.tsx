@@ -21,7 +21,7 @@ function RouteComponent() {
       tableActions={() => (
         <Button>
           <Link
-            to={'/loans/create'}
+            to={'/loans/apply'}
             className="inline-flex items-center gap-0.5"
           >
             <span>

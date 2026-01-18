@@ -57,3 +57,27 @@ export const getMembersWithAccounts = createServerFn().handler(async () => {
     },
   })
 })
+
+export const getMemberDetailsById = createServerFn()
+  .inputValidator(MemberIdSchema.parse)
+  .handler(async ({ data }) => {
+    try {
+      const memberDetails = await db.query.members.findFirst({
+        where: (members, { eq }) => eq(members.id, data.memberId),
+        with: {
+          accounts: true,
+          loans: {
+            where: (loans, { eq }) => eq(loans.status, 'pending'),
+            limit: 1,
+          },
+        },
+      })
+
+      if (!memberDetails) {
+        throw new MemberNotFoundException()
+      }
+      return memberDetails
+    } catch (error) {
+      throw new MemberNotFoundException()
+    }
+  })
