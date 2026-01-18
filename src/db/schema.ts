@@ -25,15 +25,19 @@ const updatedAt = timestamp('updated_at', { withTimezone: true })
 
 const deletedAt = timestamp('deleted_at', { withTimezone: true })
 
+const timestamps = {
+  createdAt,
+  updatedAt,
+  deletedAt,
+}
+
 export const users = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   firstName: varchar('first_name', { length: 50 }).notNull(),
   lastName: varchar('last_name', { length: 50 }).notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: varchar('password').notNull(),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps
 })
 
 export const members = pgTable('members', {
@@ -48,9 +52,7 @@ export const members = pgTable('members', {
   address: text('address'),
   joinDate: date('join_date'),
   status: varchar('status', { length: 20 }),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps,
 })
 
 export const savingsProducts = pgTable('savings_products', {
@@ -59,9 +61,7 @@ export const savingsProducts = pgTable('savings_products', {
   description: text('description'),
   interestRate: decimal('interest_rate').notNull(),
   minimumBalance: decimal('minimum_balance').notNull(),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps,
   ///TODO: add minimum account withdrawal balance column
 })
 
@@ -78,9 +78,7 @@ export const savingsAccounts = pgTable('savings_accounts', {
   accountNumber: varchar('account_number', { length: 30 }),
   balance: decimal(),
   openedDate: date('opened_date').notNull(),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps,
 })
 
 export const loanProducts = pgTable('loan_products', {
@@ -91,9 +89,7 @@ export const loanProducts = pgTable('loan_products', {
   interestRate: decimal('interest_rate').notNull(),
   repaymentPeriodMonths: integer('repayment_period_months'),
   description: text(),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps,
 })
 
 const enums = pgEnum('installment_type', ['month', 'week', 'year'])
@@ -120,9 +116,7 @@ export const loans = pgTable('loans', {
   approvedBy: uuid('approved_by').references(() => users.id, {
     onDelete: 'cascade',
   }),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps,
 })
 
 // -- Loan Repayments: Scheduled or actual repayments
@@ -139,9 +133,7 @@ export const loanSchedules = pgTable('loan_schedules', {
   interestPaid: decimal('interest_paid'),
   balanceAfter: decimal('balance_after'),
   status: varchar('status', { length: 20 }),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps,
 })
 
 export const transactions = pgTable('transactions', {
@@ -167,9 +159,7 @@ export const transactions = pgTable('transactions', {
   payeeTelephone: varchar(),
   description: text('description'),
   status: varchar('status').default('pending'),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps,
 })
 
 export const savingsTransactions = pgTable('savings_transactions', {
@@ -193,9 +183,7 @@ export const savingsTransactions = pgTable('savings_transactions', {
   payeeTelephone: varchar(),
   description: text('description'),
   status: varchar('status').default('pending'),
-  createdAt,
-  updatedAt,
-  deletedAt,
+  ...timestamps,
 })
 
 // -- Audit Logs Table: Tracks all changes to important tables
