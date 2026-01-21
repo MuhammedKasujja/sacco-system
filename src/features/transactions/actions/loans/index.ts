@@ -126,11 +126,11 @@ const updateLoanStatus = async (loanId: string) => {
   )
 
   if (!hasPending) {
-    await db.update(loans).set({ status: 'paid' }).where(eq(loans.id, loanId))
+    await db.update(loans).set({ status: 'repaid' }).where(eq(loans.id, loanId))
   } else {
     await db
       .update(loans)
-      .set({ status: 'partial' })
+      .set({ status: 'performing' })
       .where(eq(loans.id, loanId))
   }
 }
@@ -140,8 +140,8 @@ export const getLoanTransactionsByMemberId = createServerFn()
   .handler(async ({ data }) => {
     const list = await db.query.transactions.findMany({
       where: eq(transactions.memberId, data.memberId),
-      with:{
-        loan:true 
+      with: {
+        loan: true,
       },
       limit: 10,
       orderBy: desc(transactions.createdAt),

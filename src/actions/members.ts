@@ -1,10 +1,11 @@
 import { db } from '@/db'
-import { members } from '@/db/schema'
+import { loans, members } from '@/db/schema'
 import { generateRandomString, getCurrentTime, hashPassword } from '@/lib/utils'
 import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createMemberAccountFn } from './accounts'
 import { AuditSevice } from '@/server/services/audit_service'
+import { eq, isNull, or } from 'drizzle-orm'
 
 export const EditMemberSchema = z.object({
   id: z.string().optional(),
@@ -37,6 +38,24 @@ export const fetchMembers = createServerFn().handler(() => {
     },
   })
 })
+
+export const fetchMembersEligibleForLoan = createServerFn().handler(
+  async () => {
+    return await db
+      .selectDistinct({
+        id: members.id,
+        idNumber: members.idNumber,
+        firstName: members.firstName,
+        lastName: members.lastName,
+        email: members.email,
+        phone: members.phone,
+      })
+      .from(members)
+      .leftJoin(loans, eq(members.id, loans.memberId))
+      .where(or(isNull(loans.id), eq(loans.status, 'repaid')))
+      .orderBy(members.id)
+  },
+)
 
 export const createMemberFn = createServerFn({ method: 'POST' })
   .inputValidator(EditMemberSchema.parse)

@@ -14,7 +14,26 @@ import {
   serial,
 } from 'drizzle-orm/pg-core'
 
-export const installmentTypeEnums = pgEnum('installment_types', ['month', 'week', 'year'])
+export const installmentTypeEnums = pgEnum('installment_types', [
+  'month',
+  'week',
+  'year',
+])
+
+export const loanStatusEnums = pgEnum('loan_statuses', [
+  'in-review',
+  'active',
+  'performing',
+  'overdue',
+  'repaid',
+  'canceled',
+])
+
+export const loanScheduleStatusEnums = pgEnum('loan_schedule_statuses', [
+  'pending',
+  'partial',
+  'paid',
+])
 
 const createdAt = timestamp('created_at', { withTimezone: true })
   .defaultNow()
@@ -39,7 +58,7 @@ export const users = pgTable('users', {
   lastName: varchar('last_name', { length: 50 }).notNull(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   password: varchar('password').notNull(),
-  ...timestamps
+  ...timestamps,
 })
 
 export const members = pgTable('members', {
@@ -112,7 +131,7 @@ export const loans = pgTable('loans', {
   // installmentType: enums,
   installmentType: installmentTypeEnums('installment_type').default('month'),
   disbursementDate: date('disbursement_date'),
-  status: varchar('status', { length: 20 }),
+  status: loanStatusEnums('status').notNull().default('in-review'),
   approvedBy: uuid('approved_by').references(() => users.id, {
     onDelete: 'cascade',
   }),
@@ -132,7 +151,7 @@ export const loanSchedules = pgTable('loan_schedules', {
   amount: decimal('amount').notNull(),
   interestPaid: decimal('interest_paid'),
   balanceAfter: decimal('balance_after'),
-  status: varchar('status', { length: 20 }),
+  status: loanScheduleStatusEnums('status').notNull().default('pending'),
   ...timestamps,
 })
 

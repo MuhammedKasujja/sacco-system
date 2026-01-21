@@ -19,3 +19,10 @@ export class LoanScheduleNotFoundException extends Error {
     this.message = 'Loan Schedule not found'
   }
 }
+
+export class LoanNotFoundException extends Error {
+  constructor() {
+    super()
+    this.message = 'Loan not found'
+  }
+}

@@ -30,7 +30,7 @@ export const createLoanFn = createServerFn({ method: 'POST' })
         installmentCount: data.repaymentPeriodInMonths.toString(),
         interestRate: data.interestRate.toString(),
         number: loanNumber,
-        status: 'pending',
+        status: 'in-review',
         installmentType: 'month',
       })
       .returning()

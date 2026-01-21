@@ -11,7 +11,11 @@ import {
   CardFooter,
 } from '@/components/ui/card'
 import z from 'zod'
-import { NumberField, TextareaField, TextField } from '@/components/ui/form-fields'
+import {
+  NumberField,
+  TextareaField,
+  TextField,
+} from '@/components/ui/form-fields'
 import { Field, FieldGroup } from '@/components/ui/field'
 import { Button } from '@/components/ui/button'
 import {
@@ -93,7 +97,11 @@ function RouteComponent() {
           <Button type="button" variant="outline" onClick={() => form.reset()}>
             Reset
           </Button>
-          <Button type="submit" form="form-member-registration">
+          <Button
+            type="submit"
+            form="form-member-registration"
+            disabled={form.formState.isSubmitting}
+          >
             Submit
           </Button>
         </Field>

@@ -1,5 +1,5 @@
 import { fetchLoanProducts } from '@/actions/loan_products'
-import { fetchMembers } from '@/actions/members'
+import { fetchMembersEligibleForLoan } from '@/actions/members'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -27,7 +27,7 @@ import z from 'zod/v3'
 export const Route = createFileRoute('/_app/loans/apply/')({
   loader: async () => ({
     loanProducts: await fetchLoanProducts(),
-    members: await fetchMembers(),
+    members: await fetchMembersEligibleForLoan(),
   }),
   component: RouteComponent,
 })
@@ -78,7 +78,6 @@ function RouteComponent() {
         { type: 'max', message: 'Principal should be below maximum Amount' },
         { shouldFocus: true },
       )
-      console.log('principalAmount', 'max', currentPrincipalAmount)
     } else {
       form.clearErrors('principalAmount')
     }

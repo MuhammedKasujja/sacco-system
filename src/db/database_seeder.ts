@@ -2,7 +2,9 @@ import { faker } from '@faker-js/faker'
 import {
   auditLogs,
   loanProducts,
+  loanScheduleStatusEnums,
   loanSchedules,
+  loanStatusEnums,
   loans,
   members,
   savingsAccounts,
@@ -32,13 +34,20 @@ const testMemberPassword = 'Password2!'
 const USERS_COUNT = 5
 const MEMBERS_COUNT = 5
 const LOANS_COUNT = 10
-const LOAN_PRODUCTS_COUNT = 5
 const LOAN_REPAYMENTS_COUNT = 52
 const SAVING_ACCOUNTS_COUNT = 5
 const SAVING_PRODUCTS_COUNT = 5
 const LOAN_TRANSACTIONS_COUNT = 140
 const SAVING_TRANSACTIONS_COUNT = 100
 const AUDIT_LOGS_COUNT = 5_0
+
+const LOAN_PRODUCTS = [
+  'Personal Loan',
+  'Business Loan',
+  'Agricultural Loan',
+  'Emergency Loan',
+  'Medical Loan',
+]
 
 export class DatabaseSeeder {
   private mockUsers: UserEntity[] = []
@@ -103,12 +112,7 @@ export class DatabaseSeeder {
             max: 500_000,
             dec: 2,
           }),
-          status: faker.helpers.arrayElement([
-            'pending',
-            'approved',
-            'rejected',
-            'repaid',
-          ]),
+          status: faker.helpers.arrayElement(loanStatusEnums.enumValues),
           createdAt: faker.date.recent({ days: 90 }),
           // Add more fields as needed
         })
@@ -257,11 +261,11 @@ export class DatabaseSeeder {
   }
 
   private async generateLoanProducts() {
-    for (let i = 0; i < LOAN_PRODUCTS_COUNT; i++) {
+    for (let product of LOAN_PRODUCTS) {
       const newProduct = await db
         .insert(loanProducts)
         .values({
-          productName: faker.finance.accountName(),
+          productName: product,
           description: faker.finance.transactionDescription(),
           repaymentPeriodMonths: faker.number.int({ min: 3, max: 36 }),
           interestRate: faker.finance.amount({ min: 2, max: 20, dec: 2 }),
@@ -281,8 +285,8 @@ export class DatabaseSeeder {
 
       this.mockLoanProducts.push(newProduct[0])
     }
-    console.log(`👥 Created ${LOAN_PRODUCTS_COUNT} loan products`)
-    return LOAN_PRODUCTS_COUNT
+    console.log(`👥 Created ${LOAN_PRODUCTS.length} loan products`)
+    return LOAN_PRODUCTS.length
   }
 
   private async generateLoanRepayments() {
@@ -306,11 +310,9 @@ export class DatabaseSeeder {
             dec: 0,
           }),
           balanceAfter: amount,
-          status: faker.helpers.arrayElement([
-            'pending',
-            'approved',
-            'rejected',
-          ]),
+          status: faker.helpers.arrayElement(
+            loanScheduleStatusEnums.enumValues,
+          ),
           createdAt: faker.date.recent({ days: 500 }),
         })
         .returning()
@@ -355,7 +357,7 @@ export class DatabaseSeeder {
     await this.generateUsers()
     await this.generateLoanProducts()
     await this.generateSavingProducts()
-    if(!includeTestData) return;
+    if (!includeTestData) return
     await this.generateMembers()
     await this.generateSavingAccounts()
     await this.generateLoans()
