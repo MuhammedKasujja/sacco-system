@@ -1,5 +1,5 @@
 import { fetchLoanProducts } from '@/actions/loan_products'
-import { fetchMembersEligibleForLoan } from '@/actions/members'
+import { fetchMembersEligibleForLoan, fetchMembers } from '@/actions/members'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -27,7 +27,7 @@ import z from 'zod/v3'
 export const Route = createFileRoute('/_app/loans/apply/')({
   loader: async () => ({
     loanProducts: await fetchLoanProducts(),
-    members: await fetchMembersEligibleForLoan(),
+    members: await fetchMembers(),
   }),
   component: RouteComponent,
 })
@@ -88,7 +88,8 @@ function RouteComponent() {
       const { message } = await createLoanFn({ data })
       toast.message(message)
     } catch (error) {
-      toast.error(error as any)
+      console.log(error)
+      toast.error(`${error}`)
     }
   }
 

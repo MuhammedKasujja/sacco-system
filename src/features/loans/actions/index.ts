@@ -1,3 +1,4 @@
+import { checkIfMemberEligibleForLoan } from '@/actions/members'
 import { db } from '@/db'
 import { loans } from '@/db/schema'
 import { generateLoanSchedulessFn } from '@/features/loan-schedules/actions'
@@ -14,12 +15,13 @@ export const EditLoanSchema = z.object({
   memberId: z.string(),
   loanProductId: z.string(),
   interestRate: z.coerce.number(),
-  repaymentPeriodInMonths: z.coerce.number({message: 'Required'}).min(1),
+  repaymentPeriodInMonths: z.coerce.number({ message: 'Required' }).min(1),
 })
 
 export const createLoanFn = createServerFn({ method: 'POST' })
   .inputValidator(EditLoanSchema.parse)
   .handler(async ({ data }) => {
+    await checkIfMemberEligibleForLoan({ data: { memberId: data.memberId } })
     const loanNumber = await generateNextLoanNumber()
     const [latestLoan] = await db
       .insert(loans)

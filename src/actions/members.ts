@@ -5,7 +5,9 @@ import { createServerFn } from '@tanstack/react-start'
 import z from 'zod'
 import { createMemberAccountFn } from './accounts'
 import { AuditSevice } from '@/server/services/audit_service'
-import { eq, isNull, or } from 'drizzle-orm'
+import { and, eq, isNull, ne, or } from 'drizzle-orm'
+import { MemberIdSchema } from '@/features/members/schemas'
+import { MemberHasOutstandingLoanException } from '@/server/execptions'
 
 export const EditMemberSchema = z.object({
   id: z.string().optional(),
@@ -95,3 +97,25 @@ async function generateNextMemberNumber() {
 
   return `M-${count}`
 }
+
+export const checkIfMemberEligibleForLoan = createServerFn()
+  .inputValidator(MemberIdSchema.parse)
+  .handler(async ({ data }) => {
+    try {
+      const [outstandingLoan] = await db
+        .selectDistinct({
+          id: members.id,
+        })
+        .from(members)
+        .leftJoin(loans, eq(members.id, loans.memberId))
+        .where(and(ne(loans.status, 'repaid'), eq(members.id, data.memberId)))
+        .orderBy(members.id)
+        .limit(1)
+      // if member has an outstanding loan, do not proceed
+      if (outstandingLoan) {
+        throw new MemberHasOutstandingLoanException()
+      }
+    } catch (error) {
+      throw new MemberHasOutstandingLoanException()
+    }
+  })

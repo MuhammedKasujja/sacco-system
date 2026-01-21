@@ -26,3 +26,10 @@ export class LoanNotFoundException extends Error {
     this.message = 'Loan not found'
   }
 }
+
+export class MemberHasOutstandingLoanException extends Error {
+  constructor() {
+    super()
+    this.message = 'Member has an outstanding Loan'
+  }
+}
