@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as ApiTestRouteImport } from './routes/api/test'
+import { Route as ApiDbSeedRouteImport } from './routes/api/db-seed'
 import { Route as AppUsersIndexRouteImport } from './routes/_app/users/index'
 import { Route as AppTransactionsIndexRouteImport } from './routes/_app/transactions/index'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
@@ -55,6 +56,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
 const ApiTestRoute = ApiTestRouteImport.update({
   id: '/api/test',
   path: '/api/test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDbSeedRoute = ApiDbSeedRouteImport.update({
+  id: '/api/db-seed',
+  path: '/api/db-seed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppUsersIndexRoute = AppUsersIndexRouteImport.update({
@@ -152,6 +158,7 @@ const AppLoanProductsEditIndexRoute =
 export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/api/db-seed': typeof ApiDbSeedRoute
   '/api/test': typeof ApiTestRoute
   '/': typeof AppIndexRoute
   '/accounts/$accountId': typeof AppAccountsAccountIdRoute
@@ -176,6 +183,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/api/db-seed': typeof ApiDbSeedRoute
   '/api/test': typeof ApiTestRoute
   '/': typeof AppIndexRoute
   '/accounts/$accountId': typeof AppAccountsAccountIdRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/api/db-seed': typeof ApiDbSeedRoute
   '/api/test': typeof ApiTestRoute
   '/_app/': typeof AppIndexRoute
   '/_app/accounts/$accountId': typeof AppAccountsAccountIdRoute
@@ -228,6 +237,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/login'
     | '/logout'
+    | '/api/db-seed'
     | '/api/test'
     | '/'
     | '/accounts/$accountId'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/logout'
+    | '/api/db-seed'
     | '/api/test'
     | '/'
     | '/accounts/$accountId'
@@ -277,6 +288,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/login'
     | '/logout'
+    | '/api/db-seed'
     | '/api/test'
     | '/_app/'
     | '/_app/accounts/$accountId'
@@ -303,6 +315,7 @@ export interface RootRouteChildren {
   AppRouteRoute: typeof AppRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
+  ApiDbSeedRoute: typeof ApiDbSeedRoute
   ApiTestRoute: typeof ApiTestRoute
 }
 
@@ -341,6 +354,13 @@ declare module '@tanstack/react-router' {
       path: '/api/test'
       fullPath: '/api/test'
       preLoaderRoute: typeof ApiTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/db-seed': {
+      id: '/api/db-seed'
+      path: '/api/db-seed'
+      fullPath: '/api/db-seed'
+      preLoaderRoute: typeof ApiDbSeedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/users/': {
@@ -524,6 +544,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRouteRoute: AppRouteRouteWithChildren,
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
+  ApiDbSeedRoute: ApiDbSeedRoute,
   ApiTestRoute: ApiTestRoute,
 }
 export const routeTree = rootRouteImport

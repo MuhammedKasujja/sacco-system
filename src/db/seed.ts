@@ -38,7 +38,7 @@ async function resetDb() {
   }
 }
 
-const main = async () => {
+export const main = async () => {
   console.log('\n\nSeeding data ...')
 
   await resetDb()
@@ -46,8 +46,8 @@ const main = async () => {
   await new DatabaseSeeder().build({ includeTestData: false })
 }
 
-main().finally(async () => {
-  // imediately terminate the connection after seeding data
-  console.log('*** Seeding successfully ***\n')
-  await db.$client.end()
-})
+// main().finally(async () => {
+//   // imediately terminate the connection after seeding data
+//   console.log('*** Seeding successfully ***\n')
+//   await db.$client.end()
+// })

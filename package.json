@@ -14,7 +14,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:reset": "drizzle-kit drop && drizzle-kit generate && drizzle-kit migrate",
     "db:seed": "drizzle-kit migrate && tsx ./src/db/seed.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "postinstall": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
