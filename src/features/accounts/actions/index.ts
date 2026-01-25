@@ -5,7 +5,7 @@ import { savingsAccounts, savingsTransactions } from '@/db/schema'
 import { getCurrentTime } from '@/lib/utils'
 import { getAccountByIdAndMemberId } from '../queries'
 import { eq } from 'drizzle-orm'
-import z from 'zod/v3'
+import z from 'zod'
 import { AuditSevice } from '@/server/services/audit_service'
 
 type TransactionType = 'withdrawal' | 'deposit'

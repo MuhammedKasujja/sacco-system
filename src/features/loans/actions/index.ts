@@ -5,17 +5,19 @@ import { generateLoanSchedulessFn } from '@/features/loan-schedules/actions'
 import { AuditSevice } from '@/server/services/audit_service'
 import { createServerFn } from '@tanstack/react-start'
 import { eq } from 'drizzle-orm'
-import z from 'zod/v3'
+import z from 'zod'
 
 export const EditLoanSchema = z.object({
   id: z.string().optional(),
   principalAmount: z.coerce
-    .number({ message: 'Principal amount is required' })
-    .min(1, { message: 'Principal amount must be at least 1' }),
-  memberId: z.string(),
-  loanProductId: z.string(),
-  interestRate: z.coerce.number(),
-  repaymentPeriodInMonths: z.coerce.number({ message: 'Required' }).min(1),
+    .number<number>({ error: 'Principal amount is required' })
+    .min(1, { error: 'Principal is required' }),
+  memberId: z.string().min(1, { error: 'Please choose member' }),
+  loanProductId: z.string({ error: 'Please select a loan product' }),
+  interestRate: z.coerce.number<number>(),
+  repaymentPeriodInMonths: z.coerce
+    .number<number>({ error: 'Required' })
+    .min(1),
 })
 
 export const createLoanFn = createServerFn({ method: 'POST' })

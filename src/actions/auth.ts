@@ -7,8 +7,8 @@ import { checkPassword } from '@/lib/utils'
 import { AuditSevice } from '@/server/services/audit_service'
 
 export const LoginSchema = z.object({
-  email: z.email().max(255),
-  password: z.string().min(8).max(100),
+  email: z.email().max(255).trim(),
+  password: z.string().min(8).max(100).trim(),
 })
 
 // Login server function
@@ -16,14 +16,17 @@ export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator((data) => LoginSchema.parse(data))
   .handler(async ({ data }) => {
     const user = await getUserByEmail({
-      data: { email: data.email },
+      data: { email: data.email.trim() },
     })
 
     if (!user) {
       return { error: 'Invalid credentials' }
     }
 
-    const isValidPassword = await checkPassword(data.password, user.password)
+    const isValidPassword = await checkPassword(
+      data.password.trim(),
+      user.password,
+    )
 
     if (!isValidPassword) {
       return { error: 'Invalid Email or Password' }

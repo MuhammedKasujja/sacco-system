@@ -67,7 +67,7 @@ export const getMemberDetailsById = createServerFn()
         with: {
           accounts: true,
           loans: {
-            where: (loans, { eq }) => eq(loans.status, 'pending'),
+            where: (loans, { ne }) => ne(loans.status, 'repaid'),
             limit: 1,
           },
         },

@@ -41,7 +41,7 @@ export const fetchMembers = createServerFn().handler(() => {
   })
 })
 
-export const fetchMembersEligibleForLoan = createServerFn().handler(
+export const fetchMembersEligibleForLoanFn = createServerFn().handler(
   async () => {
     return await db
       .selectDistinct({

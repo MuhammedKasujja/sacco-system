@@ -1,4 +1,4 @@
-import z from "zod/v3";
+import z from "zod";
 
 export const AccountIdSchema = z.object({
     accountId: z.string()
@@ -10,14 +10,14 @@ export const AccountWithMemberSchema = z.object({
 })
 
 export const WithdrawalMoneySchema = z.object({
-    amount: z.coerce.number(),
+    amount: z.coerce.number<number>(),
     memberId: z.string().min(2),
     accountId: z.string().min(2),
     purpose: z.string().optional(),
 })
 
 export const DepositMoneySchema = z.object({
-    amount: z.coerce.number(),
+    amount: z.coerce.number<number>(),
     memberId: z.string().min(2),
     accountId: z.string().min(2),
     purpose: z.string().optional(),

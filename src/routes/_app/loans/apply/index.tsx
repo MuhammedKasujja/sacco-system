@@ -1,5 +1,5 @@
 import { fetchLoanProducts } from '@/actions/loan_products'
-import { fetchMembersEligibleForLoan, fetchMembers } from '@/actions/members'
+import { fetchMembersEligibleForLoanFn } from '@/actions/members'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -22,12 +22,12 @@ import { createFileRoute, useRouterState } from '@tanstack/react-router'
 import { Activity, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import z from 'zod/v3'
+import z from 'zod'
 
 export const Route = createFileRoute('/_app/loans/apply/')({
   loader: async () => ({
     loanProducts: await fetchLoanProducts(),
-    members: await fetchMembers(),
+    members: await fetchMembersEligibleForLoanFn(),
   }),
   component: RouteComponent,
 })
