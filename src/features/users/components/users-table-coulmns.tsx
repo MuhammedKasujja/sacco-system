@@ -31,8 +31,8 @@ export function getUserTableColunms(): ColumnDef<UserEntity>[] {
     },
     {
       id: 'actions',
-      cell: ({}) => (
-        <EditUserFormDialog>
+      cell: ({row}) => (
+        <EditUserFormDialog userId={row.original.id}>
           <Button size={'icon-sm'} variant={'secondary'}>
             <Edit2Icon />
           </Button>
