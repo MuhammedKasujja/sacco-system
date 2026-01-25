@@ -94,7 +94,7 @@ function RouteComponent() {
               </form>
               <div className="bg-muted relative hidden md:block">
                 <img
-                  src="/tanstack-circle-logo.png"
+                  src="/sacco_logo.png"
                   alt="logo"
                   className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                 />
