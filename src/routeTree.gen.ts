@@ -9,91 +9,224 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as UsersIndexRouteImport } from './routes/users/index'
-import { Route as TransactionsIndexRouteImport } from './routes/transactions/index'
-import { Route as SettingsIndexRouteImport } from './routes/settings/index'
-import { Route as ReportsIndexRouteImport } from './routes/reports/index'
-import { Route as MembersIndexRouteImport } from './routes/members/index'
-import { Route as LoansIndexRouteImport } from './routes/loans/index'
-import { Route as LoanProductsIndexRouteImport } from './routes/loan-products/index'
+import { Route as LogoutRouteImport } from './routes/logout'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AppRouteRouteImport } from './routes/_app/route'
+import { Route as AppIndexRouteImport } from './routes/_app/index'
+import { Route as AppUsersIndexRouteImport } from './routes/_app/users/index'
+import { Route as AppTransactionsIndexRouteImport } from './routes/_app/transactions/index'
+import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index'
+import { Route as AppReportsIndexRouteImport } from './routes/_app/reports/index'
+import { Route as AppMembersIndexRouteImport } from './routes/_app/members/index'
+import { Route as AppLoansIndexRouteImport } from './routes/_app/loans/index'
+import { Route as AppLoanProductsIndexRouteImport } from './routes/_app/loan-products/index'
+import { Route as AppAccountsIndexRouteImport } from './routes/_app/accounts/index'
+import { Route as AppUsersEditRouteImport } from './routes/_app/users/edit'
+import { Route as AppMembersMemberIdRouteImport } from './routes/_app/members/$memberId'
+import { Route as AppLoansLoanIdRouteImport } from './routes/_app/loans/$loanId'
+import { Route as AppAccountsWithdrawalRouteImport } from './routes/_app/accounts/withdrawal'
+import { Route as AppAccountsDepositRouteImport } from './routes/_app/accounts/deposit'
+import { Route as AppAccountsAccountIdRouteImport } from './routes/_app/accounts/$accountId'
+import { Route as AppReportsAuditIndexRouteImport } from './routes/_app/reports/audit/index'
+import { Route as AppMembersEditIndexRouteImport } from './routes/_app/members/edit/index'
+import { Route as AppLoansApplyIndexRouteImport } from './routes/_app/loans/apply/index'
+import { Route as AppLoanProductsEditIndexRouteImport } from './routes/_app/loan-products/edit/index'
 
-const IndexRoute = IndexRouteImport.update({
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const UsersIndexRoute = UsersIndexRouteImport.update({
+const AppUsersIndexRoute = AppUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const TransactionsIndexRoute = TransactionsIndexRouteImport.update({
+const AppTransactionsIndexRoute = AppTransactionsIndexRouteImport.update({
   id: '/transactions/',
   path: '/transactions/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const SettingsIndexRoute = SettingsIndexRouteImport.update({
+const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const ReportsIndexRoute = ReportsIndexRouteImport.update({
+const AppReportsIndexRoute = AppReportsIndexRouteImport.update({
   id: '/reports/',
   path: '/reports/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const MembersIndexRoute = MembersIndexRouteImport.update({
+const AppMembersIndexRoute = AppMembersIndexRouteImport.update({
   id: '/members/',
   path: '/members/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const LoansIndexRoute = LoansIndexRouteImport.update({
+const AppLoansIndexRoute = AppLoansIndexRouteImport.update({
   id: '/loans/',
   path: '/loans/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const LoanProductsIndexRoute = LoanProductsIndexRouteImport.update({
+const AppLoanProductsIndexRoute = AppLoanProductsIndexRouteImport.update({
   id: '/loan-products/',
   path: '/loan-products/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AppRouteRoute,
 } as any)
+const AppAccountsIndexRoute = AppAccountsIndexRouteImport.update({
+  id: '/accounts/',
+  path: '/accounts/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppUsersEditRoute = AppUsersEditRouteImport.update({
+  id: '/users/edit',
+  path: '/users/edit',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppMembersMemberIdRoute = AppMembersMemberIdRouteImport.update({
+  id: '/members/$memberId',
+  path: '/members/$memberId',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppLoansLoanIdRoute = AppLoansLoanIdRouteImport.update({
+  id: '/loans/$loanId',
+  path: '/loans/$loanId',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAccountsWithdrawalRoute = AppAccountsWithdrawalRouteImport.update({
+  id: '/accounts/withdrawal',
+  path: '/accounts/withdrawal',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAccountsDepositRoute = AppAccountsDepositRouteImport.update({
+  id: '/accounts/deposit',
+  path: '/accounts/deposit',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAccountsAccountIdRoute = AppAccountsAccountIdRouteImport.update({
+  id: '/accounts/$accountId',
+  path: '/accounts/$accountId',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppReportsAuditIndexRoute = AppReportsAuditIndexRouteImport.update({
+  id: '/reports/audit/',
+  path: '/reports/audit/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppMembersEditIndexRoute = AppMembersEditIndexRouteImport.update({
+  id: '/members/edit/',
+  path: '/members/edit/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppLoansApplyIndexRoute = AppLoansApplyIndexRouteImport.update({
+  id: '/loans/apply/',
+  path: '/loans/apply/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppLoanProductsEditIndexRoute =
+  AppLoanProductsEditIndexRouteImport.update({
+    id: '/loan-products/edit/',
+    path: '/loan-products/edit/',
+    getParentRoute: () => AppRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/loan-products': typeof LoanProductsIndexRoute
-  '/loans': typeof LoansIndexRoute
-  '/members': typeof MembersIndexRoute
-  '/reports': typeof ReportsIndexRoute
-  '/settings': typeof SettingsIndexRoute
-  '/transactions': typeof TransactionsIndexRoute
-  '/users': typeof UsersIndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/': typeof AppIndexRoute
+  '/accounts/$accountId': typeof AppAccountsAccountIdRoute
+  '/accounts/deposit': typeof AppAccountsDepositRoute
+  '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
+  '/loans/$loanId': typeof AppLoansLoanIdRoute
+  '/members/$memberId': typeof AppMembersMemberIdRoute
+  '/users/edit': typeof AppUsersEditRoute
+  '/accounts': typeof AppAccountsIndexRoute
+  '/loan-products': typeof AppLoanProductsIndexRoute
+  '/loans': typeof AppLoansIndexRoute
+  '/members': typeof AppMembersIndexRoute
+  '/reports': typeof AppReportsIndexRoute
+  '/settings': typeof AppSettingsIndexRoute
+  '/transactions': typeof AppTransactionsIndexRoute
+  '/users': typeof AppUsersIndexRoute
+  '/loan-products/edit': typeof AppLoanProductsEditIndexRoute
+  '/loans/apply': typeof AppLoansApplyIndexRoute
+  '/members/edit': typeof AppMembersEditIndexRoute
+  '/reports/audit': typeof AppReportsAuditIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/loan-products': typeof LoanProductsIndexRoute
-  '/loans': typeof LoansIndexRoute
-  '/members': typeof MembersIndexRoute
-  '/reports': typeof ReportsIndexRoute
-  '/settings': typeof SettingsIndexRoute
-  '/transactions': typeof TransactionsIndexRoute
-  '/users': typeof UsersIndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/': typeof AppIndexRoute
+  '/accounts/$accountId': typeof AppAccountsAccountIdRoute
+  '/accounts/deposit': typeof AppAccountsDepositRoute
+  '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
+  '/loans/$loanId': typeof AppLoansLoanIdRoute
+  '/members/$memberId': typeof AppMembersMemberIdRoute
+  '/users/edit': typeof AppUsersEditRoute
+  '/accounts': typeof AppAccountsIndexRoute
+  '/loan-products': typeof AppLoanProductsIndexRoute
+  '/loans': typeof AppLoansIndexRoute
+  '/members': typeof AppMembersIndexRoute
+  '/reports': typeof AppReportsIndexRoute
+  '/settings': typeof AppSettingsIndexRoute
+  '/transactions': typeof AppTransactionsIndexRoute
+  '/users': typeof AppUsersIndexRoute
+  '/loan-products/edit': typeof AppLoanProductsEditIndexRoute
+  '/loans/apply': typeof AppLoansApplyIndexRoute
+  '/members/edit': typeof AppMembersEditIndexRoute
+  '/reports/audit': typeof AppReportsAuditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/loan-products/': typeof LoanProductsIndexRoute
-  '/loans/': typeof LoansIndexRoute
-  '/members/': typeof MembersIndexRoute
-  '/reports/': typeof ReportsIndexRoute
-  '/settings/': typeof SettingsIndexRoute
-  '/transactions/': typeof TransactionsIndexRoute
-  '/users/': typeof UsersIndexRoute
+  '/_app': typeof AppRouteRouteWithChildren
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/_app/': typeof AppIndexRoute
+  '/_app/accounts/$accountId': typeof AppAccountsAccountIdRoute
+  '/_app/accounts/deposit': typeof AppAccountsDepositRoute
+  '/_app/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
+  '/_app/loans/$loanId': typeof AppLoansLoanIdRoute
+  '/_app/members/$memberId': typeof AppMembersMemberIdRoute
+  '/_app/users/edit': typeof AppUsersEditRoute
+  '/_app/accounts/': typeof AppAccountsIndexRoute
+  '/_app/loan-products/': typeof AppLoanProductsIndexRoute
+  '/_app/loans/': typeof AppLoansIndexRoute
+  '/_app/members/': typeof AppMembersIndexRoute
+  '/_app/reports/': typeof AppReportsIndexRoute
+  '/_app/settings/': typeof AppSettingsIndexRoute
+  '/_app/transactions/': typeof AppTransactionsIndexRoute
+  '/_app/users/': typeof AppUsersIndexRoute
+  '/_app/loan-products/edit/': typeof AppLoanProductsEditIndexRoute
+  '/_app/loans/apply/': typeof AppLoansApplyIndexRoute
+  '/_app/members/edit/': typeof AppMembersEditIndexRoute
+  '/_app/reports/audit/': typeof AppReportsAuditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/login'
+    | '/logout'
     | '/'
+    | '/accounts/$accountId'
+    | '/accounts/deposit'
+    | '/accounts/withdrawal'
+    | '/loans/$loanId'
+    | '/members/$memberId'
+    | '/users/edit'
+    | '/accounts'
     | '/loan-products'
     | '/loans'
     | '/members'
@@ -101,9 +234,22 @@ export interface FileRouteTypes {
     | '/settings'
     | '/transactions'
     | '/users'
+    | '/loan-products/edit'
+    | '/loans/apply'
+    | '/members/edit'
+    | '/reports/audit'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/login'
+    | '/logout'
     | '/'
+    | '/accounts/$accountId'
+    | '/accounts/deposit'
+    | '/accounts/withdrawal'
+    | '/loans/$loanId'
+    | '/members/$memberId'
+    | '/users/edit'
+    | '/accounts'
     | '/loan-products'
     | '/loans'
     | '/members'
@@ -111,99 +257,253 @@ export interface FileRouteTypes {
     | '/settings'
     | '/transactions'
     | '/users'
+    | '/loan-products/edit'
+    | '/loans/apply'
+    | '/members/edit'
+    | '/reports/audit'
   id:
     | '__root__'
-    | '/'
-    | '/loan-products/'
-    | '/loans/'
-    | '/members/'
-    | '/reports/'
-    | '/settings/'
-    | '/transactions/'
-    | '/users/'
+    | '/_app'
+    | '/login'
+    | '/logout'
+    | '/_app/'
+    | '/_app/accounts/$accountId'
+    | '/_app/accounts/deposit'
+    | '/_app/accounts/withdrawal'
+    | '/_app/loans/$loanId'
+    | '/_app/members/$memberId'
+    | '/_app/users/edit'
+    | '/_app/accounts/'
+    | '/_app/loan-products/'
+    | '/_app/loans/'
+    | '/_app/members/'
+    | '/_app/reports/'
+    | '/_app/settings/'
+    | '/_app/transactions/'
+    | '/_app/users/'
+    | '/_app/loan-products/edit/'
+    | '/_app/loans/apply/'
+    | '/_app/members/edit/'
+    | '/_app/reports/audit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  LoanProductsIndexRoute: typeof LoanProductsIndexRoute
-  LoansIndexRoute: typeof LoansIndexRoute
-  MembersIndexRoute: typeof MembersIndexRoute
-  ReportsIndexRoute: typeof ReportsIndexRoute
-  SettingsIndexRoute: typeof SettingsIndexRoute
-  TransactionsIndexRoute: typeof TransactionsIndexRoute
-  UsersIndexRoute: typeof UsersIndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AppRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/users/': {
-      id: '/users/'
+    '/_app/users/': {
+      id: '/_app/users/'
       path: '/users'
       fullPath: '/users'
-      preLoaderRoute: typeof UsersIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppUsersIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/transactions/': {
-      id: '/transactions/'
+    '/_app/transactions/': {
+      id: '/_app/transactions/'
       path: '/transactions'
       fullPath: '/transactions'
-      preLoaderRoute: typeof TransactionsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppTransactionsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/settings/': {
-      id: '/settings/'
+    '/_app/settings/': {
+      id: '/_app/settings/'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof SettingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppSettingsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/reports/': {
-      id: '/reports/'
+    '/_app/reports/': {
+      id: '/_app/reports/'
       path: '/reports'
       fullPath: '/reports'
-      preLoaderRoute: typeof ReportsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppReportsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/members/': {
-      id: '/members/'
+    '/_app/members/': {
+      id: '/_app/members/'
       path: '/members'
       fullPath: '/members'
-      preLoaderRoute: typeof MembersIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppMembersIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/loans/': {
-      id: '/loans/'
+    '/_app/loans/': {
+      id: '/_app/loans/'
       path: '/loans'
       fullPath: '/loans'
-      preLoaderRoute: typeof LoansIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppLoansIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/loan-products/': {
-      id: '/loan-products/'
+    '/_app/loan-products/': {
+      id: '/_app/loan-products/'
       path: '/loan-products'
       fullPath: '/loan-products'
-      preLoaderRoute: typeof LoanProductsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AppLoanProductsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/accounts/': {
+      id: '/_app/accounts/'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AppAccountsIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/users/edit': {
+      id: '/_app/users/edit'
+      path: '/users/edit'
+      fullPath: '/users/edit'
+      preLoaderRoute: typeof AppUsersEditRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/members/$memberId': {
+      id: '/_app/members/$memberId'
+      path: '/members/$memberId'
+      fullPath: '/members/$memberId'
+      preLoaderRoute: typeof AppMembersMemberIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/loans/$loanId': {
+      id: '/_app/loans/$loanId'
+      path: '/loans/$loanId'
+      fullPath: '/loans/$loanId'
+      preLoaderRoute: typeof AppLoansLoanIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/accounts/withdrawal': {
+      id: '/_app/accounts/withdrawal'
+      path: '/accounts/withdrawal'
+      fullPath: '/accounts/withdrawal'
+      preLoaderRoute: typeof AppAccountsWithdrawalRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/accounts/deposit': {
+      id: '/_app/accounts/deposit'
+      path: '/accounts/deposit'
+      fullPath: '/accounts/deposit'
+      preLoaderRoute: typeof AppAccountsDepositRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/accounts/$accountId': {
+      id: '/_app/accounts/$accountId'
+      path: '/accounts/$accountId'
+      fullPath: '/accounts/$accountId'
+      preLoaderRoute: typeof AppAccountsAccountIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/reports/audit/': {
+      id: '/_app/reports/audit/'
+      path: '/reports/audit'
+      fullPath: '/reports/audit'
+      preLoaderRoute: typeof AppReportsAuditIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/members/edit/': {
+      id: '/_app/members/edit/'
+      path: '/members/edit'
+      fullPath: '/members/edit'
+      preLoaderRoute: typeof AppMembersEditIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/loans/apply/': {
+      id: '/_app/loans/apply/'
+      path: '/loans/apply'
+      fullPath: '/loans/apply'
+      preLoaderRoute: typeof AppLoansApplyIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/loan-products/edit/': {
+      id: '/_app/loan-products/edit/'
+      path: '/loan-products/edit'
+      fullPath: '/loan-products/edit'
+      preLoaderRoute: typeof AppLoanProductsEditIndexRouteImport
+      parentRoute: typeof AppRouteRoute
     }
   }
 }
 
+interface AppRouteRouteChildren {
+  AppIndexRoute: typeof AppIndexRoute
+  AppAccountsAccountIdRoute: typeof AppAccountsAccountIdRoute
+  AppAccountsDepositRoute: typeof AppAccountsDepositRoute
+  AppAccountsWithdrawalRoute: typeof AppAccountsWithdrawalRoute
+  AppLoansLoanIdRoute: typeof AppLoansLoanIdRoute
+  AppMembersMemberIdRoute: typeof AppMembersMemberIdRoute
+  AppUsersEditRoute: typeof AppUsersEditRoute
+  AppAccountsIndexRoute: typeof AppAccountsIndexRoute
+  AppLoanProductsIndexRoute: typeof AppLoanProductsIndexRoute
+  AppLoansIndexRoute: typeof AppLoansIndexRoute
+  AppMembersIndexRoute: typeof AppMembersIndexRoute
+  AppReportsIndexRoute: typeof AppReportsIndexRoute
+  AppSettingsIndexRoute: typeof AppSettingsIndexRoute
+  AppTransactionsIndexRoute: typeof AppTransactionsIndexRoute
+  AppUsersIndexRoute: typeof AppUsersIndexRoute
+  AppLoanProductsEditIndexRoute: typeof AppLoanProductsEditIndexRoute
+  AppLoansApplyIndexRoute: typeof AppLoansApplyIndexRoute
+  AppMembersEditIndexRoute: typeof AppMembersEditIndexRoute
+  AppReportsAuditIndexRoute: typeof AppReportsAuditIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppIndexRoute: AppIndexRoute,
+  AppAccountsAccountIdRoute: AppAccountsAccountIdRoute,
+  AppAccountsDepositRoute: AppAccountsDepositRoute,
+  AppAccountsWithdrawalRoute: AppAccountsWithdrawalRoute,
+  AppLoansLoanIdRoute: AppLoansLoanIdRoute,
+  AppMembersMemberIdRoute: AppMembersMemberIdRoute,
+  AppUsersEditRoute: AppUsersEditRoute,
+  AppAccountsIndexRoute: AppAccountsIndexRoute,
+  AppLoanProductsIndexRoute: AppLoanProductsIndexRoute,
+  AppLoansIndexRoute: AppLoansIndexRoute,
+  AppMembersIndexRoute: AppMembersIndexRoute,
+  AppReportsIndexRoute: AppReportsIndexRoute,
+  AppSettingsIndexRoute: AppSettingsIndexRoute,
+  AppTransactionsIndexRoute: AppTransactionsIndexRoute,
+  AppUsersIndexRoute: AppUsersIndexRoute,
+  AppLoanProductsEditIndexRoute: AppLoanProductsEditIndexRoute,
+  AppLoansApplyIndexRoute: AppLoansApplyIndexRoute,
+  AppMembersEditIndexRoute: AppMembersEditIndexRoute,
+  AppReportsAuditIndexRoute: AppReportsAuditIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  LoanProductsIndexRoute: LoanProductsIndexRoute,
-  LoansIndexRoute: LoansIndexRoute,
-  MembersIndexRoute: MembersIndexRoute,
-  ReportsIndexRoute: ReportsIndexRoute,
-  SettingsIndexRoute: SettingsIndexRoute,
-  TransactionsIndexRoute: TransactionsIndexRoute,
-  UsersIndexRoute: UsersIndexRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
