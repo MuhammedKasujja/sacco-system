@@ -1,5 +1,4 @@
 import { LoanRepaymentEntitty } from '@/features/loans/queries'
-import { useIsMobile } from '@/hooks/use-mobile'
 import { Button } from '@/components/ui/button'
 import { CreditCardIcon } from 'lucide-react'
 import { EditLoanRepaymentTransactionSchema } from '@/features/transactions/schemas'
@@ -14,7 +13,7 @@ import {
   TextField,
 } from '@/components/ui/form-fields'
 import { FieldGroup } from '@/components/ui/field'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from '@tanstack/react-router'
 import {
   Dialog,
@@ -38,7 +37,6 @@ export function MakeLoanRepayment({
 }: MakeLoanRepaymentProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const isMobile = useIsMobile()
 
   const form = useForm<z.infer<typeof EditLoanRepaymentTransactionSchema>>({
     resolver: zodResolver(EditLoanRepaymentTransactionSchema),
@@ -48,6 +46,19 @@ export function MakeLoanRepayment({
       scheduleId: repayment.id,
     },
   })
+
+  const amount = form.watch('amount')
+
+  useEffect(() => {
+    if (amount > Number(repayment.balanceAfter)) {
+      form.setError('amount', {
+        type: 'max',
+        message: `Amount should not exceed balance of ${repayment.balanceAfter}`,
+      })
+    } else {
+      form.clearErrors('amount')
+    }
+  }, [amount])
 
   async function onSubmit(
     data: z.infer<typeof EditLoanRepaymentTransactionSchema>,
@@ -71,7 +82,7 @@ export function MakeLoanRepayment({
           Pay
         </Button>
       </DialogTrigger>
-      <DialogContent className='w-full sm:max-w-md'>
+      <DialogContent className="w-full sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Make Payment - {loanNumber}</DialogTitle>
           <DialogDescription className="w-full" asChild>
