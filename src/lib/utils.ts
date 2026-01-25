@@ -27,9 +27,15 @@ export function getCurrentTime() {
 }
 
 export function generateRandomString(length: number): string {
-  const array = new Uint8Array(length);
-  crypto.getRandomValues(array);
+  const array = new Uint8Array(length)
+  crypto.getRandomValues(array)
   return Array.from(array, (byte) =>
-    ("0" + (byte % 36).toString(36)).slice(-1),
-  ).join("");
+    ('0' + (byte % 36).toString(36)).slice(-1),
+  ).join('')
+}
+
+export async function delayedFn(callback: () => void, seconds: number = 1) {
+  return await Promise.resolve(() => {
+    setTimeout(() => callback, seconds * 1000)
+  })
 }

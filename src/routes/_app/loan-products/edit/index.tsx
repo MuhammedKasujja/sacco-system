@@ -37,6 +37,7 @@ function RouteComponent() {
     const { status, message } = await createLoanProductFn({ data })
     if (status == 'success') {
       toast.success(message)
+      form.reset()
     } else {
       toast.error('Failed to create loan product')
     }

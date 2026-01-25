@@ -88,7 +88,11 @@ export const createMemberFn = createServerFn({ method: 'POST' })
     // const account =
     await createMemberAccountFn({ data: { memberId: createdMember.id } })
 
-    return { status: 'success', message: 'Member created successfully' }
+    return {
+      status: 'success',
+      message: 'Member created successfully',
+      data: { memberId: createdMember.id },
+    }
   })
 
 async function generateNextMemberNumber() {

@@ -87,8 +87,8 @@ function RouteComponent() {
     try {
       const { message } = await createLoanFn({ data })
       toast.message(message)
+      form.reset()
     } catch (error) {
-      console.log(error)
       toast.error(`${error}`)
     }
   }

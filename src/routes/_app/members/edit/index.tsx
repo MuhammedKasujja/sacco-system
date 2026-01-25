@@ -1,6 +1,6 @@
 import { createMemberFn, EditMemberSchema } from '@/actions/members'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import {
@@ -25,15 +25,23 @@ export const Route = createFileRoute('/_app/members/edit/')({
 })
 
 function RouteComponent() {
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof EditMemberSchema>>({
     resolver: zodResolver(EditMemberSchema),
     defaultValues: {},
   })
 
   async function onSubmit(data: z.infer<typeof EditMemberSchema>) {
-    const { status, message } = await createMemberFn({ data })
+    const { status, message, data: response } = await createMemberFn({ data })
     if (status == 'success') {
       toast.success(message)
+      form.reset()
+      // delayedFn(() => {
+        navigate({
+          to: '/members/$memberId',
+          params: { memberId: response.memberId },
+        })
+      // })
     } else {
       toast.error('Failed to create member')
     }
