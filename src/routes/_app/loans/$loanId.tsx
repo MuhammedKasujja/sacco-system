@@ -79,24 +79,30 @@ function getLoanRemaymentColumns({
 }): ColumnDef<LoanRepaymentEntitty>[] {
   return [
     {
+      id: 'reapymentDate',
+      header: 'Repayment Date',
+      cell: ({ row }) => <div>{formatDate(row.original.repaymentDate)}</div>,
+    },
+    {
       id: 'amount',
       header: 'Amount',
       cell: ({ row }) => <div>{formatMoney(row.original.amount)}</div>,
     },
     {
-      id: 'interestRate',
-      header: 'Interest Rate',
-      cell: ({ row }) => <div>{row.original.interestPaid}%</div>,
-    },
-    {
-      id: 'createdAt',
-      header: 'Repayment Date',
-      cell: ({ row }) => <div>{formatDate(row.original.repaymentDate)}</div>,
+      id: 'paid',
+      header: 'Paid',
+      cell: ({ row }) => (
+        <div>
+          {row.original.totalAmountPaid
+            ? formatMoney(row.original.totalAmountPaid)
+            : '-'}
+        </div>
+      ),
     },
     {
       id: 'status',
       header: 'Status',
-      cell: ({ row }) => <div>{row.original.status}</div>,
+      cell: ({ row }) => <Badge variant={'outline'}>{row.original.status}</Badge>,
     },
     {
       id: 'actions',

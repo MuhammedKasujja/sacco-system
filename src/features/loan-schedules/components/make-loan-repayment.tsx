@@ -1,15 +1,5 @@
 import { LoanRepaymentEntitty } from '@/features/loans/queries'
 import { useIsMobile } from '@/hooks/use-mobile'
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { CreditCardIcon } from 'lucide-react'
 import { EditLoanRepaymentTransactionSchema } from '@/features/transactions/schemas'
@@ -23,9 +13,19 @@ import {
   NumberField,
   TextField,
 } from '@/components/ui/form-fields'
-import { Field, FieldGroup } from '@/components/ui/field'
+import { FieldGroup } from '@/components/ui/field'
 import { useState } from 'react'
 import { useRouter } from '@tanstack/react-router'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 
 type MakeLoanRepaymentProps = {
   repayment: LoanRepaymentEntitty
@@ -64,17 +64,17 @@ export function MakeLoanRepayment({
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <Button variant={'outline'} size={'sm'}>
           <CreditCardIcon data-icon="inline-start" />
           Pay
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent size="default">
-        <AlertDialogHeader>
-          <AlertDialogTitle>Make Payment - {loanNumber}</AlertDialogTitle>
-          <AlertDialogDescription className="w-full" asChild>
+      </DialogTrigger>
+      <DialogContent className='w-full sm:max-w-md'>
+        <DialogHeader>
+          <DialogTitle>Make Payment - {loanNumber}</DialogTitle>
+          <DialogDescription className="w-full" asChild>
             <form
               id="form-edit-repayment"
               onSubmit={form.handleSubmit(onSubmit)}
@@ -99,18 +99,18 @@ export function MakeLoanRepayment({
                 />
               </FieldGroup>
             </form>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <Field orientation={'horizontal'} className="justify-end">
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <Button type="submit" form="form-edit-repayment">
-              Submit
-            </Button>
-          </Field>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant={'outline'}>Cancel</Button>
+          </DialogClose>
+          <Button type="submit" form="form-edit-repayment">
+            Submit
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 
   //   return (

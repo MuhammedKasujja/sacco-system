@@ -27,7 +27,7 @@ export function getAccountTransactionsTableColumns(): ColumnDef<AccountTransacti
     },
     {
       id: 'createdAt',
-      header: 'Repayment Date',
+      header: 'Transaction Date',
       cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
     },
     {

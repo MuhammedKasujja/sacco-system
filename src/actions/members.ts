@@ -81,7 +81,7 @@ export const createMemberFn = createServerFn({ method: 'POST' })
         number,
       })
       .returning()
-    AuditSevice.createMemberAuditLog({
+    await AuditSevice.createMemberAuditLog({
       eventType: data.id ? 'MEMBER_UPDATED' : 'MEMBER_CREATED',
       entityId: createdMember.id,
     })

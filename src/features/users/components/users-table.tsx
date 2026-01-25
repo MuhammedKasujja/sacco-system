@@ -1,10 +1,10 @@
 import { UserEntity } from '@/actions/users'
 import { DataTable } from '@/components/data-table-old'
 import { Button } from '@/components/ui/button'
-import { Link } from '@tanstack/react-router'
 import { Plus } from 'lucide-react'
 import { getUserTableColunms } from './users-table-coulmns'
 import { useMemo } from 'react'
+import { EditUserFormDialog } from './forms/edit-user-form-dialog'
 
 type UsersTableProps = {
   data: UserEntity[]
@@ -22,14 +22,14 @@ export function UsersTable({ data }: UsersTableProps) {
       data={data}
       onSearch={handleSearch}
       tableActions={() => (
-        <Button>
-          <Link to={'/users/edit'} className="inline-flex items-center gap-0.5">
+        <EditUserFormDialog>
+          <Button>
             <span>
               <Plus />
             </span>
             New User
-          </Link>
-        </Button>
+          </Button>
+        </EditUserFormDialog>
       )}
     />
   )

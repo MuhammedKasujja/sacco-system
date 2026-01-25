@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { formatDate } from '@/lib/formatting'
 import { ColumnDef } from '@tanstack/react-table'
 import { Edit2Icon } from 'lucide-react'
+import { EditUserFormDialog } from './forms/edit-user-form-dialog'
 
 export function getUserTableColunms(): ColumnDef<UserEntity>[] {
   return [
@@ -30,10 +31,12 @@ export function getUserTableColunms(): ColumnDef<UserEntity>[] {
     },
     {
       id: 'actions',
-      cell: ({ row }) => (
-        <Button size={'icon-sm'} variant={'secondary'}>
-          <Edit2Icon />
-        </Button>
+      cell: ({}) => (
+        <EditUserFormDialog>
+          <Button size={'icon-sm'} variant={'secondary'}>
+            <Edit2Icon />
+          </Button>
+        </EditUserFormDialog>
       ),
     },
   ]
