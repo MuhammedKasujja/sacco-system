@@ -30,6 +30,12 @@ const testUserPassword = 'Password2'
 
 const testMemberPassword = 'Password2!'
 
+const testAdminAccount = {
+  email: 'admin@sacco.com',
+  firstName: 'Muhammed',
+  lastName: 'Kasujja',
+}
+
 /// Row counts for test data per table
 const USERS_COUNT = 5
 const MEMBERS_COUNT = 5
@@ -60,6 +66,20 @@ export class DatabaseSeeder {
   private mockLoanTransactions: TransactionEntity[] = []
   private mockSavingTransactions: TransactionEntity[] = []
 
+  private async createDefaultAdminAccount() {
+    const password = await hashPassword(testUserPassword)
+    await db
+      .insert(users)
+      .values({
+        firstName: testAdminAccount.firstName,
+        lastName: testAdminAccount.lastName,
+        email: testAdminAccount.email,
+        password: password, // In real app: hash this!
+        createdAt: faker.date.recent({ days: 100 }),
+      })
+      .returning()
+  }
+
   private async generateUsers() {
     for (let i = 0; i < USERS_COUNT; i++) {
       const firstName = faker.person.firstName()
@@ -69,7 +89,7 @@ export class DatabaseSeeder {
 
       const password = await hashPassword(testUserPassword)
 
-      const user = await db
+      const [user] = await db
         .insert(users)
         .values({
           firstName,
@@ -80,7 +100,7 @@ export class DatabaseSeeder {
         })
         .returning()
 
-      this.mockUsers.push(user[0])
+      this.mockUsers.push(user)
     }
     console.log(`👥 Created ${USERS_COUNT} users`)
     return USERS_COUNT
@@ -354,6 +374,7 @@ export class DatabaseSeeder {
   }
 
   async build({ includeTestData = false }: { includeTestData?: boolean }) {
+    await this.createDefaultAdminAccount()
     await this.generateUsers()
     await this.generateLoanProducts()
     await this.generateSavingProducts()
