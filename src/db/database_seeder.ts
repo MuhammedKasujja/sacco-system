@@ -1,3 +1,7 @@
+// make sure to load env variables
+import 'dotenv/config'
+/////////////////////////////////////
+
 import { faker } from '@faker-js/faker'
 import {
   auditLogs,
@@ -373,7 +377,34 @@ export class DatabaseSeeder {
     return AUDIT_LOGS_COUNT
   }
 
-  async build({ includeTestData = false }: { includeTestData?: boolean }) {
+  private async cleanDb() {
+    try {
+      // console.log('Current Env:', process.env)
+      // const result = await db.execute(sql`SELECT current_database()`)
+      // console.log('Connected to database:', result.rows)
+
+      /// clear data base
+      await db.delete(loans)
+      await db.delete(loanProducts)
+      await db.delete(loanSchedules)
+      await db.delete(savingsAccounts)
+      await db.delete(savingsProducts)
+      await db.delete(auditLogs)
+      await db.delete(transactions)
+      await db.delete(users)
+      await db.delete(members)
+
+      console.log('🗑️  Cleared existing data')
+    } catch (error) {
+      console.warn('⚠️  Some tables might not exist yet — continuing', error)
+    }
+  }
+
+  private async build({
+    includeTestData = false,
+  }: {
+    includeTestData?: boolean
+  }) {
     await this.createDefaultAdminAccount()
     await this.generateUsers()
     await this.generateLoanProducts()
@@ -386,5 +417,11 @@ export class DatabaseSeeder {
     await this.generateLoanTransactions()
     await this.generateSavingTransactions()
     await this.generateAuditLogs()
+  }
+
+  async seed({ includeTestData = false }: { includeTestData?: boolean }) {
+    await this.cleanDb()
+
+    await this.build({ includeTestData })
   }
 }
