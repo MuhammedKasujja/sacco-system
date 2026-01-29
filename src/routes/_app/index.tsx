@@ -23,7 +23,8 @@ function RouteComponent() {
   const statistics = Route.useLoaderData()
   return (
     <div className='space-y-5'>
-      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+      {/* <div className="grid auto-rows-min gap-4 md:grid-cols-3"> */}
+      <div className='*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:shadow-xs md:grid-cols-3'>
         <Card className="bg-muted/50 text-2xl font-semibold">
           <CardHeader>
             <CardDescription>Total Members</CardDescription>

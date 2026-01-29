@@ -1,4 +1,4 @@
-import { main } from '@/db/seed'
+import { DatabaseSeeder } from '@/db/database_seeder'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/api/db-seed')({
@@ -6,7 +6,7 @@ export const Route = createFileRoute('/api/db-seed')({
     handlers: {
       GET: async () => {
         try {
-          await main()
+          new DatabaseSeeder().seed({ includeTestData: false })
           return Response.json({
             success: true,
             message: 'Seeding DB successfully',
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/api/db-seed')({
         } catch (error) {
           return Response.json({ success: false, error })
         } finally {
-        //   await db.$client.end()
+          //   await db.$client.end()
         }
       },
     },

@@ -156,29 +156,29 @@ const AppLoanProductsEditIndexRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AppIndexRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/api/db-seed': typeof ApiDbSeedRoute
   '/api/test': typeof ApiTestRoute
-  '/': typeof AppIndexRoute
   '/accounts/$accountId': typeof AppAccountsAccountIdRoute
   '/accounts/deposit': typeof AppAccountsDepositRoute
   '/accounts/withdrawal': typeof AppAccountsWithdrawalRoute
   '/loans/$loanId': typeof AppLoansLoanIdRoute
   '/members/$memberId': typeof AppMembersMemberIdRoute
   '/users/edit': typeof AppUsersEditRoute
-  '/accounts': typeof AppAccountsIndexRoute
-  '/loan-products': typeof AppLoanProductsIndexRoute
-  '/loans': typeof AppLoansIndexRoute
-  '/members': typeof AppMembersIndexRoute
-  '/reports': typeof AppReportsIndexRoute
-  '/settings': typeof AppSettingsIndexRoute
-  '/transactions': typeof AppTransactionsIndexRoute
-  '/users': typeof AppUsersIndexRoute
-  '/loan-products/edit': typeof AppLoanProductsEditIndexRoute
-  '/loans/apply': typeof AppLoansApplyIndexRoute
-  '/members/edit': typeof AppMembersEditIndexRoute
-  '/reports/audit': typeof AppReportsAuditIndexRoute
+  '/accounts/': typeof AppAccountsIndexRoute
+  '/loan-products/': typeof AppLoanProductsIndexRoute
+  '/loans/': typeof AppLoansIndexRoute
+  '/members/': typeof AppMembersIndexRoute
+  '/reports/': typeof AppReportsIndexRoute
+  '/settings/': typeof AppSettingsIndexRoute
+  '/transactions/': typeof AppTransactionsIndexRoute
+  '/users/': typeof AppUsersIndexRoute
+  '/loan-products/edit/': typeof AppLoanProductsEditIndexRoute
+  '/loans/apply/': typeof AppLoansApplyIndexRoute
+  '/members/edit/': typeof AppMembersEditIndexRoute
+  '/reports/audit/': typeof AppReportsAuditIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
@@ -235,29 +235,29 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/login'
     | '/logout'
     | '/api/db-seed'
     | '/api/test'
-    | '/'
     | '/accounts/$accountId'
     | '/accounts/deposit'
     | '/accounts/withdrawal'
     | '/loans/$loanId'
     | '/members/$memberId'
     | '/users/edit'
-    | '/accounts'
-    | '/loan-products'
-    | '/loans'
-    | '/members'
-    | '/reports'
-    | '/settings'
-    | '/transactions'
-    | '/users'
-    | '/loan-products/edit'
-    | '/loans/apply'
-    | '/members/edit'
-    | '/reports/audit'
+    | '/accounts/'
+    | '/loan-products/'
+    | '/loans/'
+    | '/members/'
+    | '/reports/'
+    | '/settings/'
+    | '/transactions/'
+    | '/users/'
+    | '/loan-products/edit/'
+    | '/loans/apply/'
+    | '/members/edit/'
+    | '/reports/audit/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -338,7 +338,7 @@ declare module '@tanstack/react-router' {
     '/_app': {
       id: '/_app'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -366,56 +366,56 @@ declare module '@tanstack/react-router' {
     '/_app/users/': {
       id: '/_app/users/'
       path: '/users'
-      fullPath: '/users'
+      fullPath: '/users/'
       preLoaderRoute: typeof AppUsersIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/transactions/': {
       id: '/_app/transactions/'
       path: '/transactions'
-      fullPath: '/transactions'
+      fullPath: '/transactions/'
       preLoaderRoute: typeof AppTransactionsIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/settings/': {
       id: '/_app/settings/'
       path: '/settings'
-      fullPath: '/settings'
+      fullPath: '/settings/'
       preLoaderRoute: typeof AppSettingsIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/reports/': {
       id: '/_app/reports/'
       path: '/reports'
-      fullPath: '/reports'
+      fullPath: '/reports/'
       preLoaderRoute: typeof AppReportsIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/members/': {
       id: '/_app/members/'
       path: '/members'
-      fullPath: '/members'
+      fullPath: '/members/'
       preLoaderRoute: typeof AppMembersIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/loans/': {
       id: '/_app/loans/'
       path: '/loans'
-      fullPath: '/loans'
+      fullPath: '/loans/'
       preLoaderRoute: typeof AppLoansIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/loan-products/': {
       id: '/_app/loan-products/'
       path: '/loan-products'
-      fullPath: '/loan-products'
+      fullPath: '/loan-products/'
       preLoaderRoute: typeof AppLoanProductsIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/accounts/': {
       id: '/_app/accounts/'
       path: '/accounts'
-      fullPath: '/accounts'
+      fullPath: '/accounts/'
       preLoaderRoute: typeof AppAccountsIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
@@ -464,28 +464,28 @@ declare module '@tanstack/react-router' {
     '/_app/reports/audit/': {
       id: '/_app/reports/audit/'
       path: '/reports/audit'
-      fullPath: '/reports/audit'
+      fullPath: '/reports/audit/'
       preLoaderRoute: typeof AppReportsAuditIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/members/edit/': {
       id: '/_app/members/edit/'
       path: '/members/edit'
-      fullPath: '/members/edit'
+      fullPath: '/members/edit/'
       preLoaderRoute: typeof AppMembersEditIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/loans/apply/': {
       id: '/_app/loans/apply/'
       path: '/loans/apply'
-      fullPath: '/loans/apply'
+      fullPath: '/loans/apply/'
       preLoaderRoute: typeof AppLoansApplyIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/loan-products/edit/': {
       id: '/_app/loan-products/edit/'
       path: '/loan-products/edit'
-      fullPath: '/loan-products/edit'
+      fullPath: '/loan-products/edit/'
       preLoaderRoute: typeof AppLoanProductsEditIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
