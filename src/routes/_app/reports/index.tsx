@@ -21,7 +21,7 @@ function RouteComponent() {
   return (
     <Tabs defaultValue="general">
       <TabsList>
-        <TabsTrigger value="general">General Logs</TabsTrigger>
+        <TabsTrigger value="general">Activity Logs</TabsTrigger>
         <TabsTrigger value="auth">Auth Logs</TabsTrigger>
       </TabsList>
       <TabsContent value="general">
